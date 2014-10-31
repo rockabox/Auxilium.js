@@ -1,21 +1,18 @@
 /**
  * @constructor
- * @param  {object} ele Element to register all events to.
  */
-function Events (ele) {
-    this.ele = ele;
-}
+function Events () {}
 
 /**
  * Registers event to an element with callback. If an event already
  * exists on the element, we add the function to our own event system.
+ * @param {object} ele Element to listener on
  * @param {string} eventType Event name
  * @param {function} handler Function that will be called when this
  *                           event is triggered.
  */
-Events.prototype.addListener = function (eventType, handler) {
-    var $this = this,
-        ele = $this.ele;
+Events.prototype.addListener = function (ele, eventType, handler) {
+    var $this = this;
 
     ele.rbevents = ele.rbevents || [];
 
@@ -28,7 +25,7 @@ Events.prototype.addListener = function (eventType, handler) {
         }
         // Replace with our own
         ele['on' + eventType] = function (event) {
-            $this.handleEvent(event);
+            $this.handleEvent(ele, event);
         };
     }
 
@@ -38,12 +35,12 @@ Events.prototype.addListener = function (eventType, handler) {
 /**
  * Fires any registered events.
  * @private
- * @param  {object} event Event object
- * @param  {object} data  Data to pass with event
+ * @param {object} ele Element to fire registered events from
+ * @param {object} event Event object
+ * @param {object} data Data to pass with event
  */
-Events.prototype.handleEvent = function (event, data) {
-    var ele = this.ele,
-        eventType = event.type;
+Events.prototype.handleEvent = function (ele, event, data) {
+    var eventType = event.type;
 
     if (ele.rbevents && ele.rbevents[eventType]) {
         var handlers = ele.rbevents[eventType];
@@ -65,13 +62,12 @@ Events.prototype.handleEvent = function (event, data) {
 
 /**
  * Remove a registered event from an element
- * @param  {string} eventType Event name
- * @param  {function} handler Function that was originally called when
+ * @param {object} ele Element to remove a registered event from
+ * @param {string} eventType Event name
+ * @param {function} handler Function that was originally called when
  *                            this event is triggered.
  */
-Events.prototype.removeEvent = function (eventType, handler) {
-    var ele = this.ele;
-
+Events.prototype.removeEvent = function (ele, eventType, handler) {
     if (ele.rbevents && ele.rbevents[eventType]) {
         var handlers = ele.rbevents[eventType];
 
@@ -86,12 +82,13 @@ Events.prototype.removeEvent = function (eventType, handler) {
 
 /**
  * Trigger an event on a given element.
- * @param  {string} eventType Event name
- * @param  {object} data    Data to pass with event
+ * @param {object} ele Element to trigger an event from
+ * @param {string} eventType Event name
+ * @param {object} data    Data to pass with event
  */
-Events.prototype.triggerEvent = function (eventType, data) {
+Events.prototype.triggerEvent = function (ele, eventType, data) {
     data = data || {};
-    this.handleEvent({
+    this.handleEvent(ele, {
         type: eventType
     }, data);
 };
