@@ -5,7 +5,7 @@
  * @param {object} advert      The Advert class
  * @param {object} customHooks Custom hooks set within Placement js
  */
-function jsHooks (advert, customHooks) {
+function JSHooks (advert, customHooks) {
     var $this = this,
         events = advert.utils.events,
         hooks = [
