@@ -18,7 +18,12 @@ function loadJson (jsonFile, callback) {
 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == '200') {
-            callback(JSON.parse(xobj.responseText));
+            try {
+                var response = JSON.parse(xobj.responseText);
+                callback(response);
+            } catch (error) {
+                // Not a JSON object
+            }
         }
     };
 
