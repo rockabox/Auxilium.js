@@ -7,7 +7,7 @@ define([], function () {
      *
      * @returns All of the elements found with the tag specified inside the ele
      */
-    function getNestedEles (ele, tag, callback) {
+    function getElementByTag (ele, tag, callback) {
         var elements = ele.getElementsByTagName(tag);
 
         for (var i = 0, len = elements.length; i < len; i++) {
@@ -17,5 +17,5 @@ define([], function () {
         return elements;
     }
 
-    return getNestedEles;
+    return getElementByTag;
 });
