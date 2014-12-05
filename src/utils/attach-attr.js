@@ -15,6 +15,10 @@ define([], function () {
      *  // Returns x (<img src="http://example.com/something.gif" width="100" height="200" />)
      */
     function attachAttr (ele, attrs) {
+        if (!attrs) {
+            return ele;
+        }
+
         for (var attr in attrs) {
             ele.setAttribute(attr, attrs[attr]);
         }

@@ -15,6 +15,10 @@ define([], function () {
      *  // Returns x (<div style="position: relative; background-colour: black"></div>)
      */
     function attachCss (ele, css) {
+        if (!css) {
+            return ele;
+        }
+
         var style = ele.style;
 
         for (var rule in css) {
