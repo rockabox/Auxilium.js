@@ -1,6 +1,7 @@
 define([
     'utils/events'
 ], function (Events) {
+    var events = new Events();
     /**
      * Rockabox JSHook class, it will setup custom hooks set in the Placement js
      * for Load, Init, View initial, Engagement and Click.
@@ -10,7 +11,6 @@ define([
      */
     function JSHooks (advert, customHooks) {
         var $this = this,
-            events = new Events(),
             hooks = [
                 'load',
                 'init',
@@ -34,5 +34,8 @@ define([
         init();
     }
 
-    return JSHooks;
+    return {
+        init: JSHooks,
+        events: events
+    };
 });
