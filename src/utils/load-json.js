@@ -20,5 +20,6 @@ define(['utils/ajax'], function (Ajax) {
             } catch (error) {}
         };
         ajax.load(jsonFile);
+        return ajax;
     };
 });

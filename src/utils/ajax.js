@@ -6,14 +6,14 @@ define([], function () {
     }
 
     Ajax.prototype = {
-        get: 'GET',
-        post: 'POST',
+        GET: 'GET',
+        POST: 'POST',
         load: function (url, method) {
             var $this = this,
                 xhr = $this.getRequest();
 
             if (xhr) {
-                method = method ? method : $this.get;
+                method = method ? method : $this.GET;
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 200) {
