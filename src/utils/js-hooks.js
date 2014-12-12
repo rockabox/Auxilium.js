@@ -6,10 +6,10 @@ define([
      * Rockabox JSHook class, it will setup custom hooks set in the Placement js
      * for Load, Init, View initial, Engagement and Click.
      *
-     * @param {object} advert      The Advert class
-     * @param {object} customHooks Custom hooks set within Placement js
+     * @param {object} ele          The element in order to attach to the custom hooks
+     * @param {object} customHooks  Custom hooks set within Placement js
      */
-    function JSHooks (advert, customHooks) {
+    function JSHooks (ele, customHooks) {
         var $this = this,
             hooks = [
                 'load',
@@ -27,7 +27,7 @@ define([
                 var hookName = hooks[hook],
                     hookEvent = 'rb.' + hookName;
 
-                events.addListener(advert.getCreative(), hookEvent, customHooks[hookName]);
+                events.addListener(ele, hookEvent, customHooks[hookName]);
             }
         }
 
