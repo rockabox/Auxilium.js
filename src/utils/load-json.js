@@ -1,8 +1,8 @@
-define([], function () {
+define(['utils/ajax'], function (Ajax) {
     /**
      * Loads a JSON File and passes the content to a callback function
      * @param {string}   jsonFile The location of the JSON file in which to load.
-     * @param {Function} callback A function in which to run on completing teh load of the file.
+     * @param {Function} callback A function in which to run on load complete of file.
      *
      * @example
      *  var file = 'http://example.com/pokemon.json',
@@ -11,25 +11,14 @@ define([], function () {
      * 		};
      * // Will console.log the entire contents of the pokemon.json file loaded.
      */
-    function loadJson (jsonFile, callback) {
-        var xobj = new XMLHttpRequest();
-
-        xobj.overrideMimeType('application/json');
-        xobj.open('GET', jsonFile, true);
-
-        xobj.onreadystatechange = function () {
-            if (xobj.readyState == 4 && xobj.status == '200') {
-                try {
-                    var response = JSON.parse(xobj.responseText);
-                    callback(response);
-                } catch (error) {
-                    // Not a JSON object
-                }
-            }
+    return function (jsonFile, callback) {
+        var ajax = new Ajax();
+        ajax.onload = function (xhr) {
+            try {
+                var response = JSON.parse(xhr.responseText);
+                callback(response);
+            } catch (error) {}
         };
-
-        xobj.send(null);
-    }
-
-    return loadJson;
+        ajax.load(jsonFile);
+    };
 });
