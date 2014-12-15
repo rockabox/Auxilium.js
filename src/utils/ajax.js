@@ -49,7 +49,9 @@ define([], function () {
             return xhr;
         },
         loadJson: function (url, method, onload, onerror) {
-            this.load(url, method, function (xhr) {
+            var $this = this;
+
+            $this.load(url, method, function (xhr) {
                 try {
                     var response = JSON.parse(xhr.responseText);
                     onload(response);
