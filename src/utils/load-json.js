@@ -1,4 +1,9 @@
 define(['utils/ajax'], function (Ajax) {
+
+    function LoadJson () {
+        this.ajax = new Ajax();
+    }
+
     /**
      * Loads a JSON File and passes the content to a callback function
      * @param {string}   jsonFile The location of the JSON file in which to load.
@@ -11,15 +16,15 @@ define(['utils/ajax'], function (Ajax) {
      * 		};
      * // Will console.log the entire contents of the pokemon.json file loaded.
      */
-    return function (jsonFile, callback) {
-        var ajax = new Ajax();
-        ajax.onload = function (xhr) {
+    LoadJson.prototype.load = function (jsonFile, callback) {
+        this.ajax.onload = function (xhr) {
             try {
                 var response = JSON.parse(xhr.responseText);
                 callback(response);
             } catch (error) {}
         };
-        ajax.load(jsonFile);
-        return ajax;
+        this.ajax.load(jsonFile);
     };
+
+    return LoadJson;
 });
