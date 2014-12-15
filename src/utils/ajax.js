@@ -11,7 +11,7 @@ define([], function () {
          * @param {function} onload Success callback
          * @param {function} onerror Error callback
          *
-         * @return {object} XMLHTTP request object
+         * @returns {object} XMLHTTP request object
          */
         load: function (url, method, onload, onerror) {
             var $this = this,
@@ -40,7 +40,7 @@ define([], function () {
         /**
          * Retrieves the correct XMLHTTP object
          *
-         * @return {object} XMLHTTP request object
+         * @returns {object} XMLHTTP request object
          */
         getRequest: function () {
             var xhr = false;
@@ -71,11 +71,13 @@ define([], function () {
          * @param {string} method Defaults to get
          * @param {function} onload Success callback
          * @param {function} onerror Error callback
+         *
+         * @returns {object} XMLHTTP request object
          */
         loadJson: function (url, method, onload, onerror) {
             var $this = this;
 
-            $this.load(url, method, function (xhr) {
+            return $this.load(url, method, function (xhr) {
                 try {
                     var response = JSON.parse(xhr.responseText);
                     onload(response);
