@@ -1,28 +1,23 @@
 define([], function () {
 
-    function Ajax () {
-        this.onload = function () {};
-        this.onerror = function () {};
-    }
+    function Ajax () {}
 
     Ajax.prototype = {
-        GET: 'GET',
-        POST: 'POST',
-        load: function (url, method) {
+        load: function (url, method, onload, onerror) {
             var $this = this,
                 xhr = $this.getRequest();
 
             if (xhr) {
-                method = method ? method : $this.GET;
+                method = method ? method : 'get';
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 200) {
-                            if ($this.onload) {
-                                $this.onload(xhr);
+                            if (onload) {
+                                onload(xhr);
                             }
                         } else {
-                            if ($this.onerror) {
-                                $this.onerror(xhr);
+                            if (onerror) {
+                                onerror(xhr);
                             }
                         }
                     }
@@ -52,6 +47,18 @@ define([], function () {
                 }
             }
             return xhr;
+        },
+        loadJson: function (url, method, onload, onerror) {
+            this.load(url, method, function (xhr) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    onload(response);
+                } catch (error) {
+                    if (onerror) {
+                        onerror(error);
+                    }
+                }
+            }, onerror);
         }
     };
 

@@ -12,7 +12,9 @@ define([], function () {
         this.addListeners = function (onload, onerror) {
             onLoadHandler = onload;
             script.onload = script.onreadystatechange = $this.onload;
-            script.onerror = onerror;
+            if (script.onerror) {
+                script.onerror = onerror;
+            }
 
             return script;
         };

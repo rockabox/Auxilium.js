@@ -26,7 +26,9 @@ define([], function () {
             }
             // Replace with our own
             ele['on' + eventType] = function (event) {
-                $this.handleEvent(ele, event);
+                $this.handleEvent(ele, {
+                    type: eventType
+                }, event);
             };
         }
 
