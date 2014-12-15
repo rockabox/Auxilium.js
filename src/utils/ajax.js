@@ -3,6 +3,16 @@ define([], function () {
     function Ajax () {}
 
     Ajax.prototype = {
+        /**
+         * Execute ajax request
+         *
+         * @param {string} url Location of json file
+         * @param {string} method Defaults to get
+         * @param {function} onload Success callback
+         * @param {function} onerror Error callback
+         *
+         * @return {object} XMLHTTP request object
+         */
         load: function (url, method, onload, onerror) {
             var $this = this,
                 xhr = $this.getRequest();
@@ -27,6 +37,11 @@ define([], function () {
             }
             return xhr;
         },
+        /**
+         * Retrieves the correct XMLHTTP object
+         *
+         * @return {object} XMLHTTP request object
+         */
         getRequest: function () {
             var xhr = false;
             if (typeof ActiveXObject !== 'undefined') {
@@ -48,6 +63,15 @@ define([], function () {
             }
             return xhr;
         },
+        /**
+         * Exactly the same as load but will parse the response
+         * into a JSON object.
+         *
+         * @param {string} url Location of json file
+         * @param {string} method Defaults to get
+         * @param {function} onload Success callback
+         * @param {function} onerror Error callback
+         */
         loadJson: function (url, method, onload, onerror) {
             var $this = this;
 
