@@ -33,15 +33,17 @@ define([], function () {
         };
 
         this.onload = function (event) {
-            var state = script.readyState,
+            var s = (event && event.target) ? event.target : script,
+                state = s.readyState,
                 ready = (!state) || (state === 'loaded') ||
-                        (state === 'complete');
+                    (state === 'complete');
+
             if (!done && ready) {
                 if (onLoadHandler) {
                     onLoadHandler(event);
                 }
                 done = true;
-                script.onload = script.onreadystatechange = null;
+                s.onload = s.onreadystatechange = null;
             }
         };
 
