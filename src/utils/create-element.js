@@ -14,6 +14,8 @@ define([
      * @param {string|array} params.cssNames    Contains css class name or names in which to attach to an element
      * @param {object} params.events            Contains event handlers to be attached to an element
      *
+     * @returns ele The HTML element created with css and attributes added to passed from params
+     *
      * @requires attachEvents
      * @requires attachAttr
      * @requires attachCss
@@ -41,7 +43,6 @@ define([
      * //   class="legen wait-for-it dary" />
      * // When the image source has loaded a function will be ran console logging out.
      *
-     * @returns ele The HTML element created with css and attributes added to passed from params
      */
     function createElement (tag, params) {
         var ele = document.createElement(tag);

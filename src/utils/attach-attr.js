@@ -6,13 +6,16 @@ define([], function () {
      * @returns {object} ele  Passes the element with attributes attached.
      *
      * @example
-     *  var x = document.createElement('img'),
+     * var imgEle = document.createElement('img'),
      * 		attr = {
      * 			'src': 'http://example.com/something.gif',
      *    		'width': '100',
      *    		'height': '200'
      *   	};
-     *  // Returns x (<img src="http://example.com/something.gif" width="100" height="200" />)
+     *
+     * attachAttr(imgEle, attr);
+     *
+     * // Returns imgEle (<img src="http://example.com/something.gif" width="100" height="200" />)
      */
     function attachAttr (ele, attrs) {
         if (!attrs) {

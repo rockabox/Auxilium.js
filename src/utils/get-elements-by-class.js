@@ -7,9 +7,38 @@ define([
      *
      * @param {object}      parent       The parent element in which to search through for the element.
      * @param {string}      className    A string representation of the class name in which to search for.
-     * @param {string=*}    tagName      A string representation of the tag name the class is assigned to.
+     * @param {string=?}    tagName      A string representation of the tag name the class is assigned to.
      *
      * @returns {object} result An array of elements found within the element with the class passed through.
+     *
+     * @example
+     * // DOM
+     * <div id="main-content">
+     * 		<div class="muppets" id="kermit">
+     * 			<span class="muppets" id="miss-piggy"></span>
+     *    </div>
+     *    <div class="muppets" id="gonzo">
+     * 	  		<span class="muppets" id="rat"></span>
+     *      </div>
+     *      <div class="muppets" id="fuzzy"></div>
+     * </div>
+     *
+     * // JS
+     * var eles = getElementByClassName(document.body, 'muppets');
+     * // Returns
+     * // All elements with class muppets, id's:
+     * // - kermit
+     * // - miss-piggy
+     * // - gonzo
+     * // - rat
+     * // - fuzzy
+     *
+     * var mainContent = document.getElementById('main-content'),
+     * 		eleSpan = getElementByClassName(mainContent, 'muppets', 'span');
+     * // Returns
+     * // Elements with class muppets and is a span tag
+     * // - miss-piggy
+     * // - rat
      */
     function getElementByClassName (parent, className, tagName) {
         var tag = (tagName) ? tagName : '*',

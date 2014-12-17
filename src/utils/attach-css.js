@@ -12,7 +12,7 @@ define([], function () {
      *    		'backgroundColor': 'black'
      *   	};
      *  attachCss(ele, css);
-     *  // Returns x (<div style="position: relative; background-colour: black"></div>)
+     *  // Returns div (<div style="position: relative; background-colour: black"></div>)
      */
     function attachCss (ele, css) {
         if (!css) {
