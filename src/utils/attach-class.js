@@ -2,6 +2,22 @@ define([
     'utils/has-class'
 ], function (hasClass) {
     /**
+     * Attaches a class to a name
+     *
+     * @param {Object} ele  An element in which to attach a class
+     * @param {string} name A class name which to attach to an element
+     *
+     * @returns ele The element passed with the class attached
+     */
+    function attachToEle (ele, name) {
+        if (!hasClass(ele, name)) {
+            ele.className += (ele.className ? ' ' : '') + name;
+        }
+
+        return ele;
+    }
+
+    /**
      * Add CSS Classes to an element if there is an array passed or a singular class name if a string
      *
      * @requires hasClass
@@ -33,18 +49,12 @@ define([
             return ele;
         }
 
-        function attachToEle (name) {
-            if (!hasClass(ele, name)) {
-                ele.className += (ele.className ? ' ' : '') + name;
-            }
-        }
-
         if (typeof names === 'string') {
-            attachToEle(names);
+            attachToEle(ele, names);
         } else {
             for (var name in names) {
                 if (names.hasOwnProperty(name)) {
-                    attachToEle(names[name]);
+                    attachToEle(ele, names[name]);
                 }
             }
         }
