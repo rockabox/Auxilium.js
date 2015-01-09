@@ -1,8 +1,14 @@
+/**
+ * A module which attaches a css class to an html element.
+ * @module utils/attach-class
+ * @see module:utils/has-class
+ */
 define([
     'utils/has-class'
 ], function (hasClass) {
     /**
      * Attaches a class to a name
+     * @memberOf module:utils/attach-class
      *
      * @param {Object} ele  An element in which to attach a class
      * @param {string} name A class name which to attach to an element
@@ -19,8 +25,7 @@ define([
 
     /**
      * Add CSS Classes to an element if there is an array passed or a singular class name if a string
-     *
-     * @requires hasClass
+     * @memberOf module:utils/attach-class
      *
      * @param {object}          ele     Element in which to add the class/classes.
      * @param {string|array}    names   The class name or names in which to add.
@@ -34,7 +39,7 @@ define([
      *
      * attachClass(ele, names);
      * // Returns ele
-     * // (<div class="IP Freely"></div>)
+     * // (&lt;div class="IP Freely"&gt;&lt;/div&gt;)
      *
      * // Attach a single class to an element
      * var ele = document.createElement('div'),
@@ -42,7 +47,7 @@ define([
      *
      * attachClass(ele, names);
      * // Returns ele
-     * // (<div class="barney-stinson"></div>)
+     * // (&lt;div class="barney-stinson"&lt;&gt;/div&gt;)
      */
     function attachClass (ele, names) {
         if (!names) {

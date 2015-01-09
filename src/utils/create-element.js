@@ -1,3 +1,11 @@
+/**
+ * A module which Creates an element and returns the element.
+ * @module utils/create-element
+ * @see module:utils/attach-attr
+ * @see module:utils/attach-class
+ * @see module:utils/attach-css
+ * @see module:utils/attach-events
+ */
 define([
     'utils/attach-attr',
     'utils/attach-class',
@@ -6,6 +14,8 @@ define([
 ], function (attachAttr, attachClass, attachCss, attachEvents) {
     /**
      * Creates an element and returns the element
+     * @memberOf module:utils/create-element
+     *
      * @param {string} tag                      The HTML tag type in which to create
      * @param {object} params                   Contains paramaters to be used for the creation of the element
      * @param {object} params.attr              Contains the HTML node attributes and it's values to be added to the
@@ -39,8 +49,8 @@ define([
      * };
      * var imageEle = createElement('img', params);
      * // Returns
-     * // <img src="http://rockabox.com/example.gif" style="border: 1px solid black; background-color: red;"
-     * //   class="legen wait-for-it dary" />
+     * // &lt;img src="http://rockabox.com/example.gif" style="border: 1px solid black; background-color: red;"
+     * //   class="legen wait-for-it dary" /&gt;
      * // When the image source has loaded a function will be ran console logging out.
      *
      */

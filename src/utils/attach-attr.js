@@ -1,6 +1,11 @@
+/**
+ * A module which attaches DOM attribles to an element.
+ * @module utils/attach-attr
+ */
 define([], function () {
     /**
-     * Attaches DOM attribles to an elements
+     * Attaches DOM attribles to an element.
+     * @memberOf module:utils/attach-attr
      * @param {object} ele    A DOM Element in which to add the CSS to.
      * @param {object} attrs Attributes in which to add to the Element in an object
      * @returns {object} ele  Passes the element with attributes attached.
@@ -15,7 +20,7 @@ define([], function () {
      *
      * attachAttr(imgEle, attr);
      *
-     * // Returns imgEle (<img src="http://example.com/something.gif" width="100" height="200" />)
+     * // Returns imgEle (&lt;img src="http://example.com/something.gif" width="100" height="200" /&gt;)
      */
     function attachAttr (ele, attrs) {
         if (!attrs) {
