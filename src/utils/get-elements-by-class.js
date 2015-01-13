@@ -1,9 +1,15 @@
+/**
+ * A cross-browser module which gets all elements by class name.
+ * @module utils/get-elements-by-class
+ */
 define([
     'utils/has-class'
 ], function (hasClass) {
     /**
-     * A cross-browser function usable for IE7+, Chrome, Firefox & Safari in order to search within an element for all
-     * elements with a specific class name.
+     * A cross-browser function usable for IE7+, Chrome, Firefox & Safari in order to search within
+     * an element for all elements with a specific class name.
+     *
+     * @memberOf module:utils/get-elements-by-class
      *
      * @param {object}      parent       The parent element in which to search through for the element.
      * @param {string}      className    A string representation of the class name in which to search for.
@@ -13,15 +19,15 @@ define([
      *
      * @example
      * // DOM
-     * <div id="main-content">
-     * 		<div class="muppets" id="kermit">
-     * 			<span class="muppets" id="miss-piggy"></span>
-     *    </div>
-     *    <div class="muppets" id="gonzo">
-     * 	  		<span class="muppets" id="rat"></span>
-     *      </div>
-     *      <div class="muppets" id="fuzzy"></div>
-     * </div>
+     * &lt;div id="main-content"&gt;
+     * 		&lt;div class="muppets" id="kermit"&gt;
+     * 			&lt;span class="muppets" id="miss-piggy"&gt;&lt;/span&gt;
+     *    &lt;/div&gt;
+     *    &lt;div class="muppets" id="gonzo"&gt;
+     * 	  		&lt;span class="muppets" id="rat"&gt;&lt;/span&gt;
+     *      &lt;/div&gt;
+     *      &lt;div class="muppets" id="fuzzy"&gt;&lt;/div&gt;
+     * &lt;/div&gt;
      *
      * // JS
      * var eles = getElementByClassName(document.body, 'muppets');

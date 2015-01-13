@@ -1,10 +1,17 @@
-define([], function () {
+/**
+ * A module to allow for cross-browser AJAX calls
+ * @module utils/ajax
+ */
+define([
+], function () {
 
     function Ajax () {}
 
     Ajax.prototype = {
         /**
          * Execute ajax request
+         *
+         * @memberOf moduel:utils/ajax
          *
          * @param {string} url Location of json file
          * @param {string} method Defaults to get
@@ -40,6 +47,8 @@ define([], function () {
         /**
          * Retrieves the correct XMLHTTP object
          *
+         * @memberOf moduel:utils/ajax
+         *
          * @returns {object} XMLHTTP request object
          */
         getRequest: function () {
@@ -66,6 +75,8 @@ define([], function () {
         /**
          * Exactly the same as load but will parse the response
          * into a JSON object.
+         *
+         * @memberOf moduel:utils/ajax
          *
          * @param {string} url Location of json file
          * @param {string} method Defaults to get

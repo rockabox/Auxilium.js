@@ -1,12 +1,21 @@
-define([], function () {
+/**
+ * A module to attach and fire events on an element.
+ * @module utils/events
+ */
+define([
+], function () {
     /**
      * @constructor
+     * @memberOf module:utils/events
      */
     function Events () {}
 
     /**
      * Registers event to an element with callback. If an event already
      * exists on the element, we add the function to our own event system.
+     *
+     * @memberOf module:utils/events
+     *
      * @param {object} ele Element to listener on
      * @param {string} eventType Event name
      * @param {function} handler Function that will be called when this
@@ -37,7 +46,10 @@ define([], function () {
 
     /**
      * Fires any registered events.
-     * @private
+     *
+     * @protected
+     * @memberOf module:utils/events
+     *
      * @param {object} ele Element to fire registered events from
      * @param {object} event Event object
      * @param {object} data Data to pass with event
@@ -65,6 +77,10 @@ define([], function () {
 
     /**
      * Remove a registered event from an element
+     *
+     * @public
+     * @memberOf module:utils/events
+     *
      * @param {object} ele Element to remove a registered event from
      * @param {string} eventType Event name
      * @param {function} handler Function that was originally called when
