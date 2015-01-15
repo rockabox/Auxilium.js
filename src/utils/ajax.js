@@ -11,7 +11,7 @@ define([
         /**
          * Execute ajax request
          *
-         * @memberOf moduel:utils/ajax
+         * @memberOf module:utils/ajax
          *
          * @param {string} url Location of json file
          * @param {string} method Defaults to get
@@ -47,7 +47,7 @@ define([
         /**
          * Retrieves the correct XMLHTTP object
          *
-         * @memberOf moduel:utils/ajax
+         * @memberOf module:utils/ajax
          *
          * @returns {object} XMLHTTP request object
          */
@@ -76,7 +76,7 @@ define([
          * Exactly the same as load but will parse the response
          * into a JSON object.
          *
-         * @memberOf moduel:utils/ajax
+         * @memberOf module:utils/ajax
          *
          * @param {string} url Location of json file
          * @param {string} method Defaults to get
