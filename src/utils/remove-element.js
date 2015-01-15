@@ -2,12 +2,12 @@ define([
 
 ], function () {
 
-    function removeElement (node) {
+    function removeElement (node, removeParent) {
         var parent = node.parentNode;
         while (node.hasChildNodes()) {
             node.removeChild(node.lastChild);
         }
-        if (parent) {
+        if (removeParent && parent) {
             parent.removeChild(node);
         }
         return parent;
