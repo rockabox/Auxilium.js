@@ -1,7 +1,7 @@
 /**
  * A module which will remove a single class from an element.
  * @module utils/remove-class
- * @see module:utils/has-class
+ * @requires module:utils/has-class
  */
 define([
     'utils/has-class'

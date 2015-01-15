@@ -1,7 +1,7 @@
 /**
  * A module which attaches a css class to an html element.
  * @module utils/attach-class
- * @see module:utils/has-class
+ * @requires module:utils/has-class
  */
 define([
     'utils/has-class'

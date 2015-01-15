@@ -1,10 +1,10 @@
 /**
  * A module which Creates an element and returns the element.
  * @module utils/create-element
- * @see module:utils/attach-attr
- * @see module:utils/attach-class
- * @see module:utils/attach-css
- * @see module:utils/attach-events
+ * @requires module:utils/attach-attr
+ * @requires module:utils/attach-class
+ * @requires module:utils/attach-css
+ * @requires module:utils/attach-events
  */
 define([
     'utils/attach-attr',

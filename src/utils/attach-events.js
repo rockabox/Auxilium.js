@@ -1,7 +1,7 @@
 /**
  * A module which attaches events to an html element.
  * @module utils/attach-events
- * @see module:utils/events
+ * @requires module:utils/events
  */
 define([
     'utils/events'
