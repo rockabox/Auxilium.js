@@ -8,15 +8,15 @@ define([
      * Removes an elements child node
      * @memberOf module:utils/remove-element
      * @param {Object} node HTML node to act upon
-     * @param {Boolean:false} removeParent Optional: remove the entire node
+     * @param {Boolean:false} self Optional: remove the entire node
      * return {Object} Original HTML node
      */
-    function removeElement (node, removeParent) {
+    function removeElement (node, self) {
         var parent = node.parentNode;
         while (node.hasChildNodes()) {
             node.removeChild(node.lastChild);
         }
-        if (removeParent && parent) {
+        if (self && parent) {
             parent.removeChild(node);
         }
         return parent;
