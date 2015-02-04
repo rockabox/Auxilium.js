@@ -1,12 +1,12 @@
 /**
  * A module that checks whether an object has the given properties.
- * @module utils/has-property
+ * @module aux/has-property
  */
 define([
 ], function () {
     /**
      * hasProperty
-     * @memberOf module:utils/has-property
+     * @memberOf module:aux/has-property
      * @param {Object} obj Object to check
      * @param {String} path Properties to check
      *

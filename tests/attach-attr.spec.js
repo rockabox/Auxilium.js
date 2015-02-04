@@ -1,4 +1,4 @@
-define(['utils/attach-attr'], function (attachAttr) {
+define(['aux/attach-attr'], function (attachAttr) {
     describe('utils attachAttr', function () {
 
         var ele,

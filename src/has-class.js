@@ -1,13 +1,13 @@
 /**
  * A module which checks that an element has a specific class.
- * @module utils/has-class
+ * @module aux/has-class
  */
 define([
 ], function () {
     /**
      * Checks whether or not an element has a specific class name.
      *
-     * @memberOf module:utils/has-class
+     * @memberOf module:aux/has-class
      *
      * @param  {object}  ele  Element to test.
      * @param  {string}  name Class name you want to see if the element contains.

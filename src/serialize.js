@@ -1,6 +1,6 @@
 /**
  * A module in order to serialize an object into query params for a URL.
- * @module utils/serialize
+ * @module aux/serialize
  */
 define([
 ], function () {
@@ -8,7 +8,7 @@ define([
      * Serialize's an object into query params for a URL
      * Passes & between params (? or & not prefixed)
      *
-     * @memberOf module:utils/serialize
+     * @memberOf module:aux/serialize
      *
      * @param  {object} queryParams The different params to serialize (key becomes &param value becomes =value)
      *

@@ -1,6 +1,6 @@
 /**
  * A module which merge's two objects together (destructively to the first obj).
- * @module utils/merge
+ * @module aux/merge
  */
 define([
 ], function () {

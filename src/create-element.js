@@ -1,20 +1,20 @@
 /**
  * A module which Creates an element and returns the element.
- * @module utils/create-element
- * @requires module:utils/attach-attr
- * @requires module:utils/attach-class
- * @requires module:utils/attach-css
- * @requires module:utils/attach-events
+ * @module aux/create-element
+ * @requires module:aux/attach-attr
+ * @requires module:aux/attach-class
+ * @requires module:aux/attach-css
+ * @requires module:aux/attach-events
  */
 define([
-    'utils/attach-attr',
-    'utils/attach-class',
-    'utils/attach-css',
-    'utils/attach-events'
+    'aux/attach-attr',
+    'aux/attach-class',
+    'aux/attach-css',
+    'aux/attach-events'
 ], function (attachAttr, attachClass, attachCss, attachEvents) {
     /**
      * Creates an element and returns the element
-     * @memberOf module:utils/create-element
+     * @memberOf module:aux/create-element
      *
      * @param {string} tag                      The HTML tag type in which to create
      * @param {object} params                   Contains paramaters to be used for the creation of the element

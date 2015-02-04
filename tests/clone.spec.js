@@ -1,5 +1,5 @@
 define([
-    'utils/clone'
+    'aux/clone'
 ], function (clone) {
     describe('Clone an object util function', function () {
         it('should be able to clone an object', function () {

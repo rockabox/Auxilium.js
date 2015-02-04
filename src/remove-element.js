@@ -1,12 +1,12 @@
 /**
  * A module which removes all child nodes and optionally, the main node.
- * @module utils/remove-element
+ * @module aux/remove-element
  */
 define([
 ], function () {
     /**
      * Removes an elements child node
-     * @memberOf module:utils/remove-element
+     * @memberOf module:aux/remove-element
      * @param {Object} node HTML node to act upon
      * @param {Boolean:false} self Optional: remove the entire node
      * return {Object} Original HTML node

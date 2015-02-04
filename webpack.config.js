@@ -5,7 +5,7 @@ module.exports = {
     plugins: [],
     resolve: {
         alias: {
-            utils: path.join(__dirname, 'src')
+            aux: path.join(__dirname, 'src')
         }
     }
 };

@@ -1,5 +1,5 @@
 define([
-    'utils/has-class'
+    'aux/has-class'
 ], function (hasClass) {
     describe('Check whether or not an element has a class', function () {
 

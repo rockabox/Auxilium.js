@@ -1,11 +1,11 @@
 /**
  * A module which attaches DOM attribles to an element.
- * @module utils/attach-attr
+ * @module aux/attach-attr
  */
 define([], function () {
     /**
      * Attaches DOM attribles to an element.
-     * @memberOf module:utils/attach-attr
+     * @memberOf module:aux/attach-attr
      * @param {object} ele    A DOM Element in which to add the CSS to.
      * @param {object} attrs Attributes in which to add to the Element in an object
      * @returns {object} ele  Passes the element with attributes attached.

@@ -1,14 +1,14 @@
 /**
  * A module which attaches events to an html element.
- * @module utils/attach-events
- * @requires module:utils/events
+ * @module aux/attach-events
+ * @requires module:aux/events
  */
 define([
-    'utils/events'
+    'aux/events'
 ], function (Events) {
     /**
      * Attaches multiple events to an element using the Rockabox Events system
-     * @memberOf module:utils/attach-events
+     * @memberOf module:aux/attach-events
      *
      * @param {Object} ele      The DOM Element in which to attach the events to.
      * @param {Object} handlers An object containing all of the different event types in which to attach a function to.

@@ -1,15 +1,15 @@
 /**
  * A module which will remove a single class from an element.
- * @module utils/remove-class
- * @requires module:utils/has-class
+ * @module aux/remove-class
+ * @requires module:aux/has-class
  */
 define([
-    'utils/has-class'
+    'aux/has-class'
 ], function (hasClass) {
     /**
      * Remove class from an element.
      *
-     * @memberOf module:utils/remove-class
+     * @memberOf module:aux/remove-class
      *
      * @param  {object} ele  Element to remove class from.
      * @param  {string} name Class name in which to remove.

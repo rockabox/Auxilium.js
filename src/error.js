@@ -1,13 +1,13 @@
 /**
  * A module which deals with handling errors (helper to throw error's).
- * @module utils/merge
+ * @module aux/merge
  */
 define([
 ], function () {
     /**
      * Throws an error message.
      *
-     * @memberOf module:utils/error
+     * @memberOf module:aux/error
      *
      * @public
      * @param {string} message Error message

@@ -1,11 +1,11 @@
 /**
  * A module in order to load a JavaScript file on the page using a script tag.
- * @module utils/load-script
+ * @module aux/load-script
  */
 define([], function () {
     /**
      * A loader for Javascript &lt;script/&gt; tags
-     * @memberOf module:utils/load-script
+     * @memberOf module:aux/load-script
      * @constructor
      */
     function LoadScript () {
@@ -19,7 +19,7 @@ define([], function () {
         /**
          * Adds load and error listeners on to the script tag.
          *
-         * @memberOf module:utils/load-script
+         * @memberOf module:aux/load-script
          *
          * @param {Function} onload  A callback function which should be called when the file has loaded.
          * @param {Function} onerror A callback function which should be called when there was an error
@@ -39,7 +39,7 @@ define([], function () {
 
         /**
          * Set's up the constructor calling the getScript method.
-         * @memberOf module:utils/load-script
+         * @memberOf module:aux/load-script
          *
          * @return {Object} script The script DOM node.
          */
@@ -51,7 +51,7 @@ define([], function () {
 
         /**
          * Load's the file via the script tag on to the page.
-         * @memberOf module:utils/load-script
+         * @memberOf module:aux/load-script
          *
          * @param  {String} src The URL to the file in which to load.
          * @return {Object} script The script DOM node.
@@ -80,7 +80,7 @@ define([], function () {
 
         /**
          * Renders the script node to the page via a script tag.
-         * @memberOf module:utils/load-script
+         * @memberOf module:aux/load-script
          *
          * @return {Object} script The script DOM node.
          */
@@ -93,7 +93,7 @@ define([], function () {
 
         /**
          * Creates a DOM element for the script tag.
-         * @memberOf module:utils/load-script
+         * @memberOf module:aux/load-script
          *
          * @return {Object} s The script DOM node.
          */

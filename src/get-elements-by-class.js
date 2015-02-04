@@ -1,15 +1,15 @@
 /**
  * A cross-browser module which gets all elements by class name.
- * @module utils/get-elements-by-class
+ * @module aux/get-elements-by-class
  */
 define([
-    'utils/has-class'
+    'aux/has-class'
 ], function (hasClass) {
     /**
      * A cross-browser function usable for IE7+, Chrome, Firefox & Safari in order to search within
      * an element for all elements with a specific class name.
      *
-     * @memberOf module:utils/get-elements-by-class
+     * @memberOf module:aux/get-elements-by-class
      *
      * @param {object}      parent       The parent element in which to search through for the element.
      * @param {string}      className    A string representation of the class name in which to search for.

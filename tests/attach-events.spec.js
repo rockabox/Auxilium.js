@@ -1,4 +1,4 @@
-define(['utils/attach-events'], function (attachEvents) {
+define(['aux/attach-events'], function (attachEvents) {
     describe('Attach event handlers', function () {
         it('should attach a click event to the element', function () {
             var ele = document.createElement('div'),

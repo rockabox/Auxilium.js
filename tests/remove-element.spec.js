@@ -1,5 +1,5 @@
 define([
-    'utils/remove-element'
+    'aux/remove-element'
 ], function (removeElement) {
     describe('Remove Element Util', function () {
         var child,

@@ -1,6 +1,6 @@
 define([
-    'utils/attach-class',
-    'utils/create-element'
+    'aux/attach-class',
+    'aux/create-element'
 ], function (attachClass, createElement) {
     describe('Attach a css class to a dom element util', function () {
         var ele,

@@ -1,13 +1,13 @@
 /**
  * A module in order to get all elements with a specific tag name and fire a callback with the element .
- * @module utils/get-element-by-tag
+ * @module aux/get-element-by-tag
  */
 define([
 ], function () {
     /**
      * Get all elements with a certain tag name within an element and fire a callback passing the element.
      *
-     * @memberOf module:utils/get-element-by-tag
+     * @memberOf module:aux/get-element-by-tag
      *
      * @param {object}   ele      The containing object in which to search within
      * @param {string}   tag      The type of tag name in which should be looked for

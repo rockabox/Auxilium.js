@@ -1,11 +1,11 @@
 /**
  * A module which attaches inline styling to an html element.
- * @module utils/attach-css
+ * @module aux/attach-css
  */
 define([], function () {
     /**
      * Attaches CSS to an elements style attribute
-     * @memberOf module:utils/attach-css
+     * @memberOf module:aux/attach-css
      *
      * @param {object} ele    A DOM Element in which to add the CSS to.
      * @param {object} css CSS in which to add to the Element in an object
