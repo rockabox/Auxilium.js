@@ -19,9 +19,9 @@ module.exports = function (grunt) {
         'karma:unit'
     ]);
 
-    grunt.registerTask('ci-task', [
+    grunt.registerTask('ci-test', [
         'test',
-        'karma:coveralls',
-        'sauce-labs'
+        'sauce-labs',
+        'coveralls'
     ]);
 };

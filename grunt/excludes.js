@@ -1,6 +1,8 @@
 module.exports = {
     files: [
         '!node_modules/**',
-        '!vendor/**'
+        '!vendor/**',
+        '!.reports/**',
+        '!coverage/**'
     ]
 };
