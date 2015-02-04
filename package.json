@@ -1,0 +1,36 @@
+{
+  "name": "Auxilium.js",
+  "version": "0.1.0",
+  "description": "A webpacked utility library.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rockabox/Auxilium.js.git"
+  },
+  "keywords": [
+    "Auxilium",
+    "webpack",
+    "utils",
+    "helpers"
+  ],
+  "author": [
+    "Rockabox <tech@rockabox.com> (http://rockabox.com)",
+    "Nick White <nickswhite89@gmail.com> (http://nwhite89.github.io)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rockabox/Auxilium.js/issues"
+  },
+  "homepage": "https://github.com/rockabox/Auxilium.js",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "~0.11.0",
+    "grunt-jscs": "~1.2.0",
+    "load-grunt-config": "~0.16.0",
+    "load-grunt-tasks": "~3.1.0"
+  }
+}

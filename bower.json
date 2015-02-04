@@ -1,0 +1,31 @@
+{
+  "name": "Auxilium.js",
+  "version": "0.1.0",
+  "description": "A webpacked utility library.",
+  "author": [
+    "Rockabox <tech@rockabox.com> (http://rockabox.com)",
+    "Nick White <nickswhite89@gmail.com> (http://nwhite89.github.io)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Auxilium",
+    "webpack",
+    "utils",
+    "helpers"
+  ],
+  "ignore": [
+    ".editorconfig",
+    ".gitignore",
+    ".jscsrc",
+    ".jshintrc",
+    ".travis.yml",
+    "Gruntfile.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rockabox/Auxilium.js.git"
+  },
+  "main": "src/index.js",
+  "dependencies": {
+  }
+}
