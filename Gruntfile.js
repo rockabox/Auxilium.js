@@ -10,6 +10,10 @@ module.exports = function (grunt) {
         'jscs:src'
     ]);
 
+    grunt.registerTask('sauce-labs', [
+        'karma:unit-sauce'
+    ]);
+
     grunt.registerTask('test', [
         'lint',
         'karma:unit'
