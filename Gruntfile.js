@@ -18,4 +18,10 @@ module.exports = function (grunt) {
         'lint',
         'karma:unit'
     ]);
+
+    grunt.registerTask('ci-task', [
+        'test',
+        'karma:coveralls',
+        'sauce-labs'
+    ]);
 };
