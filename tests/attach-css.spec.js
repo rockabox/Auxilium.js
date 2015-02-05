@@ -1,4 +1,4 @@
-define(['aux/attach-css'], function (attachCss) {
+define(['attach-css'], function (attachCss) {
     describe('utils attachCss', function () {
         var ele,
             css = {

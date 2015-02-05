@@ -1,6 +1,6 @@
 define([
-    'aux/create-element',
-    'aux/get-elements-by-class'
+    'create-element',
+    'get-elements-by-class'
 ], function (createElement, getElementByClass) {
     describe('Retrieve an element by class name', function () {
         var ele;

@@ -1,5 +1,5 @@
 define([
-    'aux/merge'
+    'merge'
 ], function (merge) {
     describe('Merge utility functions', function () {
         it('should be able to merge two objects', function () {

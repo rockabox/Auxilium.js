@@ -1,4 +1,4 @@
-define(['aux/ajax'], function (Ajax) {
+define(['ajax'], function (Ajax) {
     describe('Ajax utils', function () {
 
         var ajax;

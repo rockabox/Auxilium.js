@@ -1,20 +1,17 @@
-/**
- * A module in order to serialize an object into query params for a URL.
- * @module aux/serialize
- */
 define([
 ], function () {
     /**
      * Serialize's an object into query params for a URL
      * Passes & between params (? or & not prefixed)
      *
-     * @memberOf module:aux/serialize
+     * @exports serialize
      *
      * @param  {object} queryParams The different params to serialize (key becomes &param value becomes =value)
      *
      * @return {string}        Passes back a serialized version from the object ready to be used for a URL
      *
      * @example
+     * ```js
      * var queryParams = {
      * 	'first_name': 'Bart',
      *  'last_name': 'Simpson'
@@ -22,6 +19,7 @@ define([
      * serialize(queryParams);
      * // returns
      * // first_name=Bart&last_name=Simpson
+     * ```
      */
     function serialize (queryParams) {
         var str = [],

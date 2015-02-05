@@ -1,5 +1,5 @@
 define([
-    'aux/has-property'
+    'has-property'
 ], function (hasProperty) {
     describe('Utils hasProperty', function () {
         var obj;

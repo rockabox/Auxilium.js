@@ -1,9 +1,10 @@
-/**
- * A module to allow for cross-browser AJAX calls
- * @module aux/ajax
- */
 define([
 ], function () {
+
+    /**
+     * A module to allow for cross-browser AJAX calls
+     * @exports ajax
+     */
 
     function Ajax () {}
 
@@ -11,7 +12,7 @@ define([
         /**
          * Execute ajax request
          *
-         * @memberOf module:aux/ajax
+         * @memberOf module:ajax
          *
          * @param {string} url Location of json file
          * @param {string} method Defaults to get
@@ -47,7 +48,7 @@ define([
         /**
          * Retrieves the correct XMLHTTP object
          *
-         * @memberOf module:aux/ajax
+         * @memberOf module:ajax
          *
          * @returns {object} XMLHTTP request object
          */
@@ -76,7 +77,7 @@ define([
          * Exactly the same as load but will parse the response
          * into a JSON object.
          *
-         * @memberOf module:aux/ajax
+         * @memberOf module:ajax
          *
          * @param {string} url Location of json file
          * @param {string} method Defaults to get

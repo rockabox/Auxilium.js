@@ -1,4 +1,4 @@
-define(['aux/create-element'], function (createElement) {
+define(['create-element'], function (createElement) {
     describe('Creating a DOM element', function () {
 
         it('should create an element with no styling or attributes', function () {
