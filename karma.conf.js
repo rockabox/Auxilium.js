@@ -2,6 +2,16 @@ var webpackConf = require('./webpack.config.js'),
     lodash = require('lodash-node'),
     opts = lodash.cloneDeep(webpackConf);
 
+opts.module = opts.module || {};
+// Use the istanbul-instrumenter loader to be able to gather coverage reports from webpack.
+opts.module.postLoaders = [
+    {
+        test: /\.js$/,
+        exclude: /(tests|node_modules|bower_components)\//,
+        loader: 'istanbul-instrumenter'
+    }
+];
+
 module.exports = function (config) {
     var configuration = {
             customLaunchers: {
@@ -27,21 +37,31 @@ module.exports = function (config) {
             singleRun: true,
             captureTimeout: 60000,
             reporters: [
-                'progress'
+                'progress',
+                'coverage'
             ],
-            preprocessors: {
-                'src/**/*.js': 'coverage',
-                'tests/**/*.spec.js': 'webpack'
-            },
             coverageReporter: {
-                dir: '.reports/js/coverage/'
+                type: 'html',
+                dir: 'coverage/'
+            },
+            preprocessors: {
+                'tests/**/*.spec.js': [
+                    'webpack'
+                ]
             },
             webpack: opts
         };
 
     if (process.env.TRAVIS) {
-        // If we're running on Travis CI use the custom launcher
-        configuration.browsers = ['Chrome_travis_ci', 'Firefox'];
+        // If we're running on Travis CI use the custom launcher & use coveralls reporter
+        configuration.browsers = [
+            'Chrome_travis_ci',
+            'Firefox'
+        ];
+        configuration.coverageReporter = {
+            type: 'lcovonly',
+            dir: 'coverage'
+        };
     }
 
     config.set(configuration);
