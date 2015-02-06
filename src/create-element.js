@@ -1,8 +1,8 @@
 define([
-    'attach-attr',
-    'attach-class',
-    'attach-css',
-    'attach-events'
+    './attach-attr',
+    './attach-class',
+    './attach-css',
+    './attach-events'
 ], function (attachAttr, attachClass, attachCss, attachEvents) {
     /**
      * Creates an element and returns the element

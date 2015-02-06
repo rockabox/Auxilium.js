@@ -1,5 +1,5 @@
 define([
-    'has-class'
+    './has-class'
 ], function (hasClass) {
     /**
      * A cross-browser function usable for IE7+, Chrome, Firefox & Safari in order to search within

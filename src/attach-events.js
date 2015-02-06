@@ -1,5 +1,5 @@
 define([
-    'events'
+    './events'
 ], function (Events) {
     /**
      * Attaches multiple events to an element using the Auxilium Events system.

@@ -1,5 +1,5 @@
 define([
-    'has-class'
+    './has-class'
 ], function (hasClass) {
     /**
      * Attaches a class to a name

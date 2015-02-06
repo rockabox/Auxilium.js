@@ -1,5 +1,5 @@
 define([
-    'has-class'
+    './has-class'
 ], function (hasClass) {
     /**
      * Remove a single class from an element.

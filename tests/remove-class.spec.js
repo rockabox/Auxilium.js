@@ -1,5 +1,5 @@
 define([
-    'remove-class'
+    'aux/remove-class'
 ], function (removeClass) {
     describe('Remove a class from an element', function () {
         var ele;

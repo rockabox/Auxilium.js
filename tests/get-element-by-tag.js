@@ -1,4 +1,6 @@
-define(['get-element-by-tag'], function (getElementByTag) {
+define([
+    'aux/get-element-by-tag'
+], function (getElementByTag) {
     describe('Test getting nested elements', function () {
         var ele,
             ele2,

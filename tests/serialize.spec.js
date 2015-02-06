@@ -1,4 +1,6 @@
-define(['serialize'], function (serialize) {
+define([
+    'aux/serialize'
+], function (serialize) {
     describe('serialize', function () {
         it('should correctly serializes object to query string', function () {
             var query = serialize({

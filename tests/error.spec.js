@@ -1,5 +1,5 @@
 define([
-    'error'
+    'aux/error'
 ], function (error) {
     describe('Error handling util function', function () {
         it('should throw an error message', function () {
