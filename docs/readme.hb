@@ -1,5 +1,35 @@
 # Auxilium.js
-Rockabox's webpack utility helpers.
+Rockabox's AMD utility helpers, which work with IE7+.
+
+Primarily this project is used in conjunction with [webpack](http://webpack.github.io/) builds being included in via bower, however this should work with any AMD loaders such as Require. Documentation for the modules can be found [here](#all-modules).
+
+# Using within your project
+
+This project is downloadable via bower using
+```sh
+bower install Auxilium.js
+```
+
+## Using with webpack
+
+Within this project the file ``webpack.base.config.js`` provides an Object of aliases to use with Webpack.
+
+```js
+var aliases = require('./<YOUR_BOWER_FILE>/Auxilium.js/webpack.base.config.js');
+wepback.resolve.alias = aliases;
+```
+
+This will now mean that within your own project using ``aux/`` will now straight alias to this project allowing all modules to be used such as:
+
+```js
+define([
+    'aux/attach-events'
+], function (attachEvents) {
+    // Attach events module will now be accessible within your Webpack module.
+});
+```
+
+<a name="all-modules"></a>
 
 {{heading-depth-set 2~}}
 {{#module name="ajax"~}}

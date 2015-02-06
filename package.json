@@ -4,7 +4,7 @@
   "description": "A webpacked utility library.",
   "main": "src/index.js",
   "scripts": {
-    "docs": "./node_modules/jsdoc-to-markdown/bin/cli.js src/**/*.js --template docs/readme.hb > README.md",
+    "docs": "jsdoc2md src/**/*.js --template docs/readme.hb > README.md",
     "test": "grunt test",
     "test-ci": "grunt ci-test"
   },
