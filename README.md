@@ -1,3 +1,8 @@
+[![Travis CI Build Status](https://img.shields.io/travis/rockabox/Auxilium.js/master.svg)](https://travis-ci.org/rockabox/Auxilium.js)
+[![Coverage Status](https://img.shields.io/coveralls/rockabox/Auxilium.js/master.svg)](https://coveralls.io/r/rockabox/Auxilium.js?branch=master)
+![Bower version](https://img.shields.io/bower/v/Auxilium.js.svg)
+[![NPM devDependencies](https://img.shields.io/david/dev/rockabox/Auxilium.js.svg)](https://david-dm.org/rockabox/Auxilium.js#info=devDependencies)
+
 # Auxilium.js
 Rockabox's AMD utility helpers, which work with IE7+.
 
