@@ -46,7 +46,7 @@ define([
      *
      * attachClass(ele, names);
      * // Returns ele
-     * // (<div class="barney-stinson"<>/div>)
+     * // (<div class="barney-stinson"></div>)
      * ```
      */
     function attachClass (ele, names) {
