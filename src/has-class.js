@@ -1,13 +1,9 @@
-/**
- * A module which checks that an element has a specific class.
- * @module aux/has-class
- */
 define([
 ], function () {
     /**
      * Checks whether or not an element has a specific class name.
      *
-     * @memberOf module:aux/has-class
+     * @exports has-class
      *
      * @param  {object}  ele  Element to test.
      * @param  {string}  name Class name you want to see if the element contains.
@@ -15,15 +11,15 @@ define([
      * @return {boolean}      Whether or not the element has the class name.
      *
      * @example
-     * var div = document.createElement('div');
-     * div.className = 'kermit gonzo';
+     * ```js
+     * ele = <div class="kermit gonzo"></div>
      * hasClass(div, 'gonzo');
      * // Returns true
      *
-     * var div = document.createElement('div');
-     * div.className = 'cookiemonster';
+     * ele = <div class="cookiemonster"></div>
      * hasClass(div, 'kermit');
      * // Returns false
+     * ```
      */
     function hasClass (ele, name) {
         var exp = new RegExp('(\\s|^)' + name + '(\\s|$)');

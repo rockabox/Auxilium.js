@@ -1,15 +1,10 @@
-/**
- * A module which deals with handling errors (helper to throw error's).
- * @module aux/merge
- */
 define([
 ], function () {
     /**
-     * Throws an error message.
+     * A module which deals with handling errors (helper to throw error's).
      *
-     * @memberOf module:aux/error
+     * @exports error
      *
-     * @public
      * @param {string} message Error message
      */
     function error (message) {

@@ -1,12 +1,11 @@
-/**
- * A module to attach and fire events on an element.
- * @module aux/events
- */
 define([
 ], function () {
     /**
      * @constructor
-     * @memberOf module:aux/events
+     * @description
+     * A module to attach and fire events on an element.
+     *
+     * @exports events
      */
     function Events () {}
 
@@ -14,12 +13,11 @@ define([
      * Registers event to an element with callback. If an event already
      * exists on the element, we add the function to our own event system.
      *
-     * @memberOf module:aux/events
+     * @memberOf module:events
      *
      * @param {object} ele Element to listener on
      * @param {string} eventType Event name
-     * @param {function} handler Function that will be called when this
-     *                           event is triggered.
+     * @param {function} handler Function that will be called when this event is triggered.
      */
     Events.prototype.addListener = function (ele, eventType, handler) {
         var $this = this;
@@ -48,7 +46,7 @@ define([
      * Fires any registered events.
      *
      * @protected
-     * @memberOf module:aux/events
+     * @memberOf module:events
      *
      * @param {object} ele Element to fire registered events from
      * @param {object} event Event object
@@ -79,12 +77,11 @@ define([
      * Remove a registered event from an element
      *
      * @public
-     * @memberOf module:aux/events
+     * @memberOf module:events
      *
      * @param {object} ele Element to remove a registered event from
      * @param {string} eventType Event name
-     * @param {function} handler Function that was originally called when
-     *                            this event is triggered.
+     * @param {function} handler Function that was originally called when this event is triggered.
      */
     Events.prototype.removeEvent = function (ele, eventType, handler) {
         if (ele.rbevents && ele.rbevents[eventType]) {

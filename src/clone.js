@@ -1,15 +1,12 @@
-/**
- * Clones an object, returning a new instance of the object passed.
- * @module aux/clone
- */
 define([
 ], function () {
     /**
      * Clones an object, returning a new instance of the object passed.
      *
-     * @memberOf module:aux/clone
+     * @exports clone
      *
      * @param  {object} obj The base object which to make a fresh copy of
+     *
      * @return {object}     A fresh instance of the object originally passed
      */
     function clone (obj) {

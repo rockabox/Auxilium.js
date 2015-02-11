@@ -4,6 +4,7 @@
   "description": "A webpacked utility library.",
   "main": "src/index.js",
   "scripts": {
+    "docs": "jsdoc2md src/**/*.js --template docs/readme.hb > README.md",
     "test": "grunt test",
     "test-ci": "grunt ci-test"
   },
@@ -35,6 +36,7 @@
     "grunt-karma-coveralls": "~2.5.3",
     "istanbul-instrumenter-loader": "~0.1.2",
     "jasmine-core": "~2.2.0",
+    "jsdoc-to-markdown": "~0.5.11",
     "karma": "~0.12.31",
     "karma-chrome-launcher": "~0.1.7",
     "karma-coverage": "~0.2.7",

@@ -1,29 +1,26 @@
-/**
- * A module which will remove a single class from an element.
- * @module aux/remove-class
- * @requires module:aux/has-class
- */
 define([
-    'aux/has-class'
+    './has-class'
 ], function (hasClass) {
     /**
-     * Remove class from an element.
+     * Remove a single class from an element.
      *
-     * @memberOf module:aux/remove-class
+     * @exports remove-class
+     *
+     * @requires module:has-class
      *
      * @param  {object} ele  Element to remove class from.
      * @param  {string} name Class name in which to remove.
      *
-     * @requires hasClass
-     *
      * @return {object}      Element with class removed.
      *
      * @example
-     * var element = '&lt;div class="red-dwarf lister"&gt;';
+     * ```js
+     * var element = '<div class="red-dwarf lister">';
      * element = removeClass('lister');
      *
      * // Returns
-     * // element (&lt;div class="red-dwarf"&gt;&lt;/div&gt;)
+     * // element (<div class="red-dwarf"></div>)
+     * ```
      */
     function removeClass (ele, name) {
         if (hasClass(ele, name)) {

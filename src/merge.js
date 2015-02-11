@@ -1,16 +1,12 @@
-/**
- * A module which merge's two objects together (destructively to the first obj).
- * @module aux/merge
- */
 define([
 ], function () {
     /**
-     * Combines two objects where the values on the
-     * first object is replaced. Will modify the first object!
+     * Combines two objects where the values on the first object is replaced. Will modify the first object!
      *
-     * @memberOf module:utils.merge
+     * @exports merge
      *
      * @public
+     *
      * @param  {object} obj1 Base object which will be updated
      * @param  {object} obj2 Extra values
      * @return {object}      Merged object

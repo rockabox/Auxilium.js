@@ -1,4 +1,6 @@
-define(['aux/load-script'], function (LoadScript) {
+define([
+    'aux/load-script'
+], function (LoadScript) {
     describe('LoadScript', function () {
 
         var cb = {

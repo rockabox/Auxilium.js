@@ -1,4 +1,6 @@
-define(['aux/events'], function (Events) {
+define([
+    'aux/events'
+], function (Events) {
     describe('Rockabox custom event', function () {
 
         var CLICK = 'click',

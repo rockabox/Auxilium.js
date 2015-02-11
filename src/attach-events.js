@@ -1,14 +1,11 @@
-/**
- * A module which attaches events to an html element.
- * @module aux/attach-events
- * @requires module:aux/events
- */
 define([
-    'aux/events'
+    './events'
 ], function (Events) {
     /**
-     * Attaches multiple events to an element using the Rockabox Events system
-     * @memberOf module:aux/attach-events
+     * Attaches multiple events to an element using the Auxilium Events system.
+     *
+     * @exports attach-events
+     * @requires module:events
      *
      * @param {Object} ele      The DOM Element in which to attach the events to.
      * @param {Object} handlers An object containing all of the different event types in which to attach a function to.
@@ -16,6 +13,7 @@ define([
      * @returns ele
      *
      * @example
+     * ```js
      * var div = document.createElement('div'),
      * 		handlers = {
      * 			click: function () {
@@ -28,6 +26,7 @@ define([
      *
      * // Returns div
      * // clicking on the div will result in a console.log and the function within handlers.click to fire.
+     * ```
      */
     function attachEvents (ele, handlers) {
         if (!handlers) {
