@@ -419,6 +419,23 @@ hasProperty(testObj, 'cartoons.simpsons.Ash');
 
 
 
+# hyphen-to-camel
+  Converts a hyphen string into camel case
+
+**Params**
+
+- string `String` - String to convert  
+
+**Returns**: `String` - Camel cased string  
+**Example**  
+```js
+hyphenToCamel('barney-stinson');
+// Returns
+// barneyStinson
+```
+
+
+
 # load-script
   A loader for Javascript files on the page using a script tag.
 

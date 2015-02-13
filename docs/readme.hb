@@ -115,6 +115,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="hyphen-to-camel"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="load-script"~}}
   # {{>name}}
   {{>body~}}
