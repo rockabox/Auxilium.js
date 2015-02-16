@@ -103,6 +103,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="get-parameter-by-name"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="has-class"~}}
   # {{>name}}
   {{>body~}}
