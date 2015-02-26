@@ -369,6 +369,27 @@ var mainContent = document.getElementById('main-content'),
 
 
 
+# get-parameter-by-name
+  Get a parameter from the URL
+
+**Params**
+
+- url `string` - The URL containing the params  
+- name `string` - The name to get the param for  
+
+**Returns**: `string` - Containing a decoded URI version of the param  
+**Example**  
+```js
+var urlPath = 'http://www.example.com?id=921',
+	id = getParameterByName(urlPath, 'id');
+// id is 921
+
+var name = getParameterByName(urlPath, 'name');
+// name is ''
+```
+
+
+
 # has-class
   Checks whether or not an element has a specific class name.
 
