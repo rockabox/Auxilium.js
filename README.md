@@ -369,6 +369,25 @@ var mainContent = document.getElementById('main-content'),
 
 
 
+# get-orientation
+  **Params**
+
+- orientation `Number` - The orientation of the device (will fallback to use window.orientation).  
+
+**Example**  
+```js
+getOrientation(90);
+// Returns 'landscape'
+
+getOrientation(0);
+// Returns 'portrait'
+
+getOrientation();
+// Returns portrait (if no orientation can be found)
+```
+
+
+
 # get-parameter-by-name
   Get a parameter from the URL
 
@@ -453,6 +472,32 @@ hasProperty(testObj, 'cartoons.simpsons.Ash');
 hyphenToCamel('barney-stinson');
 // Returns
 // barneyStinson
+```
+
+
+
+# is-defined
+  **Params**
+
+- check `*` - The variable to check that is defined  
+- type `String` - The type your expecting the variable to be defined as.  
+
+**Returns**: `Boolean` - When the variable is undefined it will pass back false otherwise pass back true.  
+**Example**  
+```js
+var barney;
+isDefined(barney);
+// Returns false
+
+var barney = 'stinson';
+isDefined(barney);
+// Returns true
+
+isDefined(barney, 'string');
+// Returns true
+
+isDefined(barney, 'function');
+// Returns false
 ```
 
 
