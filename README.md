@@ -653,3 +653,80 @@ serialize(queryParams);
 ```
 
 
+
+# touch
+  A module to attach different touch events to an element.
+
+**Members**
+
+* [touch](#module_touch)
+  * [touch.Touch#_isTap()](#module_touch.Touch#_isTap)
+  * [touch.Touch#_preventDefault(event)](#module_touch.Touch#_preventDefault)
+  * [touch.Touch#_reset()](#module_touch.Touch#_reset)
+  * [touch.Touch#_touchStartHandler(callback)](#module_touch.Touch#_touchStartHandler)
+  * [touch.Touch#tap(ele, callback)](#module_touch.Touch#tap)
+  * [touch.Touch#_touchEndHandler(callback)](#module_touch.Touch#_touchEndHandler)
+
+<a name="module_touch.Touch#_isTap"></a>
+####touch.Touch#_isTap()
+Check if touch has moved position to determine tap.
+
+**Returns**: `Boolean` - True if position is the same.  
+**Access**: protected  
+<a name="module_touch.Touch#_preventDefault"></a>
+####touch.Touch#_preventDefault(event)
+A helper function to prevent any defaults on a given event
+
+**Params**
+
+- event `Object` - An event object passed from the browser such as mouseover or click  
+
+**Access**: protected  
+<a name="module_touch.Touch#_reset"></a>
+####touch.Touch#_reset()
+Reset touch event variables
+
+**Access**: protected  
+<a name="module_touch.Touch#_touchStartHandler"></a>
+####touch.Touch#_touchStartHandler(callback)
+Touch event handler which will callback if tap is detected.
+
+**Params**
+
+- callback `function` - When tap event has occurred  
+
+**Returns**: `function` - Function for touch event handling  
+**Access**: protected  
+<a name="module_touch.Touch#tap"></a>
+####touch.Touch#tap(ele, callback)
+Setup a tap event allowing for both tap or clicking on an element.
+
+**Params**
+
+- ele `Object` - Node element to attach touch events to  
+- callback `function` - When tap event has occurred  
+
+**Example**  
+```js
+var touch = new Touch(),
+	ele = document.createElement('div');
+
+touch.tap(ele, function () {
+	console.log('I have been tapped');
+});
+// When tapping on the div element if will fire the console log
+// When clicking on the div element it will also fire the console log
+```
+
+<a name="module_touch.Touch#_touchEndHandler"></a>
+####touch.Touch#_touchEndHandler(callback)
+Touch event handler which is called on touch end. Will automatically fire call on click for
+desktop browsers.
+
+**Params**
+
+- callback `function` - When a click event has occurred  
+
+**Returns**: `function` - Function for touch event handling  
+**Access**: protected  
+
