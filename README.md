@@ -591,6 +591,47 @@ removeElement(myParent, true)
 
 
 
+# scale
+  **Members**
+
+* [scale](#module_scale)
+  * [scale.init(node, width, height)](#module_scale.init)
+  * [scale._scaleHandler(node, width, height)](#module_scale._scaleHandler)
+
+<a name="module_scale.init"></a>
+####scale.init(node, width, height)
+Will scale the element to the size of the window, ensuring that it doesn't exceed the max
+width and height.
+
+**Params**
+
+- node `Object` - Element to apply scale to  
+- width `Number` - The elements max-width  
+- height `Number` - The elements max-height  
+
+**Example**  
+```js
+var htmlNode = document.createElement('div');
+scale.init(htmlNode, 600, 400);
+
+// Will make the htmlNode element scale when scrolling or the window is resized to the
+// size of the window with a max of 600px wide and 400px tall.
+```
+
+<a name="module_scale._scaleHandler"></a>
+####scale._scaleHandler(node, width, height)
+Returns a function to be used for listening to events.
+
+**Params**
+
+- node `Object` - Element to apply scale to  
+- width `Number` - Creative width  
+- height `Number` - Creative height  
+
+**Returns**: `function` - Event handler  
+**Access**: protected  
+
+
 # serialize
   Serialize's an object into query params for a URL
 Passes & between params (? or & not prefixed)

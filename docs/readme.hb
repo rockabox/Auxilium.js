@@ -151,6 +151,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="scale"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="serialize"~}}
   # {{>name}}
   {{>body~}}
