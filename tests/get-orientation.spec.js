@@ -1,7 +1,7 @@
 define([
     'aux/get-orientation'
 ], function (getOrientation) {
-    describe('Getting the human redable orienation', function () {
+    describe('Getting the human redable orientation', function () {
         it('should return portrait when screen has not flipped', function () {
             expect(getOrientation(0)).toBe('portrait');
         });
@@ -23,7 +23,7 @@ define([
         });
 
         it('should fallback to window scope when no orientation passed', function () {
-            // This test may fail when run on devices specifying orienation so check we're on a device
+            // This test may fail when run on devices specifying orientation so check we're on a device
             // prior to running.
             if (typeof window.orientation === 'undefined') {
                 expect(getOrientation()).toBe('portrait');
