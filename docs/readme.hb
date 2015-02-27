@@ -103,6 +103,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="get-orientation"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="get-parameter-by-name"~}}
   # {{>name}}
   {{>body~}}
@@ -122,6 +128,12 @@ define([
 {{/module}}
 
 {{#module name="hyphen-to-camel"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
+{{#module name="is-defined"~}}
   # {{>name}}
   {{>body~}}
   {{>exported~}}
