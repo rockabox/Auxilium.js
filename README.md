@@ -246,10 +246,33 @@ var imageEle = createElement('img', params);
 **Members**
 
 * [events](#module_events)
+  * [events.Events#addListeners(ele, eventTypes, handler)](#module_events.Events#addListeners)
   * [events.Events#addListener(ele, eventType, handler)](#module_events.Events#addListener)
   * [events.Events#handleEvent(ele, event, data)](#module_events.Events#handleEvent)
   * [events.Events#removeEvent(ele, eventType, handler)](#module_events.Events#removeEvent)
   * [events.triggerEvent(ele, eventType, data)](#module_events#triggerEvent)
+
+<a name="module_events.Events#addListeners"></a>
+####events.Events#addListeners(ele, eventTypes, handler)
+Registers multiple events to an element with callback.
+
+**Params**
+
+- ele `object` - Element to listener on  
+- eventTypes `string` - Event names separated by spaces  
+- handler `function` - Function that will be called when the
+                          events are triggered.  
+
+**Example**  
+```js
+var ele = '<div>Some element</div>',
+	type = 'click mouseover',
+	eventHandler = function () {
+		console.log('Log on click and mouse over')
+	};
+
+events.addListeners(ele, type, eventHandler);
+```
 
 <a name="module_events.Events#addListener"></a>
 ####events.Events#addListener(ele, eventType, handler)

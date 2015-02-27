@@ -10,6 +10,36 @@ define([
     function Events () {}
 
     /**
+     * Registers multiple events to an element with callback.
+     *
+     * @memberOf module:events
+     *
+     * @param {object} ele Element to listener on
+     * @param {string} eventTypes Event names separated by spaces
+     * @param {function} handler Function that will be called when the
+     *                           events are triggered.
+     *
+     * @example
+     * ```js
+     * var ele = '<div>Some element</div>',
+     * 	type = 'click mouseover',
+     * 	eventHandler = function () {
+     * 		console.log('Log on click and mouse over')
+     * 	};
+     *
+     * events.addListeners(ele, type, eventHandler);
+     * ```
+     */
+    Events.prototype.addListeners = function (ele, eventTypes, handler) {
+        var $this = this,
+            events = eventTypes.split(' ');
+
+        for (var i = 0, len = events.length; i < len; i++) {
+            $this.addListener(ele, events[i], handler);
+        }
+    };
+
+    /**
      * Registers event to an element with callback. If an event already
      * exists on the element, we add the function to our own event system.
      *
