@@ -30,7 +30,9 @@ define([
         var style = ele.style;
 
         for (var rule in css) {
-            style[rule] = css[rule];
+            if (css.hasOwnProperty(rule)) {
+                style[rule] = css[rule];
+            }
         }
 
         return ele;

@@ -29,7 +29,9 @@ define([
         }
 
         for (var attr in attrs) {
-            ele.setAttribute(attr, attrs[attr]);
+            if (attrs.hasOwnProperty(attr)) {
+                ele.setAttribute(attr, attrs[attr]);
+            }
         }
 
         return ele;
