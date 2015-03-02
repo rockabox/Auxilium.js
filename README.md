@@ -699,6 +699,71 @@ serialize(queryParams);
 
 
 
+# style-tag
+  A module helper to create, attach and get the contents of a style tag
+
+**Members**
+
+* [style-tag](#module_style-tag)
+  * [style-tag~attach(css, doc)](#module_style-tag..attach)
+  * [style-tag~contents(node)](#module_style-tag..contents)
+  * [style-tag~generate(css, doc)](#module_style-tag..generate)
+
+<a name="module_style-tag..attach"></a>
+####style-tag~attach(css, doc)
+Attaches a css to a specific document
+
+**Params**
+
+- css `String` - The css text in which to attach to the Style tag  
+- doc `Object` - The specific document to attach the Style tag (Optional)  
+
+**Scope**: inner function of [style-tag](#module_style-tag)  
+**Returns**: `Object` - The style tag with the css attached (and attached to the document)  
+**Example**  
+```js
+var css = 'body { margin: 0 auto; };',
+ styleAttached = styleTag.attach(css, document);
+// Returns a style tag with it attached to the document body
+```
+
+<a name="module_style-tag..contents"></a>
+####style-tag~contents(node)
+Retrieves the contents of a given style tag
+
+**Params**
+
+- node `Object` - The style HTMLNode in which to get the contents  
+
+**Scope**: inner function of [style-tag](#module_style-tag)  
+**Returns**: `Object` - The text within the style tag (the CSS).
+
+```js
+style = '<style>body { margin: 0; }',
+styleContents = styleTag.contents(style);
+// Returns 'body { margin: 0; }'
+```  
+<a name="module_style-tag..generate"></a>
+####style-tag~generate(css, doc)
+Creates a Style tag and attaches css
+
+**Params**
+
+- css `String` - The css text in which to attach to the Style tag  
+- doc `Object` - The specific document to use in order to create the Style tag  
+
+**Scope**: inner function of [style-tag](#module_style-tag)  
+**Returns**: `Object` - The style tag with the css attached  
+**Example**  
+```js
+var css = 'body { margin: 0 auto; };',
+ styleAttached = styleTag.attach(css, document);
+// Returns a style tag with css contents attached
+```
+
+
+
+
 # touch
   A module to attach different touch events to an element.
 

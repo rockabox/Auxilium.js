@@ -175,6 +175,13 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="style-tag"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
+
 {{#module name="touch"~}}
   # {{>name}}
   {{>body~}}
