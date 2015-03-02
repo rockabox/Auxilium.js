@@ -11,7 +11,7 @@ define([
              *
              * @param {Object} params The paramaters for the style tag
              * @property {String} params.css The css text in which to attach to the Style tag
-             * @property {Object} params.doc The specific document to attach the Style tag (Optional)
+             * @property {Object} params.document The specific document to attach the Style tag (Optional)
              * @property {String} params.id A specific unique identifier of the style tag
              *
              *
@@ -67,7 +67,7 @@ define([
              *
              * @param {Object} params The paramaters for the style tag
              * @property {String} params.css The css text in which to attach to the Style tag
-             * @property {Object} params.doc The specific document to attach the Style tag (Optional)
+             * @property {Object} params.document The specific document to attach the Style tag (Optional)
              * @property {String} params.id A specific unique identifier of the style tag
              *
              * @return {Object} The style tag with the css attached
