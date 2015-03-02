@@ -9,8 +9,11 @@ define([
             /**
              * Attaches a css to a specific document
              *
-             * @param {String} css The css text in which to attach to the Style tag
-             * @param {Object} doc The specific document to attach the Style tag (Optional)
+             * @param {Object} params The paramaters for the style tag
+             * @property {String} params.css The css text in which to attach to the Style tag
+             * @property {Object} params.doc The specific document to attach the Style tag (Optional)
+             * @property {String} params.id A specific unique identifier of the style tag
+             *
              *
              * @return {Object} The style tag with the css attached (and attached to the document)
              *
@@ -21,11 +24,11 @@ define([
              * // Returns a style tag with it attached to the document body
              * ```
              */
-            attach: function (css, doc) {
+            attach: function (params) {
                 var node;
-                doc = doc || document;
+                doc = params.document || document;
 
-                node = this.generate(css, doc);
+                node = this.generate(params);
                 doc.body.appendChild(node);
 
                 return node;
@@ -50,10 +53,12 @@ define([
                 return node.innerHTML;
             },
             /**
-             * Creates a Style tag and attaches css
+             * Creates a Style tag and attaches the css, checking if the script tag with the specific ID exists already.
              *
-             * @param {String} css The css text in which to attach to the Style tag
-             * @param {Object} doc The specific document to use in order to create the Style tag
+             * @param {Object} params The paramaters for the style tag
+             * @property {String} params.css The css text in which to attach to the Style tag
+             * @property {Object} params.doc The specific document to attach the Style tag (Optional)
+             * @property {String} params.id A specific unique identifier of the style tag
              *
              * @return {Object} The style tag with the css attached
              *
@@ -64,16 +69,22 @@ define([
              * // Returns a style tag with css contents attached
              * ```
              */
-            generate: function (css, doc) {
-                var style = doc.createElement('style');
+            generate: function (params) {
+                var css = params.css,
+                    doc = params.document || document,
+                    style = (params.id) ? doc.getElementById(params.id) : null;
 
-                style.type = 'text/css';
+                if (!style) {
+                    style = doc.createElement('style');
+                    style.type = 'text/css';
+                    style.id = params.id;
 
-                if (style.styleSheet) {
-                    style.styleSheet.cssText = css;
-                } else {
-                    var textNode = doc.createTextNode(css);
-                    style.appendChild(textNode);
+                    if (style.styleSheet) {
+                        style.styleSheet.cssText = css;
+                    } else {
+                        var textNode = doc.createTextNode(css);
+                        style.appendChild(textNode);
+                    }
                 }
 
                 return style;
