@@ -705,26 +705,41 @@ serialize(queryParams);
 **Members**
 
 * [style-tag](#module_style-tag)
-  * [style-tag~attach(css, doc)](#module_style-tag..attach)
+  * [style-tag~attach(params)](#module_style-tag..attach)
   * [style-tag~contents(node)](#module_style-tag..contents)
-  * [style-tag~generate(css, doc)](#module_style-tag..generate)
+  * [style-tag~generate(params)](#module_style-tag..generate)
 
 <a name="module_style-tag..attach"></a>
-####style-tag~attach(css, doc)
+####style-tag~attach(params)
 Attaches a css to a specific document
 
 **Params**
 
-- css `String` - The css text in which to attach to the Style tag  
-- doc `Object` - The specific document to attach the Style tag (Optional)  
+- params `Object` - The paramaters for the style tag  
+
+**Properties**
+
+  - params.css `String` - The css text in which to attach to the Style tag  
+  - params.doc `Object` - The specific document to attach the Style tag (Optional)  
+  - params.id `String` - A specific unique identifier of the style tag  
 
 **Scope**: inner function of [style-tag](#module_style-tag)  
 **Returns**: `Object` - The style tag with the css attached (and attached to the document)  
 **Example**  
 ```js
 var css = 'body { margin: 0 auto; };',
- styleAttached = styleTag.attach(css, document);
+ styleAttached = styleTag.attach({
+   css: css,
+   document: document,
+   id: 'fred-flinston'
+ });
 // Returns a style tag with it attached to the document body
+styleAttached = styleTag.attach({
+   css: css,
+   document: document,
+   id: 'fred-flinston'
+ });
+// Running a second time will return the first instance of the style tag
 ```
 
 <a name="module_style-tag..contents"></a>
@@ -744,20 +759,29 @@ styleContents = styleTag.contents(style);
 // Returns 'body { margin: 0; }'
 ```  
 <a name="module_style-tag..generate"></a>
-####style-tag~generate(css, doc)
-Creates a Style tag and attaches css
+####style-tag~generate(params)
+Creates a Style tag and attaches the css, checking if the script tag with the specific ID exists already.
 
 **Params**
 
-- css `String` - The css text in which to attach to the Style tag  
-- doc `Object` - The specific document to use in order to create the Style tag  
+- params `Object` - The paramaters for the style tag  
+
+**Properties**
+
+  - params.css `String` - The css text in which to attach to the Style tag  
+  - params.doc `Object` - The specific document to attach the Style tag (Optional)  
+  - params.id `String` - A specific unique identifier of the style tag  
 
 **Scope**: inner function of [style-tag](#module_style-tag)  
 **Returns**: `Object` - The style tag with the css attached  
 **Example**  
 ```js
 var css = 'body { margin: 0 auto; };',
- styleAttached = styleTag.attach(css, document);
+ styleAttached = styleTag.generate({
+   css: css,
+   document: document,
+   id: 'fred-flinston'
+ });
 // Returns a style tag with css contents attached
 ```
 

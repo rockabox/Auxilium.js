@@ -20,8 +20,18 @@ define([
              * @example
              * ```js
              * var css = 'body { margin: 0 auto; };',
-             *  styleAttached = styleTag.attach(css, document);
+             *  styleAttached = styleTag.attach({
+             *    css: css,
+             *    document: document,
+             *    id: 'fred-flinston'
+             *  });
              * // Returns a style tag with it attached to the document body
+             * styleAttached = styleTag.attach({
+             *    css: css,
+             *    document: document,
+             *    id: 'fred-flinston'
+             *  });
+             * // Running a second time will return the first instance of the style tag
              * ```
              */
             attach: function (params) {
@@ -65,7 +75,11 @@ define([
              * @example
              * ```js
              * var css = 'body { margin: 0 auto; };',
-             *  styleAttached = styleTag.attach(css, document);
+             *  styleAttached = styleTag.generate({
+             *    css: css,
+             *    document: document,
+             *    id: 'fred-flinston'
+             *  });
              * // Returns a style tag with css contents attached
              * ```
              */
