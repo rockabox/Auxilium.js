@@ -145,6 +145,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="message"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="merge"~}}
   # {{>name}}
   {{>body~}}

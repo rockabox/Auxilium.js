@@ -573,6 +573,50 @@ Creates a DOM element for the script tag.
 **Returns**: `Object` - s The script DOM node.  
 
 
+# message
+  Cross domain iframe messaging module.
+
+**Members**
+
+* [message](#module_message)
+  * [message~_events](#module_message.._events)
+  * [message~post(window, data, domain)](#module_message..post)
+  * [message~receive(window, callback)](#module_message..receive)
+
+<a name="module_message.._events"></a>
+####message~_events
+Expose events module for testing
+
+**Scope**: inner member of [message](#module_message)  
+**Access**: protected  
+<a name="module_message..post"></a>
+####message~post(window, data, domain)
+Post JSON object to a given window.
+
+**Params**
+
+- window `Object` - Another window  
+- data `Object` - Will pass this object to window  
+- domain `String` - Define what the domain must be for the event to be dispatched  
+
+**Properties**
+
+  - data.event `String` - Event type associated with this message  
+  - data.params `String` - Event type associated with this message  
+
+**Scope**: inner function of [message](#module_message)  
+<a name="module_message..receive"></a>
+####message~receive(window, callback)
+Receive JSON object from a given window.
+
+**Params**
+
+- window `Object` - Another window  
+- callback `function` - Function to pass data to  
+
+**Scope**: inner function of [message](#module_message)  
+
+
 # merge
   Combines two objects where the values on the first object is replaced. Will modify the first object!
 
@@ -720,7 +764,7 @@ Attaches a css to a specific document
 **Properties**
 
   - params.css `String` - The css text in which to attach to the Style tag  
-  - params.doc `Object` - The specific document to attach the Style tag (Optional)  
+  - params.document `Object` - The specific document to attach the Style tag (Optional)  
   - params.id `String` - A specific unique identifier of the style tag  
 
 **Scope**: inner function of [style-tag](#module_style-tag)  
@@ -769,7 +813,7 @@ Creates a Style tag and attaches the css, checking if the script tag with the sp
 **Properties**
 
   - params.css `String` - The css text in which to attach to the Style tag  
-  - params.doc `Object` - The specific document to attach the Style tag (Optional)  
+  - params.document `Object` - The specific document to attach the Style tag (Optional)  
   - params.id `String` - A specific unique identifier of the style tag  
 
 **Scope**: inner function of [style-tag](#module_style-tag)  
