@@ -7,8 +7,10 @@ define([
      *
      * @exports console-logger
      *
-     * @param {string} message Message to log out
-     * @param {string} type What logging system to use error, log (defaults to log).
+     * @requires module:has-property
+     *
+     * @param {*} message Message to log out
+     * @param {String} type What logging system to use error, log (defaults to log).
      */
     function logger (message, type) {
         type = type || 'log';

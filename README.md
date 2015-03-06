@@ -198,8 +198,8 @@ console.log (again if accessible).
 
 **Params**
 
-- message `string` - Message to log out  
-- type `string` - What logging system to use error, log (defaults to log).  
+- message `*` - Message to log out  
+- type `String` - What logging system to use error, log (defaults to log).  
 
 
 
