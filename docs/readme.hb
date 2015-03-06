@@ -73,6 +73,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="console-logger"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="create-element"~}}
   # {{>name}}
   {{>body~}}

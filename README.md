@@ -192,6 +192,17 @@ var div = document.createElement('div'),
 **Returns**: `object` - A fresh instance of the object originally passed  
 
 
+# console-logger
+  Using the browsers console logging options, allowing to use console.error if accessible otherwise fallsback to
+console.log (again if accessible).
+
+**Params**
+
+- message `string` - Message to log out  
+- type `string` - What logging system to use error, log (defaults to log).  
+
+
+
 # create-element
   Creates an element and returns the element
 
@@ -720,7 +731,7 @@ Attaches a css to a specific document
 **Properties**
 
   - params.css `String` - The css text in which to attach to the Style tag  
-  - params.doc `Object` - The specific document to attach the Style tag (Optional)  
+  - params.document `Object` - The specific document to attach the Style tag (Optional)  
   - params.id `String` - A specific unique identifier of the style tag  
 
 **Scope**: inner function of [style-tag](#module_style-tag)  
@@ -769,7 +780,7 @@ Creates a Style tag and attaches the css, checking if the script tag with the sp
 **Properties**
 
   - params.css `String` - The css text in which to attach to the Style tag  
-  - params.doc `Object` - The specific document to attach the Style tag (Optional)  
+  - params.document `Object` - The specific document to attach the Style tag (Optional)  
   - params.id `String` - A specific unique identifier of the style tag  
 
 **Scope**: inner function of [style-tag](#module_style-tag)  
