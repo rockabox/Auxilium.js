@@ -510,6 +510,30 @@ hyphenToCamel('barney-stinson');
 
 
 
+# inner-html
+  Attaches a string representation of a DOM to an element ensuring that a script tag is created rather than
+simply using innerHTML to ensure it will be executable when attached to the DOM.
+NOTE: When invalid HTML is passed to the function it will throw an error
+
+**Params**
+
+- node `Object` - The HTML DOMNode in which to attach the html to  
+- html `String` - The string representation of the DOM  
+
+**Returns**: `Object` - node The HTML DOMNode with the string representation attached (inside).  
+**Example**  
+```js
+var div = document.createElement('div');
+div = innerHTML(div, '<span></span>');
+// Returns '<div><span></span></div>'
+
+div = innerHTML(div, '<script>console.log("log something");</script>');
+// Returns '<div><script>console.log("log something");</script></div>'
+// Executing the script tag once attached to the document body
+```
+
+
+
 # is-defined
   **Params**
 
@@ -798,7 +822,6 @@ var css = 'body { margin: 0 auto; };',
 
 
 
-
 # touch
   A module to attach different touch events to an element.
 
@@ -874,4 +897,26 @@ desktop browsers.
 
 **Returns**: `function` - Function for touch event handling  
 **Access**: protected  
+
+
+# validate-html
+  Checks that HTML as string is valid HTML (all tags are closing etc.)
+
+**Params**
+
+- html `String` - The html to validate  
+
+**Returns**: `Boolean` - Whether or not the html is valid  
+**Example**  
+```js
+validateHtml('<div></div>');
+// Returns true
+
+validateHtml('<div>');
+// Returns false
+
+validateHtml('<div></div');
+// Returns false
+```
+
 
