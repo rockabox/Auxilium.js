@@ -24,12 +24,13 @@ define([
             newNode;
 
         // Loop through all of the attributes set to the existing node to ensure all are attached to the new node
-        for (var attr = 0; attr < attributes.length - 1; attr++) {
+        for (var attr = 0; attr < attributes.length; attr++) {
+            var attibuteName = attributes[attr].nodeName;
             // Don't allow the use of an attribute with class force classname
-            if (attributes === 'class') {
-                manifest.attr['className'] = attributes[attr];
+            if (attibuteName === 'class') {
+                manifest.cssNames = attributes[attr].nodeValue;
             } else {
-                manifest.attr[attr] = attributes[attr];
+                manifest.attr[attibuteName] = attributes[attr].nodeValue;
             }
         }
 
@@ -72,7 +73,7 @@ define([
      */
     function innerHTML (node, html) {
         if (!validateHtml(html)) {
-            throw Error('HTML is not valid', html);
+            throw Error('HTML is not valid: ' + html);
         }
 
         node.innerHTML = html;
