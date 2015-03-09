@@ -139,6 +139,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="inner-html"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="is-defined"~}}
   # {{>name}}
   {{>body~}}
@@ -187,8 +193,13 @@ define([
   {{>exported~}}
 {{/module}}
 
-
 {{#module name="touch"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
+{{#module name="validate-html"~}}
   # {{>name}}
   {{>body~}}
   {{>exported~}}
