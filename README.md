@@ -329,6 +329,18 @@ Trigger an event on a given element.
 
 
 
+# generate-uuid
+  Generate a UUID v4 in JavaScript
+
+**Returns**: `String` - A random generated uuid  
+**Example**  
+```js
+var uuid = generateUUID();
+// Returns 110ec58a-a0f2-4ac4-8393-c866d813b8d1
+```
+
+
+
 # get-element-by-tag
   Get all elements with a certain tag name within an element and fire a callback passing the element.
 

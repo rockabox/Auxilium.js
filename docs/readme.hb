@@ -97,6 +97,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="generate-uuid"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="get-element-by-tag"~}}
   # {{>name}}
   {{>body~}}
