@@ -31,7 +31,11 @@ define([
     function isDefined (check, type) {
         // Check that the variable is a specific type
         if (type) {
-            return (typeof check === type);
+            var regex = new RegExp(/\[object (\w+)]/),
+                string = Object.prototype.toString.call(check).toLowerCase(),
+                matches = string.match(regex);
+
+            return matches[1] === type;
         }
 
         return (typeof check !== 'undefined');
