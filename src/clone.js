@@ -14,7 +14,6 @@ define([
      */
     function clone (obj) {
         if (obj === null || !isDefined(obj, 'object')) {
-        // if (obj === null || typeof obj !== 'object') {
             return obj;
         }
 
