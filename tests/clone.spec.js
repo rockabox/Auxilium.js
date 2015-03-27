@@ -2,22 +2,37 @@ define([
     'aux/clone'
 ], function (clone) {
     describe('Clone an object util function', function () {
-        it('should be able to clone an object', function () {
-            var obj1 = {
-                    'first_name': 'Barney',
-                    'last_name': 'Stinson'
-                },
-                obj2 = obj1,
-                obj3 = clone(obj1);
+        var obj1, obj2, obj3;
 
+        beforeEach(function () {
+            obj1 = {
+                'first_name': 'Barney',
+                'last_name': 'Stinson',
+                'nested_object': {},
+                'nested_array': []
+            };
+            obj2 = obj1;
+            obj3 = clone(obj1);
+        });
+
+        it('should be able to clone an object', function () {
             expect(obj1).toBe(obj2);
             expect(obj3).not.toBe(obj1);
 
-            obj1['first_name'] = 'Ted';
-            obj1['last_name'] = 'Mosby';
+            obj3['first_name'] = 'Ted';
+            obj3['last_name'] = 'Mosby';
 
-            expect(obj2['first_name']).toBe('Ted');
-            expect(obj3['first_name']).toBe('Barney');
+            expect(obj1['first_name']).toEqual('Barney');
+            expect(obj2['first_name']).toEqual('Barney');
+            expect(obj3['first_name']).toEqual('Ted');
+        });
+
+        it('should clone with a nested object', function () {
+            expect(obj3['nested_object']).toEqual(obj1['nested_object']);
+        });
+
+        it('should clone with a nested array', function () {
+            expect(obj3['nested_array']).toEqual(obj1['nested_array']);
         });
     });
 });
