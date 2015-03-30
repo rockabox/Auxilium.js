@@ -2,7 +2,7 @@ define([
     'aux/is-defined'
 ], function (isDefined) {
     /**
-     * Clones an object, returning a new instance of the object passed.
+     * Clones an object or array.
      *
      * @exports clone
      *
@@ -13,11 +13,15 @@ define([
      * @return {object}     A fresh instance of the object originally passed
      */
     function clone (obj) {
-        if (obj === null || !isDefined(obj, 'object')) {
+        if (obj === null || typeof obj !== 'object') {
             return obj;
         }
 
         var temp = {};
+
+        if (isDefined(obj, 'array')) {
+            temp = [];
+        }
 
         for (var key in obj) {
             if (obj.hasOwnProperty(key)) {

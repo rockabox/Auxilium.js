@@ -8,8 +8,15 @@ define([
             obj1 = {
                 'first_name': 'Barney',
                 'last_name': 'Stinson',
-                'nested_object': {},
-                'nested_array': []
+                'nested_object': {
+                    'test_1': 1,
+                    'test_2': 2
+                },
+                'nested_array': [
+                    {
+                        'test_3': 3
+                    }
+                ]
             };
             obj2 = obj1;
             obj3 = clone(obj1);
@@ -28,10 +35,12 @@ define([
         });
 
         it('should clone with a nested object', function () {
+            expect(obj3['nested_object']).not.toBe(obj1['nested_object']);
             expect(obj3['nested_object']).toEqual(obj1['nested_object']);
         });
 
         it('should clone with a nested array', function () {
+            expect(obj3['nested_array']).not.toBe(obj1['nested_array']);
             expect(obj3['nested_array']).toEqual(obj1['nested_array']);
         });
     });
