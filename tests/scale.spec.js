@@ -13,7 +13,7 @@ define([
         it('should apply scroll and resize handlers to window', function () {
             spyOn(scale, '_scaleHandler').and.callThrough();
 
-            scale.init(node, 300, 250);
+            scale.init(window, node, 300, 250);
 
             expect(scale._scaleHandler.calls.count()).toEqual(1);
             expect(window.onscroll).toBeDefined();
@@ -24,7 +24,7 @@ define([
             var handler;
 
             beforeEach(function () {
-                handler = scale._scaleHandler(node, 300, 250);
+                handler = scale._scaleHandler(window, node, 300, 250);
             });
 
             it('should return a function', function () {
