@@ -19,6 +19,7 @@ define([
              * @memberOf module:scale
              *
              * @public
+             * @param {Object} window Window object that we will resize to
              * @param {Object} node Element to apply scale to
              * @param {Number} width The elements max-width
              * @param {Number} height The elements max-height
@@ -32,8 +33,8 @@ define([
              * // size of the window with a max of 600px wide and 400px tall.
              * ```
              */
-            init: function (node, width, height) {
-                var handler = this._scaleHandler(node, width, height);
+            init: function (window, node, width, height) {
+                var handler = this._scaleHandler(window, node, width, height);
 
                 events.addListener(window, 'scroll', handler);
                 events.addListener(window, 'resize', handler);
@@ -46,12 +47,13 @@ define([
              * @memberOf module:scale
              *
              * @protected
+             * @param {Object} window Window object that we will resize to
              * @param {Object} node Element to apply scale to
              * @param {Number} width Creative width
              * @param {Number} height Creative height
              * @return {Function} Event handler
              */
-            _scaleHandler: function (node, width, height) {
+            _scaleHandler: function (window, node, width, height) {
                 return function (event) {
                     var ratio = 1;
 
