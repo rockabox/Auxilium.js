@@ -54,11 +54,11 @@ define([
 
             beforeEach(function () {
                 params = {
-                    innerElements: [
+                    nodes: [
                         {
                             tag: 'div',
                             cssNames: 'child-one',
-                            innerElements: [
+                            nodes: [
                                 {
                                     tag: 'span',
                                     cssNames: 'child-two'

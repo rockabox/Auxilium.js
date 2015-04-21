@@ -22,7 +22,7 @@ define([
      * @property {string|array} params.cssNames Contains css class name or names in which to attach to an element.
      * @property {object} params.events Contains event handlers to be attached to an element
      * @property {string} params.innerHTML A string representation of DOM elements to attach as children to the ele
-     * @property {array} params.innerElements An array containing elements to create as children
+     * @property {array} params.nodes An array containing elements to create as children
      * @property {array} params.children An array of HTMLNodes to append as children to the element
      *
      * @returns ele The HTML element created with css and attributes added to passed from params
@@ -45,11 +45,11 @@ define([
      * 	   },
      * 	   cssNames: ['legen', 'wait-for-it', 'dary'],
      * 	   innerHTML: '<div class="simpsons"><span class="bart"></span></div>',
-     * 	   innerElements: [
+     * 	   nodes: [
      * 	   	{
      * 	   		tag: 'div',
      * 	   		cssNames: 'family-guy',
-     * 	   		innerElements: {
+     * 	   		nodes: {
      * 	   			tag: 'span',
      * 				cssNames: 'peter'
      * 			}
@@ -87,8 +87,8 @@ define([
         }
 
         // Using an object create new elements with this same module
-        if (params.innerElements) {
-            inner = params.innerElements;
+        if (params.nodes) {
+            inner = params.nodes;
 
             for (var i = 0; i < inner.length; i++) {
                 ele.appendChild(createElement(inner[i].tag, inner[i]));

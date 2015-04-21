@@ -218,7 +218,7 @@ console.log (again if accessible).
   - params.cssNames `string` | `array` - Contains css class name or names in which to attach to an element.  
   - params.events `object` - Contains event handlers to be attached to an element  
   - params.innerHTML `string` - A string representation of DOM elements to attach as children to the ele  
-  - params.innerElements `array` - An array containing elements to create as children  
+  - params.nodes `array` - An array containing elements to create as children  
   - params.children `array` - An array of HTMLNodes to append as children to the element  
 
 **Returns**:  - ele The HTML element created with css and attributes added to passed from params  
@@ -240,11 +240,11 @@ var childEle = createElement('div'),
 	   },
 	   cssNames: ['legen', 'wait-for-it', 'dary'],
 	   innerHTML: '<div class="simpsons"><span class="bart"></span></div>',
-	   innerElements: [
+	   nodes: [
 	   	{
 	   		tag: 'div',
 	   		cssNames: 'family-guy',
-	   		innerElements: {
+	   		nodes: {
 	   			tag: 'span',
 				cssNames: 'peter'
 			}
