@@ -210,34 +210,58 @@ console.log (again if accessible).
 
 - tag `string` - The HTML tag type in which to create  
 - params `object` - Contains paramaters to be used for the creation of the element  
-  - attr `object` - Contains the attributes and values for the HTMLNode  
-  - css `object` - Contains the css styling to be added to the element  
-  - cssNames `string` | `array` - Contains css class name or names in which to attach to an element.  
-  - events `object` - Contains event handlers to be attached to an element  
+
+**Properties**
+
+  - params.attr `object` - Contains the attributes and values for the HTMLNode  
+  - params.css `object` - Contains the css styling to be added to the element  
+  - params.cssNames `string` | `array` - Contains css class name or names in which to attach to an element.  
+  - params.events `object` - Contains event handlers to be attached to an element  
+  - params.innerHTML `string` - A string representation of DOM elements to attach as children to the ele  
+  - params.nodes `array` - An array containing elements to create as children  
+  - params.children `array` - An array of HTMLNodes to append as children to the element  
 
 **Returns**:  - ele The HTML element created with css and attributes added to passed from params  
 **Example**  
 ```js
-var params = {
+var childEle = createElement('div'),
+	params = {
 		attr: {
-			src: 'http://rockabox.com/example.gif'
-		},
+			'id': 'some-div'
+		}
 		events: {
-			load: function () {
-				console.log('Fire me when the image is loaded');
+			click: function () {
+				console.log('Fire me when I am clicked');
+		  }
+	   },
+	   css: {
+		  border: '1px solid black',
+		  backgroundColor: 'red'
+	   },
+	   cssNames: ['legen', 'wait-for-it', 'dary'],
+	   innerHTML: '<div class="simpsons"><span class="bart"></span></div>',
+	   nodes: [
+	   	{
+	   		tag: 'div',
+	   		cssNames: 'family-guy',
+	   		nodes: {
+	   			tag: 'span',
+				cssNames: 'peter'
 			}
-		},
-		css: {
-			border: '1px solid black',
-			backgroundColor: 'red'
-		},
-		cssNames: ['legen', 'wait-for-it', 'dary']
-};
-var imageEle = createElement('img', params);
-// Returns
-// <img src="http://rockabox.com/example.gif" style="border: 1px solid black; background-color: red;"
-//   class="legen wait-for-it dary" />;
-// When the image source has loaded a function will be ran console logging out.
+		}
+	   ],
+	   children: [
+	   	childEle
+	   ]
+    },
+    ele = createElement('div', params);
+// Ele becomes
+// <div style="border: 1px solid black; background-color: red;" class="legen wait-for-it dary">
+//   <div class="simpsons"><span class="bart"></span></div>
+//   <div class="family-guy"><span class="peter"></span></div>
+//   <div></div>
+// </div>
+// Clicking on the main div will console log
 ```
 
 
