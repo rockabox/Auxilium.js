@@ -2,9 +2,8 @@ define([
     './attach-attr',
     './attach-class',
     './attach-css',
-    './attach-events',
-    './inner-html'
-], function (attachAttr, attachClass, attachCss, attachEvents, innerHTML) {
+    './attach-events'
+], function (attachAttr, attachClass, attachCss, attachEvents) {
     /**
      * Creates an element and returns the element
      * @exports create-element
@@ -13,7 +12,6 @@ define([
      * @requires module:attach-class
      * @requires module:attach-css
      * @requires module:attach-events
-     * @requires module:inner-html
      *
      * @param {string} tag The HTML tag type in which to create
      * @param {object} params Contains paramaters to be used for the creation of the element
@@ -83,7 +81,7 @@ define([
         attachClass(ele, params.cssNames);
 
         if (params.innerHTML) {
-            innerHTML(ele, params.innerHTML);
+            ele.innerHTML = params.innerHTML;
         }
 
         // Using an object create new elements with this same module

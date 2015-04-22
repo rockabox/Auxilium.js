@@ -183,7 +183,7 @@ var div = document.createElement('div'),
 
 
 # clone
-  Clones an object, returning a new instance of the object passed.
+  Clones an object or array.
 
 **Params**
 
@@ -711,16 +711,17 @@ removeElement(myParent, true)
   **Members**
 
 * [scale](#module_scale)
-  * [scale.init(node, width, height)](#module_scale.init)
-  * [scale._scaleHandler(node, width, height)](#module_scale._scaleHandler)
+  * [scale.init(window, node, width, height)](#module_scale.init)
+  * [scale._scaleHandler(window, node, width, height)](#module_scale._scaleHandler)
 
 <a name="module_scale.init"></a>
-####scale.init(node, width, height)
+####scale.init(window, node, width, height)
 Will scale the element to the size of the window, ensuring that it doesn't exceed the max
 width and height.
 
 **Params**
 
+- window `Object` - Window object that we will resize to  
 - node `Object` - Element to apply scale to  
 - width `Number` - The elements max-width  
 - height `Number` - The elements max-height  
@@ -735,11 +736,12 @@ scale.init(htmlNode, 600, 400);
 ```
 
 <a name="module_scale._scaleHandler"></a>
-####scale._scaleHandler(node, width, height)
+####scale._scaleHandler(window, node, width, height)
 Returns a function to be used for listening to events.
 
 **Params**
 
+- window `Object` - Window object that we will resize to  
 - node `Object` - Element to apply scale to  
 - width `Number` - Creative width  
 - height `Number` - Creative height  
