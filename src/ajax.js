@@ -27,17 +27,14 @@ define([
 
             if (xhr) {
                 method = method ? method : 'get';
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
-                        if (xhr.status == 200) {
-                            if (onload) {
-                                onload(xhr);
-                            }
-                        } else {
-                            if (onerror) {
-                                onerror(xhr);
-                            }
-                        }
+                xhr.onload = function () {
+                    if (onload) {
+                        onload(xhr);
+                    }
+                };
+                xhr.onerror = function () {
+                    if (onerror) {
+                        onerror(xhr);
                     }
                 };
                 xhr.open(method, url, true);
@@ -54,15 +51,11 @@ define([
          */
         getRequest: function () {
             var xhr = false;
-            if (typeof ActiveXObject !== 'undefined') {
+            if (typeof XDomainRequest !== 'undefined') {
                 try {
-                    xhr = new ActiveXObject('Msxml2.XMLHTTP');
+                    xhr = new XDomainRequest();
                 } catch (e) {
-                    try {
-                        xhr = new ActiveXObject('Microsoft.XMLHTTP');
-                    } catch (err) {
-                        xhr = false;
-                    }
+                    xhr = false;
                 }
             } else if (window.XMLHttpRequest) {
                 try {
