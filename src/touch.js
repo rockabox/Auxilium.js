@@ -63,18 +63,18 @@ define([
      */
     Touch.prototype._touchStartHandler = function (callback) {
         var $this = this;
-        return function (event) {
-            $this._preventDefault(event);
+        return function (event, data) {
+            $this._preventDefault(data);
 
-            var touch = event.targetTouches ? event.targetTouches[0] : event;
+            var touch = data.touches.length ? data.touches[0] : data;
             $this.touchStart = true;
             $this.cachedX = $this.currentX = touch.pageX;
             $this.cachedY = $this.currentY = touch.pageY;
 
-            if (event.type === 'touchstart') {
+            if (data.type === 'touchstart') {
                 setTimeout(function () {
                     if ($this._isTap()) {
-                        callback(event);
+                        callback(event, data);
                         $this._reset();
                     }
                 }, 200);
