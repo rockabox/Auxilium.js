@@ -6,6 +6,7 @@ define([
         var touch,
             mockEvent = {
                 preventDefault: function () {},
+                touches: [],
                 type: 'touchstart'
             };
 
@@ -48,7 +49,12 @@ define([
             var handler;
 
             beforeEach(function () {
+                jasmine.clock().install();
                 handler = touch._touchStartHandler(callback);
+            });
+
+            afterEach(function () {
+                jasmine.clock().uninstall();
             });
 
             it('should return a function', function () {
@@ -56,9 +62,23 @@ define([
             });
 
             it('should call prevent default', function () {
-                handler(mockEvent);
+                handler(jasmine.any(Object), mockEvent);
 
                 expect(touch._preventDefault).toHaveBeenCalledWith(mockEvent);
+            });
+
+            it('should callback if tap is detected', function () {
+                var ele = document.createElement('div');
+                touch.events.addListener(ele, 'touchstart', handler);
+                // Override tap detection
+                touch._isTap = function () {
+                    return true;
+                };
+
+                ele.ontouchstart(mockEvent);
+
+                jasmine.clock().tick(500);
+                expect(callback).toHaveBeenCalledWith(jasmine.any(Object), mockEvent);
             });
         });
 
