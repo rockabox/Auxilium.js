@@ -1,6 +1,7 @@
 define([
-    'aux/scale'
-], function (Scale) {
+    'aux/scale',
+    'aux/is-css-property-supported'
+], function (Scale, isCssPropertySupported) {
     describe('Scale module', function () {
         var node,
             scale;
@@ -35,7 +36,14 @@ define([
                 handler();
 
                 // Where empty string is the default zoom value
-                expect(node.style.zoom).not.toBe('');
+                if (isCssPropertySupported('transform -webkit-transform')) {
+                    var style = node.style,
+                        transform = (style.transform !== '') ? style.transform : style['-webkit-transform'];
+
+                    expect(transform).toContain('scale(');
+                } else {
+                    expect(node.style.zoom).not.toBe('');
+                }
             });
         });
     });
