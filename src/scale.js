@@ -1,12 +1,16 @@
 define([
-    'aux/events'
-], function (Events) {
+    'aux/attach-css',
+    'aux/events',
+    'aux/is-css-property-supported'
+], function (attachCss, Events, isCssPropertySupported) {
     /**
      * @exports scale
      *
      * Scale an element to fit the window
      *
+     * @requires module:attach-css
      * @requires module:events
+     * @requires module:is-css-property-supported
      */
     function Scale () {
         var events = new Events();
@@ -63,7 +67,17 @@ define([
                         ratio = window.innerHeight / height;
                     }
 
-                    node.style.zoom = ratio;
+                    if (isCssPropertySupported('transform -webkit-transform')) {
+                        var scale = 'scale(' + ratio + ')';
+                        attachCss(node, {
+                            transform: scale,
+                            '-webkit-transform': scale
+                        });
+                    } else {
+                        attachCss(node, {
+                            'zoom': ratio
+                        });
+                    }
                 };
             }
         };
