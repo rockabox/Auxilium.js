@@ -23,10 +23,11 @@ define([
              * @memberOf module:scale
              *
              * @public
-             * @param {Object} window Window object that we will resize to
+             * @param {Object} win Window object that we will resize to
              * @param {Object} node Element to apply scale to
              * @param {Number} width The elements max-width
              * @param {Number} height The elements max-height
+             * @param {Boolean} fullscreen Whether to scale to the fullscreen (going over the original width and height)
              *
              * @example
              * ```js
@@ -37,11 +38,11 @@ define([
              * // size of the window with a max of 600px wide and 400px tall.
              * ```
              */
-            init: function (window, node, width, height) {
-                var handler = this._scaleHandler(window, node, width, height);
+            init: function (win, node, width, height, fullscreen) {
+                var handler = this._scaleHandler(win, node, width, height, fullscreen);
 
-                events.addListener(window, 'scroll', handler);
-                events.addListener(window, 'resize', handler);
+                events.addListener(win, 'scroll', handler);
+                events.addListener(win, 'resize', handler);
 
                 handler();
             },
@@ -51,20 +52,26 @@ define([
              * @memberOf module:scale
              *
              * @protected
-             * @param {Object} window Window object that we will resize to
+             * @param {Object} win Window object that we will resize to
              * @param {Object} node Element to apply scale to
-             * @param {Number} width Creative width
-             * @param {Number} height Creative height
+             * @param {Number} width Node width
+             * @param {Number} height Node height
+             * @param {Boolean} fullscreen Whether to scale to the fullscreen (going over the original width and height)
              * @return {Function} Event handler
              */
-            _scaleHandler: function (window, node, width, height) {
+            _scaleHandler: function (win, node, width, height, fullscreen) {
                 return function (event) {
-                    var ratio = 1;
+                    var _fullscreen = fullscreen || false,
+                        ratio = 1,
+                        widthRatio,
+                        heightRatio;
 
-                    if ((width >= height) && (width >= window.innerWidth)) {
-                        ratio = window.innerWidth / width;
-                    } else if ((height >= width) && (height >= window.innerHeight)) {
-                        ratio = window.innerHeight / height;
+                    // Check if either the width or the height is larger than the current viewport, if it is work out
+                    // the ratio in which to use (using the smallest from either width or height).
+                    if (width >= win.innerWidth || height >= win.innerHeight || _fullscreen) {
+                        widthRatio = win.innerWidth / width;
+                        heightRatio = win.innerHeight / height;
+                        ratio = Math.min(widthRatio, heightRatio);
                     }
 
                     if (isCssPropertySupported('transform -webkit-transform')) {
@@ -78,6 +85,8 @@ define([
                             'zoom': ratio
                         });
                     }
+
+                    return ratio;
                 };
             }
         };

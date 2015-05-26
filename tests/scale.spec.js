@@ -24,15 +24,57 @@ define([
         describe('scaleHandler', function () {
             var handler;
 
-            beforeEach(function () {
-                handler = scale._scaleHandler(window, node, 300, 250);
-            });
-
             it('should return a function', function () {
+                handler = scale._scaleHandler(window, node, 300, 250);
                 expect(typeof handler).toBe('function');
             });
 
-            it('should set zoom style on node', function () {
+            it('should not set the size as larger than the original size', function () {
+                var win = {
+                    innerWidth: 600,
+                    innerHeight: 500
+                };
+
+                handler = scale._scaleHandler(win, node, 300, 250);
+
+                expect(handler()).toBe(1);
+            });
+
+            it('should exceed the width and height when fullscreen', function () {
+                var win = {
+                    innerWidth: 600,
+                    innerHeight: 800
+                };
+
+                handler = scale._scaleHandler(win, node, 300, 400, true);
+
+                expect(handler()).toBe(2);
+            });
+
+            it('should work out the ratio due to viewport width being less than the width', function () {
+                var win = {
+                    innerWidth: 150,
+                    innerHeight: 500
+                };
+
+                handler = scale._scaleHandler(win, node, 300, 250);
+
+                expect(handler()).toBe(0.5);
+            });
+
+            it('should work out the ratio due to viewport width being less than the height', function () {
+                var win = {
+                    innerWidth: 300,
+                    innerHeight: 200
+                };
+
+                handler = scale._scaleHandler(win, node, 300, 400);
+
+                expect(handler()).toBe(0.5);
+            });
+
+            it('should set scaling on node', function () {
+                handler = scale._scaleHandler(window, node, 300, 250);
                 handler();
 
                 // Where empty string is the default zoom value
