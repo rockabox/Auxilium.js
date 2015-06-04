@@ -12,7 +12,6 @@ define([
         this.events = new Events();
         this.touchStartX = 0;
         this.touchStartY = 0;
-        this.touch = false;
         // Sets the thresholds of interaction types
         this.swipeDistance = 10;
     }
@@ -105,8 +104,23 @@ define([
      * ```
      */
     Touch.prototype.tap = function (ele, callback) {
-        this.events.addListeners(ele, 'touchstart', this._touchStartHandler());
-        this.events.addListeners(ele, 'touchend click', this._endTouchHandler(callback));
+        var $this = this;
+
+        this.events.addListeners(ele, 'click', $this._endTouchHandler(callback));
+
+        this.events.addListeners(ele, 'touchstart', function (rbEvent, event) {
+            rbEvent.preventDefault();
+            $this._touchStartHandler()(rbEvent, event);
+        });
+
+        this.events.addListeners(ele, 'mousedown', function (rbEvent, event) {
+            $this._touchStartHandler()(rbEvent, event);
+        });
+
+        this.events.addListeners(ele, 'touchend', function (rbEvent, event) {
+            rbEvent.preventDefault();
+            $this._endTouchHandler(callback)(rbEvent, event);
+        });
     };
 
     /**
@@ -131,8 +145,12 @@ define([
      * ```
      */
     Touch.prototype.swipe = function (ele, callback, direction) {
-        this.events.addListeners(ele, 'touchstart', this._touchStartHandler());
-        this.events.addListeners(ele, 'touchend', this._endTouchHandler(callback, direction, true));
+        var $this = this;
+        this.events.addListeners(ele, 'touchstart', $this._touchStartHandler());
+        this.events.addListeners(ele, 'touchend', function (rbEvent, event) {
+            event.preventDefault();
+            $this._endTouchHandler(callback, direction, true)(rbEvent, event);
+        });
     };
 
     /**
@@ -146,10 +164,8 @@ define([
         var $this = this;
         return function (event, data) {
             var cords = $this._getCords(data);
-            $this.touchStart = true;
             $this.touchStartX = cords['x'];
             $this.touchStartY = cords['y'];
-            $this.touch = true;
         };
     };
 
@@ -176,13 +192,11 @@ define([
             distanceX = Math.abs(diffX);
             distanceY = Math.abs(diffY);
 
-            if ($this.touch && event.type === 'click') {
-                return;
-            }
-
-            if (!swipe && $this._isTap(cords['x'], cords['y']) || event.type === 'click') {
+            if (!swipe && $this._isTap(cords['x'], cords['y'])) {
                 callback(event, data);
             } else if (swipe && $this._isSwipe(distanceX, distanceY)) {
+
+
                 if (direction.indexOf($this._getDirection(distanceX, distanceY, diffX, diffY)) > -1) {
                     callback();
                 }
