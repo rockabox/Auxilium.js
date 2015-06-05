@@ -10,6 +10,21 @@ define([
             expect(ele.tagName).toBeIgnoreCase('div');
         });
 
+        it('should create an element as part of a specific document', function () {
+            var customDocument = {
+                    createElement: function () {
+                        return true;
+                    }
+                },
+                ele;
+
+            spyOn(customDocument, 'createElement');
+
+            ele = createElement('div', {}, customDocument);
+
+            expect(customDocument.createElement).toHaveBeenCalled();
+        });
+
         it('should attach inline styling if passed through params', function () {
             var params = {
                     css: {

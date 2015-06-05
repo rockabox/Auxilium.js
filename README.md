@@ -210,6 +210,7 @@ console.log (again if accessible).
 
 - tag `string` - The HTML tag type in which to create  
 - params `object` - Contains paramaters to be used for the creation of the element  
+- doc `object` - Optionally pass the document in which to create the element apart of  
 
 **Properties**
 
@@ -254,7 +255,7 @@ var childEle = createElement('div'),
 	   	childEle
 	   ]
     },
-    ele = createElement('div', params);
+    ele = createElement('div', params, top.document);
 // Ele becomes
 // <div style="border: 1px solid black; background-color: red;" class="legen wait-for-it dary">
 //   <div class="simpsons"><span class="bart"></span></div>
@@ -711,20 +712,21 @@ removeElement(myParent, true)
   **Members**
 
 * [scale](#module_scale)
-  * [scale.init(window, node, width, height)](#module_scale.init)
-  * [scale._scaleHandler(window, node, width, height)](#module_scale._scaleHandler)
+  * [scale.init(win, node, width, height, fullscreen)](#module_scale.init)
+  * [scale._scaleHandler(win, node, width, height, fullscreen)](#module_scale._scaleHandler)
 
 <a name="module_scale.init"></a>
-####scale.init(window, node, width, height)
+####scale.init(win, node, width, height, fullscreen)
 Will scale the element to the size of the window, ensuring that it doesn't exceed the max
 width and height.
 
 **Params**
 
-- window `Object` - Window object that we will resize to  
+- win `Object` - Window object that we will resize to  
 - node `Object` - Element to apply scale to  
 - width `Number` - The elements max-width  
 - height `Number` - The elements max-height  
+- fullscreen `Boolean` - Whether to scale to the fullscreen (going over the original width and height)  
 
 **Example**  
 ```js
@@ -736,15 +738,16 @@ scale.init(htmlNode, 600, 400);
 ```
 
 <a name="module_scale._scaleHandler"></a>
-####scale._scaleHandler(window, node, width, height)
+####scale._scaleHandler(win, node, width, height, fullscreen)
 Returns a function to be used for listening to events.
 
 **Params**
 
-- window `Object` - Window object that we will resize to  
+- win `Object` - Window object that we will resize to  
 - node `Object` - Element to apply scale to  
-- width `Number` - Creative width  
-- height `Number` - Creative height  
+- width `Number` - Node width  
+- height `Number` - Node height  
+- fullscreen `Boolean` - Whether to scale to the fullscreen (going over the original width and height)  
 
 **Returns**: `function` - Event handler  
 **Access**: protected  
