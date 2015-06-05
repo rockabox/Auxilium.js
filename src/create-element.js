@@ -22,6 +22,7 @@ define([
      * @property {string} params.innerHTML A string representation of DOM elements to attach as children to the ele
      * @property {array} params.nodes An array containing elements to create as children
      * @property {array} params.children An array of HTMLNodes to append as children to the element
+     * @param {object} doc Optionally pass the document in which to create the element apart of
      *
      * @returns ele The HTML element created with css and attributes added to passed from params
      *
@@ -57,7 +58,7 @@ define([
      * 	   	childEle
      * 	   ]
      *     },
-     *     ele = createElement('div', params);
+     *     ele = createElement('div', params, top.document);
      * // Ele becomes
      * // <div style="border: 1px solid black; background-color: red;" class="legen wait-for-it dary">
      * //   <div class="simpsons"><span class="bart"></span></div>
@@ -67,8 +68,9 @@ define([
      * // Clicking on the main div will console log
      * ```
      */
-    function createElement (tag, params) {
-        var ele = document.createElement(tag),
+    function createElement (tag, params, doc) {
+        doc = doc || document;
+        var ele = doc.createElement(tag),
             inner;
 
         if (typeof params === 'undefined') {
@@ -89,7 +91,7 @@ define([
             inner = params.nodes;
 
             for (var i = 0; i < inner.length; i++) {
-                ele.appendChild(createElement(inner[i].tag, inner[i]));
+                ele.appendChild(createElement(inner[i].tag, inner[i], doc));
             }
         }
 
