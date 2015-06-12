@@ -106,7 +106,7 @@ define([
     Touch.prototype.tap = function (ele, callback) {
         var $this = this;
 
-        this.events.addListeners(ele, 'click', $this._endTouchHandler(callback));
+        this.events.addListeners(ele, 'click', $this._touchEndHandler(callback));
 
         this.events.addListeners(ele, 'touchstart', function (rbEvent, event) {
             rbEvent.preventDefault();
@@ -119,7 +119,7 @@ define([
 
         this.events.addListeners(ele, 'touchend', function (rbEvent, event) {
             rbEvent.preventDefault();
-            $this._endTouchHandler(callback)(rbEvent, event);
+            $this._touchEndHandler(callback)(rbEvent, event);
         });
     };
 
@@ -148,8 +148,8 @@ define([
         var $this = this;
         this.events.addListeners(ele, 'touchstart', $this._touchStartHandler());
         this.events.addListeners(ele, 'touchend', function (rbEvent, event) {
-            event.preventDefault();
-            $this._endTouchHandler(callback, direction, true)(rbEvent, event);
+            rbEvent.preventDefault();
+            $this._touchEndHandler(callback, direction, true)(rbEvent, event);
         });
     };
 
@@ -177,7 +177,7 @@ define([
      * @param {Function} callback When a click, tap, swipe event has occurred
      * @return {Function} Function for touch event handling
      */
-    Touch.prototype._endTouchHandler = function (callback, direction, swipe) {
+    Touch.prototype._touchEndHandler = function (callback, direction, swipe) {
         var $this = this;
         return function (event, data) {
             var cords = $this._getCords(data),
@@ -185,7 +185,8 @@ define([
                 diffX,
                 diffY,
                 distanceX,
-                distanceY;
+                distanceY,
+                dir;
 
             diffX = $this.touchStartX - cords['x'];
             diffY =  $this.touchStartY - cords['y'];
@@ -195,10 +196,9 @@ define([
             if (!swipe && $this._isTap(cords['x'], cords['y'])) {
                 callback(event, data);
             } else if (swipe && $this._isSwipe(distanceX, distanceY)) {
-
-
-                if (direction.indexOf($this._getDirection(distanceX, distanceY, diffX, diffY)) > -1) {
-                    callback();
+                dir = $this._getDirection(distanceX, distanceY, diffX, diffY);
+                if (direction.indexOf(dir) > -1) {
+                    callback(event, data);
                 }
             }
         };
