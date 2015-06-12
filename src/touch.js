@@ -21,18 +21,24 @@ define([
      * @memberOf module:touch
      *
      * @protected
+     * @param {integer} posX Current X position.
+     * @param {integer} posY Current Y positon.
      * @return {Boolean} True if position is the same.
      */
     Touch.prototype._isTap = function (posX, posY) {
         return (this.touchStartX === posX) && (this.touchStartY === posY);
     };
+
     /**
      * Check if touch has moved position to determine swipe.
      * @memberOf module:touch
      *
      * @protected
-     * @return {Boolean} True if position is different and the difference is bigger than threshold.
+     * @param {integer} distanceX Absolute distance traveled on X.
+     * @param {integer} distanceY Absolute distance traveled on Y.
+     * @return {Boolean} True if distance traveled is bigger than threshold.
      */
+
     Touch.prototype._isSwipe = function (distanceX, distanceY) {
         return ((this.swipeDistance < distanceX) || (this.swipeDistance < distanceY));
     };
@@ -42,6 +48,7 @@ define([
      * @memberOf module:touch
      *
      * @protected
+     * @param {Obejct} event An event object passed from the browser such as touchend or click
      * @return {Boolean} True if position is the same.
      */
     Touch.prototype._getCords = function (event) {
@@ -59,10 +66,14 @@ define([
     };
 
     /**
-     * Returns pointer horizontal and vertical postion
+     * Returns direction of the swipe
      * @memberOf module:touch
      *
      * @protected
+     * @param {integer} distanceX Absolute distance traveled on X.
+     * @param {integer} distanceY Absolute distance traveled on Y.
+     * @param {integer} diffX Distance traveled on X.
+     * @param {integer} diffY Distance traveled on Y.
      * @return {Boolean} True if position is the same.
      */
     Touch.prototype._getDirection = function (distanceX, distanceY, diffX, diffY) {
@@ -104,22 +115,24 @@ define([
      * ```
      */
     Touch.prototype.tap = function (ele, callback) {
-        var $this = this;
+        var $this = this,
+            startHandler = $this._touchStartHandler(),
+            endHandler = $this._touchEndHandler(callback);
 
-        this.events.addListeners(ele, 'click', $this._touchEndHandler(callback));
+        this.events.addListeners(ele, 'click', endHandler);
 
         this.events.addListeners(ele, 'touchstart', function (rbEvent, event) {
             rbEvent.preventDefault();
-            $this._touchStartHandler()(rbEvent, event);
+            startHandler(rbEvent, event);
         });
 
         this.events.addListeners(ele, 'mousedown', function (rbEvent, event) {
-            $this._touchStartHandler()(rbEvent, event);
+            startHandler(rbEvent, event);
         });
 
         this.events.addListeners(ele, 'touchend', function (rbEvent, event) {
             rbEvent.preventDefault();
-            $this._touchEndHandler(callback)(rbEvent, event);
+            endHandler(rbEvent, event);
         });
     };
 
@@ -170,11 +183,13 @@ define([
     };
 
     /**
-     * Touch event handler which is called on touch end and move up.
+     * Touch event handler which is called on touch end and click/tap.
      * @memberOf module:touch
      *
      * @protected
      * @param {Function} callback When a click, tap, swipe event has occurred
+     * @param {String} direction The direction(s) in which to fire the event
+     * @param {Boolean} swipe To indicate if we are swiping or taping.
      * @return {Function} Function for touch event handling
      */
     Touch.prototype._touchEndHandler = function (callback, direction, swipe) {
