@@ -869,42 +869,59 @@ var css = 'body { margin: 0 auto; };',
 **Members**
 
 * [touch](#module_touch)
-  * [touch.Touch#_isTap()](#module_touch.Touch#_isTap)
-  * [touch.Touch#_preventDefault(event)](#module_touch.Touch#_preventDefault)
-  * [touch.Touch#_reset()](#module_touch.Touch#_reset)
-  * [touch.Touch#_touchStartHandler(callback)](#module_touch.Touch#_touchStartHandler)
+  * [touch.Touch#_isTap(posX, posY)](#module_touch.Touch#_isTap)
+  * [touch.Touch#_isSwipe(distanceX, distanceY)](#module_touch.Touch#_isSwipe)
+  * [touch.Touch#_getCords(event)](#module_touch.Touch#_getCords)
+  * [touch.Touch#_getDirection(distanceX, distanceY, diffX, diffY)](#module_touch.Touch#_getDirection)
   * [touch.Touch#tap(ele, callback)](#module_touch.Touch#tap)
-  * [touch.Touch#_touchEndHandler(callback)](#module_touch.Touch#_touchEndHandler)
+  * [touch.Touch#swipe(ele, callback, direction)](#module_touch.Touch#swipe)
+  * [touch.Touch#_touchStartHandler()](#module_touch.Touch#_touchStartHandler)
+  * [touch.Touch#_touchEndHandler(callback, direction, swipe)](#module_touch.Touch#_touchEndHandler)
 
 <a name="module_touch.Touch#_isTap"></a>
-####touch.Touch#_isTap()
+####touch.Touch#_isTap(posX, posY)
 Check if touch has moved position to determine tap.
+
+**Params**
+
+- posX `integer` - Current X position.  
+- posY `integer` - Current Y positon.  
 
 **Returns**: `Boolean` - True if position is the same.  
 **Access**: protected  
-<a name="module_touch.Touch#_preventDefault"></a>
-####touch.Touch#_preventDefault(event)
-A helper function to prevent any defaults on a given event
+<a name="module_touch.Touch#_isSwipe"></a>
+####touch.Touch#_isSwipe(distanceX, distanceY)
+Check if touch has moved position to determine swipe.
 
 **Params**
 
-- event `Object` - An event object passed from the browser such as mouseover or click  
+- distanceX `integer` - Absolute distance traveled on X.  
+- distanceY `integer` - Absolute distance traveled on Y.  
 
+**Returns**: `Boolean` - True if distance traveled is bigger than threshold.  
 **Access**: protected  
-<a name="module_touch.Touch#_reset"></a>
-####touch.Touch#_reset()
-Reset touch event variables
-
-**Access**: protected  
-<a name="module_touch.Touch#_touchStartHandler"></a>
-####touch.Touch#_touchStartHandler(callback)
-Touch event handler which will callback if tap is detected.
+<a name="module_touch.Touch#_getCords"></a>
+####touch.Touch#_getCords(event)
+Returns pointer horizontal and vertical postion
 
 **Params**
 
-- callback `function` - When tap event has occurred  
+- event `Obejct` - An event object passed from the browser such as touchend or click  
 
-**Returns**: `function` - Function for touch event handling  
+**Returns**: `Boolean` - True if position is the same.  
+**Access**: protected  
+<a name="module_touch.Touch#_getDirection"></a>
+####touch.Touch#_getDirection(distanceX, distanceY, diffX, diffY)
+Returns direction of the swipe
+
+**Params**
+
+- distanceX `integer` - Absolute distance traveled on X.  
+- distanceY `integer` - Absolute distance traveled on Y.  
+- diffX `integer` - Distance traveled on X.  
+- diffY `integer` - Distance traveled on Y.  
+
+**Returns**: `Boolean` - True if position is the same.  
 **Access**: protected  
 <a name="module_touch.Touch#tap"></a>
 ####touch.Touch#tap(ele, callback)
@@ -927,14 +944,43 @@ touch.tap(ele, function () {
 // When clicking on the div element it will also fire the console log
 ```
 
-<a name="module_touch.Touch#_touchEndHandler"></a>
-####touch.Touch#_touchEndHandler(callback)
-Touch event handler which is called on touch end. Will automatically fire call on click for
-desktop browsers.
+<a name="module_touch.Touch#swipe"></a>
+####touch.Touch#swipe(ele, callback, direction)
+Setup a swipe event allowing for an event to fire when a swipe has occured on an element
+NOTE: Allows for, left, right, up and down (multiple can be added using spaces)
 
 **Params**
 
-- callback `function` - When a click event has occurred  
+- ele `Object` - The element in which to add the swipe event  
+- callback `function` - When swipe event has occured  
+- direction `String` - The direction(s) in which to fire the event  
+
+**Example**  
+```js
+var touch = new Touch(),
+	ele = document.createElement('div');
+
+touch.swipe(ele, function () {
+	console.log('I have been swipe left');
+}, 'left right');
+// When swiping (in either a left or right direction) on the div element it will fire the console log
+```
+
+<a name="module_touch.Touch#_touchStartHandler"></a>
+####touch.Touch#_touchStartHandler()
+Touch event handler which is called on touch start and movedown.
+
+**Returns**: `function` - Function for touch event handling  
+**Access**: protected  
+<a name="module_touch.Touch#_touchEndHandler"></a>
+####touch.Touch#_touchEndHandler(callback, direction, swipe)
+Touch event handler which is called on touch end and click/tap.
+
+**Params**
+
+- callback `function` - When a click, tap, swipe event has occurred  
+- direction `String` - The direction(s) in which to fire the event  
+- swipe `Boolean` - To indicate if we are swiping or taping.  
 
 **Returns**: `function` - Function for touch event handling  
 **Access**: protected  

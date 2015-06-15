@@ -90,10 +90,16 @@ define([
 
             if (event) {
                 event.preventDefault = function () {
-                    this.returnValue = false;
+                    if (data.preventDefault) {
+                        data.preventDefault();
+                    }
+                    data.returnValue = false;
                 };
                 event.stopPropagation = function () {
-                    this.cancelBubble = true;
+                    if (data.stopPropagation) {
+                        data.stopPropagation();
+                    }
+                    data.cancelBubble = true;
                 };
             }
 
