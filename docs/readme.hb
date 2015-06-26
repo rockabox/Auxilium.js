@@ -127,6 +127,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="get-url-info"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="has-class"~}}
   # {{>name}}
   {{>body~}}
