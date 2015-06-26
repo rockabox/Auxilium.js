@@ -480,6 +480,43 @@ var name = getParameterByName(urlPath, 'name');
 
 
 
+# get-url-info
+  Gets information from about a url. Domain, Port, Protocol etc.
+
+**Params**
+
+- url `String` - The URL in which to check  
+
+**Properties**
+
+  - info.hash `string` - The part of the url that is hashed (#someValue)  
+  - info.host `string` - The domain with the port attached  
+  - info.hostname `string` - The domain with no port or protocol  
+  - info.href `string` - The original URL passed to the function  
+  - info.pathname `string` - The path of the url (/search)  
+  - info.port `string` - The portnumber of the url (912) - can be blank if none specified  
+  - info.protocol `string` - The protocol of the url (http: or https:)  
+  - info.search `string` - The query paramaters of the url (?a=foo&b=bar)  
+
+**Returns**: `Object` - info The information about the URL within an Object  
+**Example**  
+```js
+var info = getUrlInfo('https://www.some-example.com:912/my-page?a=foo&b=bar#somehash');
+// Returns
+{
+	hash: '#somehash',
+	host: 'www.some-example.com:912',
+	hostname: 'www.some-example.com',
+	href: 'https://www.some-example.com:912/my-page?a=foo&b=bar#somehash',
+	pathname: '/my-page',
+	port: '912',
+	protocol: 'https:',
+	search: '?a=foo&b=bar'
+}
+```
+
+
+
 # has-class
   Checks whether or not an element has a specific class name.
 
