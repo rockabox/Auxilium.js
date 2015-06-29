@@ -210,9 +210,3 @@ define([
   {{>body~}}
   {{>exported~}}
 {{/module}}
-
-{{#module name="validate-html"~}}
-  # {{>name}}
-  {{>body~}}
-  {{>exported~}}
-{{/module}}
