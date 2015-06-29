@@ -29,8 +29,8 @@ define([
      * ```
      */
     function isDefined (check, type) {
-        // Check that the variable is a specific type
-        if (type) {
+        // Check that the variable is a specific type && not undefined (IE8 reports undefined variables as objects)
+        if (type && typeof check !== 'undefined') {
             var regex = new RegExp(/\[object (\w+)]/),
                 string = Object.prototype.toString.call(check).toLowerCase(),
                 matches = string.match(regex);
