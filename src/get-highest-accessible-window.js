@@ -36,6 +36,7 @@ define([
             }
         } catch (error) {}
 
+        // Climb the windows current parents and get the highest most possible window in which we have access
         climbParents(win);
 
         return parent;
@@ -52,7 +53,7 @@ define([
      */
     function climbParents (win) {
         try {
-            // Check when we have hit the top and return the parent as we should go no further
+            // Check when we have hit the top and return the highest parent found
             if (win.parent === win.top) {
                 return parent;
             }
@@ -64,7 +65,7 @@ define([
             // Call self (in order to climb up to the next parent)
             climbParents(win.parent);
         } catch (error) {
-            // When ever there is an error return the highest parent found
+            // When an error occurs continue climbing up until we hit the top window
             climbParents(win.parent);
         }
     }
