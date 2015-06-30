@@ -35,5 +35,25 @@ define([
         it('should return the search', function () {
             expect(getUrlInfo(url).search).toBe('?a=foo&b=bar');
         });
+
+        it('should return null when url is blank', function () {
+            url = '';
+
+            expect(getUrlInfo(url)).toBeUndefined();
+        });
+
+        it('should deal with a protocoless url', function () {
+            url = url.split('https:')[1];
+
+            expect(getUrlInfo(url).hostname).toBe('www.some-example.com');
+            expect(getUrlInfo(url).href).toContain(url);
+        });
+
+        it('should deal with no protocol at all on url', function () {
+            url = url.split('https://')[1];
+
+            expect(getUrlInfo(url).hostname).toBe('www.some-example.com');
+            expect(getUrlInfo(url).href).toContain(url);
+        });
     });
 });
