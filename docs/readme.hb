@@ -115,6 +115,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="get-highest-accessible-window"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="get-orientation"~}}
   # {{>name}}
   {{>body~}}
