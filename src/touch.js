@@ -176,6 +176,9 @@ define([
     Touch.prototype._touchStartHandler = function () {
         var $this = this;
         return function (event, data) {
+            if (typeof data === 'undefined') {
+                return;
+            }
             var cords = $this._getCords(data);
             $this.touchStartX = cords['x'];
             $this.touchStartY = cords['y'];
@@ -195,6 +198,12 @@ define([
     Touch.prototype._touchEndHandler = function (callback, direction, swipe) {
         var $this = this;
         return function (event, data) {
+            if (event.type === 'click' && typeof data === 'undefined') {
+                callback(event, data);
+            }
+            if (typeof data === 'undefined') {
+                return;
+            }
             var cords = $this._getCords(data),
                 threshold = $this.swipeDistance,
                 diffX,
