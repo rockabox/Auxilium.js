@@ -35,7 +35,19 @@ define([
      * ```
      */
     function getUrlInfo (url) {
+        if (url) {
+            return;
+        }
+
         var linkInfo;
+
+        if (url.indexOf('//') === 0) {
+            // Check if the url is protocoless and if so attach a protocol on in order to get all of the information
+            url = 'http:' + url;
+        } else if (url.indexOf('http') === -1) {
+            // Ensure that the url contains a protocol otherwise it will not be possible to get all of the information
+            url = 'http://' + url;
+        }
 
         try {
             // Try to use the built in browser URL functions
