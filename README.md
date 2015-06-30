@@ -440,31 +440,6 @@ var mainContent = document.getElementById('main-content'),
 
 
 
-# get-highest-accessible-window
-  Get the highest accessible window
-
-**Params**
-
-- \[win\] `object` - The window in which to get the parent of (defaults to current window)  
-
-**Returns**: `object` - Accessible window object  
-**Example**  
-```js
-var topWindow = false,
-	win = {
-		top: topWindow,
- 	parent: {
- 		document: {
- 			domain: 'this'
- 		}
- 	}
-};
-getHighestAccessibleWindow(win);
-// Will return the window (parent win.parent), as we do not have access to the top window
-```
-
-
-
 # get-orientation
   **Params**
 
