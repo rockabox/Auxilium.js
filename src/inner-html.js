@@ -1,8 +1,7 @@
 define([
-    'aux/get-element-by-tag',
     'aux/create-element',
-    'aux/validate-html'
-], function (getElementByTag, createElement, validateHtml) {
+    'aux/get-element-by-tag'
+], function (createElement, getElementByTag) {
 
     /**
      * @memberOf module:inner-html
@@ -51,7 +50,6 @@ define([
      * simply using innerHTML to ensure it will be executable when attached to the DOM.
      * NOTE: When invalid HTML is passed to the function it will throw an error
      *
-     * @requires module:validate-html
      * @requires module:create-element
      * @requires module:get-element-by-tag
      *
@@ -72,10 +70,6 @@ define([
      * ```
      */
     function innerHTML (node, html) {
-        if (!validateHtml(html)) {
-            throw Error('HTML is not valid: ' + html);
-        }
-
         node.innerHTML = html;
 
         // Replace all script tags with created elements

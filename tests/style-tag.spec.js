@@ -63,7 +63,7 @@ define([
                 contents = styleTag.contents(style);
 
             expect(contents).toContain('.test-element');
-            expect(contents).toContain('z-index');
+            expect(contents.toLowerCase()).toContain('z-index');
         });
     });
 });

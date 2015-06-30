@@ -2,23 +2,11 @@ var baseConf = require('./karma.conf.js');
 
 module.exports = function (config) {
     var customLaunchers = {
-            'sl_ie_9': {
+            'sl_ie_8': {
                 base: 'SauceLabs',
                 browserName: 'internet explorer',
                 platform: 'Windows 7',
-                version: '9'
-            },
-            'sl_ie_10': {
-                base: 'SauceLabs',
-                browserName: 'internet explorer',
-                platform: 'Windows 7',
-                version: '10'
-            },
-            'sl_ie_11': {
-                base: 'SauceLabs',
-                browserName: 'internet explorer',
-                platform: 'Windows 7',
-                version: '11'
+                version: '8'
             }
         };
 
@@ -32,9 +20,13 @@ module.exports = function (config) {
             'saucelabs'
         ],
         sauceLabs: {
-            testName: 'Auxilium IE9+ browsers',
+            testName: 'Auxilium IE8 browser',
             username: process.env['SAUCE_USERNAME'],
             accessKey: process.env['SAUCE_ACCESS_KEY']
-        }
+        },
+        exclude: [
+            // Inner HTML not supported in IE8
+            'tests/**/inner-html.spec.js'
+        ]
     });
 };

@@ -15,10 +15,10 @@ opts.module.postLoaders = [
 module.exports = function (config) {
     var configuration = {
             customLaunchers: {
-              'Chrome_travis_ci': {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
-              }
+                'Chrome_travis_ci': {
+                    base: 'Chrome',
+                    flags: ['--no-sandbox']
+                }
             },
             basePath: './',
             files: [

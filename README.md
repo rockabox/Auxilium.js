@@ -1022,25 +1022,3 @@ Touch event handler which is called on touch end and click/tap.
 **Returns**: `function` - Function for touch event handling  
 **Access**: protected  
 
-
-# validate-html
-  Checks that HTML as string is valid HTML (all tags are closing etc.)
-
-**Params**
-
-- html `String` - The html to validate  
-
-**Returns**: `Boolean` - Whether or not the html is valid  
-**Example**  
-```js
-validateHtml('<div></div>');
-// Returns true
-
-validateHtml('<div>');
-// Returns false
-
-validateHtml('<div></div');
-// Returns false
-```
-
-

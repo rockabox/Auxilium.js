@@ -43,7 +43,7 @@ define([
                 uuidsSorted,
                 results = [];
 
-            for (var i = 0; i < 99999; i++) {
+            for (var i = 0; i < 1000; i++) {
                 uuids.push(generateUUID());
             }
 
