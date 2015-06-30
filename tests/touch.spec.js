@@ -370,6 +370,15 @@ define([
                 expect(touch._getCords).toHaveBeenCalled();
             });
 
+            it('should not call getCords when data is undefined', function () {
+                var undefinedData;
+                spyOn(touch, '_getCords').and.callThrough();
+
+                handler({}, undefinedData);
+
+                expect(touch._getCords).not.toHaveBeenCalled();
+            });
+
             it('touchStartX', function () {
                 handler({}, mockEvent);
                 expect(touch.touchStartX).toBe(5);
@@ -412,6 +421,30 @@ define([
                 handler({}, mockEvent);
 
                 expect(touch._getCords).toHaveBeenCalled();
+            });
+
+            describe('when data is undefined', function () {
+                var mockEvent,
+                    undefinedData;
+
+                it('should callback if event type is click', function () {
+                    mockEvent = {
+                            'type': 'click'
+                        };
+
+                    handler(mockEvent, undefinedData);
+
+                    expect(callback).toHaveBeenCalledWith(mockEvent, undefinedData);
+                });
+
+                it('should not call getCords is event type is not click', function () {
+                    spyOn(touch, '_getCords');
+
+                    handler({}, undefinedData);
+
+                    expect(touch._getCords).not.toHaveBeenCalled();
+                });
+
             });
 
             describe('tap', function () {
