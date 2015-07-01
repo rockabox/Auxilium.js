@@ -51,5 +51,11 @@ define([
 
             expect(getHighestAccessibleWindow(win).document.domain).toBe('woops');
         });
+
+        it('should return the current window if we do not have access to any of it\'s parents', function () {
+            win.parent.parent.document = false;
+
+            expect(getHighestAccessibleWindow(win)).toBe(win);
+        });
     });
 });
