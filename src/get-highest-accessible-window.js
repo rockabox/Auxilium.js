@@ -28,6 +28,7 @@ define([
      */
     function getHighestAccessibleWindow (win) {
         win = win || window;
+        parent = win;
 
         // Check to see if we have access to the top level window
         try {
