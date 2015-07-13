@@ -30,8 +30,9 @@ define([
         // Whether or not to use inverted scrolling direction (defaulting to normal direction)
         invert = invert || false;
 
-        var offsetTop = win.pageYOffset,
-            distance = (win.innerHeight - viewableHeight),
+        var offsetTop = win.pageYOffset || win.document.documentElement.scrollTop,
+            winHeight = win.innerHeight || win.document.documentElement.clientHeight,
+            distance = (winHeight  - viewableHeight),
             scrollDistance = (eleHeight - viewableHeight),
             top = offset(ele.parentNode).y,
             ratio,
