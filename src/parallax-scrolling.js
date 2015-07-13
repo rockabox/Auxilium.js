@@ -1,6 +1,7 @@
 define([
-    'aux/attach-css'
-], function (attachCss) {
+    'aux/attach-css',
+    'aux/offset'
+], function (attachCss, offset) {
 
     /**
      * Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
@@ -30,20 +31,12 @@ define([
         invert = invert || false;
 
         var offsetTop = win.pageYOffset,
-            container = ele.parentNode,
             distance = (win.innerHeight - viewableHeight),
             scrollDistance = (eleHeight - viewableHeight),
-            top = container.offsetTop,
+            top = offset(ele.parentNode).y,
             ratio,
             margin,
             css = {};
-
-        // When we are within a nested element we need to check the offset of the parent and ensure we take the top
-        // offset of that element in to consideration when checking scrolling our element
-        while (container.offsetParent) {
-            container = container.offsetParent;
-            top += container.offsetTop;
-        }
 
         // Check that the htmlNode is fully within the viewport before starting to scroll
         if (offsetTop < top && (offsetTop + distance) > top) {
