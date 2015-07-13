@@ -718,6 +718,23 @@ Creates a DOM element for the script tag.
 **Returns**: `object` - Merged object  
 
 
+# parallax-scrolling
+  Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
+is displayed whilst it's in view of the viewport
+
+NOTE: It is required that the element is positioned with absoulte relative to it's wrapper.
+
+**Params**
+
+- ele `Object` - The element in which to scroll  
+- eleHeight `Number` - The full size of the element  
+- viewableHeight `Number` - The amount of the element in which should be viewable at any one time  
+- \[invert=false\] `Boolean` - Whether or not to scroll the content inversed (Bottom to Top) or (Top to Bottom)  
+- \[win\] `Object` - Optionally pass the window in which should be checked for the size of the viewport  
+
+**Returns**: `Number` - The positioning of the element (in pixels)  
+
+
 # remove-class
   Remove a single class from an element.
 
