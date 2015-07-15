@@ -766,12 +766,13 @@ events.addListener(window, 'resize', function () {
 ```
 
 <a name="module_parallax-scrolling.ParallaxScrolling#init"></a>
-####parallax-scrolling.ParallaxScrolling#init(ele, eleHeight, viewableHeight, [invert], [win])
+####parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [invert], [win])
 Initialise the a new parallax scrolling handler
 
 **Params**
 
 - ele `Object` - The element in which to scroll  
+- container `Object` - The container of the element in which to take into consideration for scroll points  
 - eleHeight `Number` - The full size of the element  
 - viewableHeight `Number` - The amount of the element in which should be viewable at any one time  
 - \[invert=false\] `Boolean` - Whether or not to scroll the content inversed (Bottom to Top) or (Top to Bottom)  

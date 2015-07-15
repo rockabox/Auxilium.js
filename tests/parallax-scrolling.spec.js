@@ -2,18 +2,22 @@ define([
     'aux/create-element',
     'aux/parallax-scrolling'
 ], function (createElement, ParallaxScrolling) {
-    var ele,
-        parallaxScrolling,
-        parentEle;
+    var container,
+        ele,
+        mainEle,
+        parallaxScrolling;
 
     describe('Parallax scrolling an element', function () {
         beforeEach(function () {
             ele = document.createElement('div');
-            parentEle = createElement('div', {
+            mainEle = document.createElement('div');
+            container = createElement('div', {
                 children: [
                     ele
                 ]
             });
+
+            mainEle.appendChild(container);
 
             parallaxScrolling = new ParallaxScrolling();
         });
@@ -23,7 +27,7 @@ define([
         });
 
         it('should return a function handler', function () {
-            var handler = parallaxScrolling.init(ele);
+            var handler = parallaxScrolling.init(ele, container);
 
             expect(typeof handler).toBe('function');
         });
@@ -31,9 +35,9 @@ define([
         it('should get the offset of the element', function () {
             spyOn(parallaxScrolling, '_offset').and.callThrough();
 
-            var handler = parallaxScrolling.init(ele);
+            var handler = parallaxScrolling.init(ele, container);
 
-            expect(parallaxScrolling._offset).toHaveBeenCalledWith(parentEle);
+            expect(parallaxScrolling._offset).toHaveBeenCalledWith(container);
         });
 
         describe('window positions', function () {
