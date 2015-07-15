@@ -15,6 +15,173 @@ define([
      * to start scrolling rather than all of the element needing to be in view
      *
      * @requires module:aux/attach-css
+     * @requires module:aux/offset
+     *
+     * @example
+     * ```js
+     * var parallaxScrolling = new ParallaxScrolling(),
+     * 	parallaxHelper = parallaxScrolling.init(ele, 300, 100, true, window);
+     *
+     * // When the window is scrolled we want to fire the parallax handler
+     * events.addListener(window, 'scroll', function () {
+     * 	parallaxHelper();
+     * });
+     *
+     * // When the window is resized we want to fire the parallax helper
+     * events.addListener(window, 'resize', function () {
+     * 	parallaxHelper();
+     * });
+     * ```
+     */
+    function ParallaxScrolling () {
+        this._attachCss = attachCss;
+        this._offset = offset;
+    }
+
+    /**
+     * Get the marginal position of the element depending on the current viewport
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @private
+     *
+     * @param  {Number} offsetTop The offsetTop offset of the element.
+     * @param  {Number} scrollDistance The distance of the viewable height compared to the position of the window height
+     * @param  {Number} distance  The distance between the windows height and the viewable height.
+     * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
+     *
+     * @return {Number} The margin number of the what the element should be
+     */
+    ParallaxScrolling.prototype._getMargin = function (offsetTop, scrollDistance, distance, scrollTop) {
+        var ratio;
+
+        // Check that the htmlNode is fully within the viewport before starting to scroll
+        if (scrollTop < offsetTop && (scrollTop + distance) > offsetTop) {
+            // Gets the ratio (scroll speed) to be able to show all of the element within the viewable height, dependant
+            // on the viewport size.
+            ratio = this._getRatio(offsetTop, scrollTop, distance, this.invert);
+            margin = '-' + (scrollDistance * ratio) + 'px';
+        } else if ((scrollTop + distance) <= offsetTop) {
+            if (this.invert) {
+                // Set the element to show from the bottom of the content (when inverted and at the top)
+                margin = this._positionBottom(this._scrollDistance);
+            } else {
+                // Set the element to show from the top of the content (when not inverted and at the top)
+                margin = this._positionTop();
+            }
+        } else {
+            if (this.invert) {
+                // Set the element to show from the top of the content (when inverted and at the top)
+                margin = this._positionTop();
+            } else {
+                // Set the element to show from the bottom of the content (when not inverted and at the top)
+                margin = this._positionBottom(this._scrollDistance);
+            }
+        }
+
+        return margin;
+    };
+
+    /**
+     * Get the ratio of which the scrolling speed needs to be set (dependant on whether the scrolling should be
+     * inverted or not).
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @private
+     *
+     * @param  {Number} offsetTop The offsetTop offset of the element.
+     * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
+     * @param  {Number} distance  The distance between the windows height and the viewable height.
+     * @param  {Boolean} invert   Whether or not to invert the scrolling direction.
+     *
+     * @return {Number}           The ratio of speed in which to scroll the content.
+     */
+    ParallaxScrolling.prototype._getRatio = function (offsetTop, scrollTop, distance, invert) {
+        var ratio = (offsetTop - scrollTop) / distance;
+
+        // When inverting the ratio should be used straight away otherwise taking away 1 from the ratio forces it to
+        // scroll the normal direction
+        if (!invert) {
+            ratio = 1 - ratio;
+        }
+
+        return ratio;
+    };
+
+    /**
+     * Get the positional data from the window
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @private
+     *
+     * @param  {Object} win The window in which to check against.
+     * @return {Object} positions
+     * @property {Number} positions.scrollTop The offset of the viewport compared to the window
+     * @property {Number} positions.winHeight The total height of the window
+     *
+     */
+    ParallaxScrolling.prototype._getWindowPositions = function (win) {
+        return {
+            scrollTop:  win.pageYOffset || win.document.documentElement.scrollTop,
+            winHeight: win.innerHeight || win.document.documentElement.clientHeight
+        };
+    };
+
+    /**
+     * Get the value for the positional value for setting to show the top of the content
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @private
+     *
+     * @return {Number} The positional value for the content showing at the top of the element.
+     */
+    ParallaxScrolling.prototype._positionTop = function () {
+        return 0;
+    };
+
+    /**
+     * Get the value for the positional value for setting to show the bottom of the content, based on the entire
+     * scrollable distance.
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @private
+     *
+     * @return {Number} The positional value for the content showing at the bottom of the element.
+     */
+    ParallaxScrolling.prototype._positionBottom = function (scrollDistance) {
+        return (scrollDistance * -1) + 'px';
+    };
+
+    /**
+     * Set the elements positional margin
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @private
+     *
+     * @param {Object} ele    The element in which to attach the positional margin to.
+     * @param {Number} margin The positional margin in which to attach to the element.
+     *
+     * @return {Object} The original element passed through with the new positional margin attached.
+     */
+    ParallaxScrolling.prototype._setElePosition = function (ele, margin) {
+        this._attachCss(ele, {
+            'top': margin
+        });
+
+        return ele;
+    };
+
+    /**
+     * Initialise the a new parallax scrolling handler
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @public
      *
      * @param  {Object} ele        The element in which to scroll
      * @param  {Number} eleHeight  The full size of the element
@@ -22,60 +189,35 @@ define([
      * @param  {Boolean} [invert=false] Whether or not to scroll the content inversed (Bottom to Top) or (Top to Bottom)
      * @param  {Object=} win       Optionally pass the window in which should be checked for the size of the viewport
      *
-     * @return {Number}            The positioning of the element (in pixels)
+     * @returns {Function} A handler in which to fire when scrolling
      */
-    function parallaxScrolling (ele, eleHeight, viewableHeight, invert, win) {
+    ParallaxScrolling.prototype.init = function (ele, eleHeight, viewableHeight, invert, win) {
+
         // Default to the current window if it hasn't been passed through to the helper
         win = win || window;
         // Whether or not to use inverted scrolling direction (defaulting to normal direction)
-        invert = invert || false;
+        this.invert = invert || false;
 
-        var offsetTop = win.pageYOffset || win.document.documentElement.scrollTop,
-            winHeight = win.innerHeight || win.document.documentElement.clientHeight,
-            distance = (winHeight  - viewableHeight),
-            scrollDistance = (eleHeight - viewableHeight),
-            top = offset(ele.parentNode).y,
-            ratio,
-            margin,
-            css = {};
+        var $this = this,
+            offsetTop = this._offset(ele.parentNode).y,
+            scrollDistance = (eleHeight - viewableHeight);
 
-        // Check that the htmlNode is fully within the viewport before starting to scroll
-        if (offsetTop < top && (offsetTop + distance) > top) {
-            // Gets the ratio (scroll speed) to be able to show all of the element within the viewable height, dependant
-            // on the viewport size.
-            ratio = (top - offsetTop) / distance;
-            // When inverting the ratio should be used straight away otherwise taking away 1 from the ratio forces it to
-            // scroll the normal direction
-            ratio = (invert) ? (ratio) : (1 - ratio);
-            margin = '-' + (scrollDistance * ratio) + 'px';
-        } else if ((offsetTop + distance) <= top) {
-            if (invert) {
-                // When we are inverting the scrolling and the element hits the top of the viewport ensure that it is
-                // set to be at the bottom of the element
-                margin = scrollDistance * -1 + 'px';
-            } else {
-                // When we are not inverting the scrolling and the element hits the top of the viewport ensure that it
-                // is set to be at the top of the element
-                margin = 0;
-            }
-        } else {
-            if (invert) {
-                // When we are inverting the scrolling and the element hits the bottom of the viewport ensure that it is
-                // set to be at the top of the element
-                margin = 0;
-            } else {
-                // When we are not inverting the scrolling and the element hits the bottom of the viewport ensure that
-                // it is set to be at the bottom of the element
-                margin = scrollDistance * -1 + 'px';
-            }
-        }
+        // The handler in which to be used for firing when scrolling
+        return function () {
+            var winPosition = $this._getWindowPositions(win),
+                margin = 0,
+                distance,
+                scrollTop = winPosition.scrollTop;
 
-        css['top'] = margin;
+            // Set the distance of the viewable height compared to the position of the window height
+            distance = (winPosition.winHeight  - viewableHeight);
 
-        attachCss(ele, css);
+            margin = $this._getMargin(offsetTop, scrollDistance, distance, scrollTop);
+            $this._setElePosition(ele, margin);
 
-        return margin;
-    }
+            return margin;
+        };
+    };
 
-    return parallaxScrolling;
+    return ParallaxScrolling;
 });
