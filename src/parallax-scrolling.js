@@ -184,6 +184,7 @@ define([
      * @public
      *
      * @param  {Object} ele        The element in which to scroll
+     * @param  {Object} container  The container of the element in which to take into consideration for scroll points
      * @param  {Number} eleHeight  The full size of the element
      * @param  {Number} viewableHeight The amount of the element in which should be viewable at any one time
      * @param  {Boolean} [invert=false] Whether or not to scroll the content inversed (Bottom to Top) or (Top to Bottom)
@@ -191,7 +192,7 @@ define([
      *
      * @returns {Function} A handler in which to fire when scrolling
      */
-    ParallaxScrolling.prototype.init = function (ele, eleHeight, viewableHeight, invert, win) {
+    ParallaxScrolling.prototype.init = function (ele, container, eleHeight, viewableHeight, invert, win) {
 
         // Default to the current window if it hasn't been passed through to the helper
         win = win || window;
@@ -199,7 +200,7 @@ define([
         this.invert = invert || false;
 
         var $this = this,
-            offsetTop = this._offset(ele.parentNode).y,
+            offsetTop = this._offset(container).y,
             scrollDistance = (eleHeight - viewableHeight);
 
         // The handler in which to be used for firing when scrolling
