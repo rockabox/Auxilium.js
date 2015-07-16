@@ -64,7 +64,7 @@ define([
         } else if ((scrollTop + distance) <= offsetTop) {
             if (this.invert) {
                 // Set the element to show from the bottom of the content (when inverted and at the top)
-                margin = this._positionBottom(this._scrollDistance);
+                margin = this._positionBottom(scrollDistance);
             } else {
                 // Set the element to show from the top of the content (when not inverted and at the top)
                 margin = this._positionTop();
@@ -75,7 +75,7 @@ define([
                 margin = this._positionTop();
             } else {
                 // Set the element to show from the bottom of the content (when not inverted and at the top)
-                margin = this._positionBottom(this._scrollDistance);
+                margin = this._positionBottom(scrollDistance);
             }
         }
 
