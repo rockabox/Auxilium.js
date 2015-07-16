@@ -718,6 +718,69 @@ Creates a DOM element for the script tag.
 **Returns**: `object` - Merged object  
 
 
+# offset
+  Gets the X and Y offset of an element to the current window
+
+**Params**
+
+- ele `Object` - The HTMLNode in which to get the axis of.  
+
+**Returns**: `Object` - The X and Y axis of the offset from the window  
+**Example**  
+```js
+var ele = '<div style="margin-top: 10px; margin-left: 140px;"></div>',
+	testEle = '<div></div>';
+
+ele.appendChild(testEle);
+
+offset(testEle);
+// Returns
+{
+	x: 10,
+	y: 140
+}
+```
+
+
+
+# parallax-scrolling
+  Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
+is displayed whilst it's in view of the viewport
+
+NOTE: It is required that the element is positioned with absoulte relative to it's wrapper.
+
+**Example**  
+```js
+var parallaxScrolling = new ParallaxScrolling(),
+	parallaxHelper = parallaxScrolling.init(ele, 300, 100, true, window);
+
+// When the window is scrolled we want to fire the parallax handler
+events.addListener(window, 'scroll', function () {
+	parallaxHelper();
+});
+
+// When the window is resized we want to fire the parallax helper
+events.addListener(window, 'resize', function () {
+	parallaxHelper();
+});
+```
+
+<a name="module_parallax-scrolling.ParallaxScrolling#init"></a>
+####parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [invert], [win])
+Initialise the a new parallax scrolling handler
+
+**Params**
+
+- ele `Object` - The element in which to scroll  
+- container `Object` - The container of the element in which to take into consideration for scroll points  
+- eleHeight `Number` - The full size of the element  
+- viewableHeight `Number` - The amount of the element in which should be viewable at any one time  
+- \[invert=false\] `Boolean` - Whether or not to scroll the content inversed (Bottom to Top) or (Top to Bottom)  
+- \[win\] `Object` - Optionally pass the window in which should be checked for the size of the viewport  
+
+**Returns**: `function` - A handler in which to fire when scrolling  
+
+
 # remove-class
   Remove a single class from an element.
 
