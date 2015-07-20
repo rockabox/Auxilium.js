@@ -1,7 +1,8 @@
 define([
     'aux/attach-css',
+    'aux/has-property',
     'aux/offset'
-], function (attachCss, offset) {
+], function (attachCss, hasProperty, offset) {
 
     /**
      * Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
@@ -123,9 +124,12 @@ define([
      *
      */
     ParallaxScrolling.prototype._getWindowPositions = function (win) {
+        var pageYOffset = hasProperty(win, 'pageYOffset') ? win.pageYOffset : win.document.documentElement.scrollTop,
+            innerHeight = hasProperty(win, 'innerHeight') ? win.innerHeight : win.document.documentElement.clientHeight;
+
         return {
-            scrollTop:  win.pageYOffset || win.document.documentElement.scrollTop,
-            winHeight: win.innerHeight || win.document.documentElement.clientHeight
+            scrollTop:  pageYOffset,
+            winHeight: innerHeight
         };
     };
 
