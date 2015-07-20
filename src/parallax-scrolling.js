@@ -208,8 +208,12 @@ define([
             scrollDistance = (eleHeight - viewableHeight);
 
         // The handler in which to be used for firing when scrolling
-        return function () {
-            var winPosition = $this._getWindowPositions(win),
+        // Allows passing a new window object through the handler and the offset of the container
+        return function (overrideWin, overrideOffset) {
+            overrideWin = overrideWin || win;
+            overrideOffset = overrideOffset || offsetTop;
+
+            var winPosition = $this._getWindowPositions(overrideWin),
                 margin = 0,
                 distance,
                 scrollTop = winPosition.scrollTop;
@@ -217,7 +221,7 @@ define([
             // Set the distance of the viewable height compared to the position of the window height
             distance = (winPosition.winHeight  - viewableHeight);
 
-            margin = $this._getMargin(offsetTop, scrollDistance, distance, scrollTop);
+            margin = $this._getMargin(overrideOffset, scrollDistance, distance, scrollTop);
             $this._setElePosition(ele, margin);
 
             return margin;
