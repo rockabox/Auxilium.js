@@ -1,7 +1,8 @@
 define([
     'aux/attach-css',
+    'aux/has-property',
     'aux/offset'
-], function (attachCss, offset) {
+], function (attachCss, hasProperty, offset) {
 
     /**
      * Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
@@ -123,9 +124,12 @@ define([
      *
      */
     ParallaxScrolling.prototype._getWindowPositions = function (win) {
+        var pageYOffset = hasProperty(win, 'pageYOffset') ? win.pageYOffset : win.document.documentElement.scrollTop,
+            innerHeight = hasProperty(win, 'innerHeight') ? win.innerHeight : win.document.documentElement.clientHeight;
+
         return {
-            scrollTop:  win.pageYOffset || win.document.documentElement.scrollTop,
-            winHeight: win.innerHeight || win.document.documentElement.clientHeight
+            scrollTop:  pageYOffset,
+            winHeight: innerHeight
         };
     };
 
@@ -204,8 +208,12 @@ define([
             scrollDistance = (eleHeight - viewableHeight);
 
         // The handler in which to be used for firing when scrolling
-        return function () {
-            var winPosition = $this._getWindowPositions(win),
+        // Allows passing a new window object through the handler and the offset of the container
+        return function (overrideWin, overrideOffset) {
+            overrideWin = overrideWin || win;
+            overrideOffset = overrideOffset || offsetTop;
+
+            var winPosition = $this._getWindowPositions(overrideWin),
                 margin = 0,
                 distance,
                 scrollTop = winPosition.scrollTop;
@@ -213,7 +221,7 @@ define([
             // Set the distance of the viewable height compared to the position of the window height
             distance = (winPosition.winHeight  - viewableHeight);
 
-            margin = $this._getMargin(offsetTop, scrollDistance, distance, scrollTop);
+            margin = $this._getMargin(overrideOffset, scrollDistance, distance, scrollTop);
             $this._setElePosition(ele, margin);
 
             return margin;

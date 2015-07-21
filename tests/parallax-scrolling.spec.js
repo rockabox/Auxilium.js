@@ -40,6 +40,40 @@ define([
             expect(parallaxScrolling._offset).toHaveBeenCalledWith(container);
         });
 
+        describe('overriding variables via handler', function () {
+            it('should allow overriding of the window', function () {
+                spyOn(parallaxScrolling, '_getWindowPositions').and.callThrough();
+
+                var handler = parallaxScrolling.init(ele, container, 100, 50),
+                    overrideWin = {
+                        pageYOffset: 10,
+                        innerHeight: 30,
+                        document: {
+                            documentElement: {
+                                scrollTop: 10,
+                                clientHeight: 30
+                            }
+                        }
+                    };
+
+                handler(overrideWin);
+
+                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin);
+            });
+
+            it('should allow overriding of the offset', function () {
+                parallaxScrolling._getMargin = function (offsetTop) {
+                    return offsetTop;
+                };
+
+                var overrideWin,
+                    handler = parallaxScrolling.init(ele, container, 100, 50),
+                    margin = handler(overrideWin, 20192);
+
+                expect(margin).toBe(20192);
+            });
+        });
+
         describe('window positions', function () {
             it('should get how much the current document has been scrolled', function () {
                 var windowPosition = parallaxScrolling._getWindowPositions(window);
