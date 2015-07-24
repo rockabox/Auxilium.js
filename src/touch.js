@@ -122,7 +122,6 @@ define([
         this.events.addListeners(ele, 'click', endHandler);
 
         this.events.addListeners(ele, 'touchstart', function (rbEvent, event) {
-            rbEvent.preventDefault();
             startHandler(rbEvent, event);
         });
 
