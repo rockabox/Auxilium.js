@@ -84,6 +84,38 @@ define([
     };
 
     /**
+     * Get the percentage of the content viewed based on scroll position
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @protected
+     *
+     * @param  {Number} scrollY        The scroll y position of the scolling content.
+     * @param  {Number} eleHeight      The height of the element in which is being scrolled.
+     * @param  {Number} viewableHeight The total height of the content being scrolled (including what is hidden).
+     * @param  {Boolean} invert        Whether or not the content is being scrolled in an inverted direction.
+     * @return {Number}                The percentage of the content which is viewed.
+     */
+    ParallaxScrolling.prototype._getPercentageViewed = function (scrollY, eleHeight, viewableHeight, invert) {
+        var scrollPercent,
+            calculatedScrollY = scrollY,
+            decimal;
+
+        if (invert) {
+            // When inverting we need to retrieve it's polar opposite in pixels in order to work out the percentage
+            calculatedScrollY = -Math.abs((eleHeight - viewableHeight + scrollY));
+        }
+
+        // Get the decimal based on the whole content size compared to what has been scrolled
+        decimal = (Math.abs(calculatedScrollY) + viewableHeight) / eleHeight;
+
+        // Get the percentage from decimal ratio
+        scrollPercent = (100 * decimal);
+
+        return scrollPercent;
+    };
+
+    /**
      * Get the ratio of which the scrolling speed needs to be set (dependant on whether the scrolling should be
      * inverted or not).
      *

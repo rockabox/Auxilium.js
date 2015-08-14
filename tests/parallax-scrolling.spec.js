@@ -155,5 +155,133 @@ define([
                 expect(parallaxScrolling._getRatio(100, 50, 2, true)).toBe(25);
             });
         });
+
+        describe('getting the scroll percentages', function () {
+            var percentage,
+                scrolled,
+                viewableHeight,
+                contentHeight,
+                inverted;
+
+            describe('not inverted', function () {
+                beforeEach(function () {
+                    inverted = false;
+                    contentHeight = 2000;
+                    viewableHeight = 500;
+                });
+
+                it('should have a 25% when no scrolling and 25% is viewable at start', function () {
+                    scrolled = 0;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(25);
+                });
+
+                it('should have a 50% when no scrolling and 50% is viewable at start', function () {
+                    scrolled = -500;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(50);
+                });
+
+                it('should have 75% when all is scrolled', function () {
+                    scrolled = -1000;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(75);
+                });
+
+                it('should have 100% when all content has been scrolled', function () {
+                    scrolled = -1500;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(100);
+                });
+            });
+
+            describe('inverted', function () {
+                beforeEach(function () {
+                    inverted = true;
+                    contentHeight = 2000;
+                    viewableHeight = 500;
+                });
+
+                it('should have a 0% when no scrolling', function () {
+                    scrolled = -1500;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(25);
+                });
+
+                it('should have 25% when all is scrolled', function () {
+                    scrolled = -1000;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(50);
+                });
+
+                it('should have a 50% when no scrolling and 50% is viewable at start', function () {
+                    scrolled = -500;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(75);
+                });
+
+                it('should have 100% when all content has been scrolled', function () {
+                    scrolled = 0;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(100);
+                });
+            });
+        });
     });
 });
