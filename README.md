@@ -609,6 +609,28 @@ hyphenToCamel('barney-stinson');
 
 
 
+# in-array
+  Returns whether or not a value is within an array (IE8 helper)
+
+**Params**
+
+- arr `Array` - The array in which to check contains a particular value.  
+- value `*` - The value in which to check the array contains.  
+
+**Returns**: `Boolean` - Whether or not the value is within the array.  
+**Example**  
+```js
+var arr = [0, 9, 2];
+
+inArray(arr, 9);
+// Returns true;
+
+inArray(arr, 1);
+// Returns false;
+```
+
+
+
 # inner-html
   Attaches a string representation of a DOM to an element ensuring that a script tag is created rather than
 simply using innerHTML to ensure it will be executable when attached to the DOM.
@@ -765,6 +787,44 @@ events.addListener(window, 'resize', function () {
 });
 ```
 
+**Members**
+
+* [parallax-scrolling](#module_parallax-scrolling)
+  * [parallax-scrolling._events](#module_parallax-scrolling#_events)
+  * [parallax-scrolling.ParallaxScrolling#_getPercentageViewed(scrollY, eleHeight, viewableHeight, invert)](#module_parallax-scrolling.ParallaxScrolling#_getPercentageViewed)
+  * [parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers(ele, percentage)](#module_parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers)
+  * [parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [invert], [win])](#module_parallax-scrolling.ParallaxScrolling#init)
+
+<a name="module_parallax-scrolling#_events"></a>
+####parallax-scrolling._events
+The Auxillium event system used by the Parallax scrolling module
+
+**Type**: `Object`  
+<a name="module_parallax-scrolling.ParallaxScrolling#_getPercentageViewed"></a>
+####parallax-scrolling.ParallaxScrolling#_getPercentageViewed(scrollY, eleHeight, viewableHeight, invert)
+Get the percentage of the content viewed based on scroll position
+
+**Params**
+
+- scrollY `Number` - The scroll y position of the scolling content.  
+- eleHeight `Number` - The height of the element in which is being scrolled.  
+- viewableHeight `Number` - The total height of the content being scrolled (including what is hidden).  
+- invert `Boolean` - Whether or not the content is being scrolled in an inverted direction.  
+
+**Returns**: `Number` - The percentage of the content which is viewed.  
+**Access**: protected  
+<a name="module_parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers"></a>
+####parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers(ele, percentage)
+Trigger an event of aux.scroll-percent with the percentage when a tenth percentile, ensuring that it does not
+trigger more than once for a percent.
+
+**Params**
+
+- ele `Object` - The element in which to trigger the event on.  
+- percentage `Number` - The percentage (rounded) in which to trigger.  
+
+**Returns**: `Boolean` - Whether the percentage was triggered or not.  
+**Access**: protected  
 <a name="module_parallax-scrolling.ParallaxScrolling#init"></a>
 ####parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [invert], [win])
 Initialise the a new parallax scrolling handler
