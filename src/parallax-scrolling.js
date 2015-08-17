@@ -339,19 +339,23 @@ define([
 
             var winPosition = $this._getWindowPositions(overrideWin),
                 scrollY = 0,
-                distance,
+                // Set the distance of the viewable height compared to the position of the window height
+                distance = (winPosition.winHeight - viewableHeight),
                 scrollTop = winPosition.scrollTop,
-                percentage;
-
-            // Set the distance of the viewable height compared to the position of the window height
-            distance = (winPosition.winHeight  - viewableHeight);
+                percentage,
+                position = $this._getViewportPosition(overrideOffset, distance, scrollTop);
 
             // Get the scrollY position of the content and use it.
             scrollY = $this._getScrollY(overrideOffset, scrollDistance, distance, scrollTop);
             $this._setElePosition(ele, scrollY);
 
-            // Get the percentage of the parallaxed content that is currently viewable.
-            percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert);
+            if (position === 'bottom') {
+                percentage = $this._getViewportPercent(scrollTop, winPosition.winHeight, offsetTop, viewableHeight);
+            } else {
+                // Get the percentage of the parallaxed content that is currently viewable.
+                percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert, scrollTop);
+            }
+
             // Pass the percentage with no decimal places to the scroll percentage trigger.
             $this._scrollPercentTriggers(ele, percentage);
 
