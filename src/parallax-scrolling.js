@@ -293,9 +293,14 @@ define([
             // Set the distance of the viewable height compared to the position of the window height
             distance = (winPosition.winHeight  - viewableHeight);
 
+            // Get the scrollY position of the content and use it.
             scrollY = $this._getScrollY(overrideOffset, scrollDistance, distance, scrollTop);
-            percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert);
             $this._setElePosition(ele, scrollY);
+
+            // Get the percentage of the parallaxed content that is currently viewable.
+            percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert);
+            // Pass the percentage with no decimal places to the scroll percentage trigger.
+            $this._scrollPercentTriggers(ele, percentage);
 
             return scrollY;
         };
