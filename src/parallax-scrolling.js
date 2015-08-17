@@ -61,7 +61,7 @@ define([
             // Gets the ratio (scroll speed) to be able to show all of the element within the viewable height, dependant
             // on the viewport size.
             ratio = this._getRatio(offsetTop, scrollTop, distance, this.invert);
-            margin = '-' + (scrollDistance * ratio) + 'px';
+            margin = -Math.abs(scrollDistance * ratio);
         } else if ((scrollTop + distance) <= offsetTop) {
             if (this.invert) {
                 // Set the element to show from the bottom of the content (when inverted and at the top)
@@ -189,7 +189,7 @@ define([
      * @return {Number} The positional value for the content showing at the bottom of the element.
      */
     ParallaxScrolling.prototype._positionBottom = function (scrollDistance) {
-        return (scrollDistance * -1) + 'px';
+        return (scrollDistance * -1);
     };
 
     /**
@@ -206,7 +206,7 @@ define([
      */
     ParallaxScrolling.prototype._setElePosition = function (ele, margin) {
         this._attachCss(ele, {
-            'top': margin
+            'top': margin + 'px'
         });
 
         return ele;
@@ -248,12 +248,14 @@ define([
             var winPosition = $this._getWindowPositions(overrideWin),
                 margin = 0,
                 distance,
-                scrollTop = winPosition.scrollTop;
+                scrollTop = winPosition.scrollTop,
+                percentage;
 
             // Set the distance of the viewable height compared to the position of the window height
             distance = (winPosition.winHeight  - viewableHeight);
 
             margin = $this._getMargin(overrideOffset, scrollDistance, distance, scrollTop);
+            percentage = $this._getPercentageViewed(margin, eleHeight, viewableHeight, invert);
             $this._setElePosition(ele, margin);
 
             return margin;

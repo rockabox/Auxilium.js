@@ -115,21 +115,25 @@ define([
         });
 
         describe('getting the positions', function () {
+            it('should return as a number', function () {
+                expect(typeof ParallaxScrolling.prototype._positionBottom()).toBe('number');
+            });
+
             it('should return top', function () {
                 expect(ParallaxScrolling.prototype._positionTop()).toBe(0);
             });
 
             describe('bottom', function () {
+                it('should return as a number', function () {
+                    expect(typeof ParallaxScrolling.prototype._positionBottom(910)).toBe('number');
+                });
+
                 it('should return as zero', function () {
-                    expect(ParallaxScrolling.prototype._positionBottom(0)).toBe('0px');
+                    expect(ParallaxScrolling.prototype._positionBottom(0)).toBe(0);
                 });
 
                 it('should return of as a number as minus', function () {
-                    expect(ParallaxScrolling.prototype._positionBottom(100)).toBe('-100px');
-                });
-
-                it('should return containing css pixels', function () {
-                    expect(ParallaxScrolling.prototype._positionBottom(100)).toContain('px');
+                    expect(ParallaxScrolling.prototype._positionBottom(100)).toBe(-100);
                 });
             });
         });
@@ -137,7 +141,7 @@ define([
         it('should set the marginal position to an element', function () {
             spyOn(parallaxScrolling, '_attachCss');
 
-            var elePos = parallaxScrolling._setElePosition(ele, '90px');
+            var elePos = parallaxScrolling._setElePosition(ele, 90);
 
             expect(parallaxScrolling._attachCss).toHaveBeenCalledWith(ele, jasmine.objectContaining({
                 'top': '90px'
