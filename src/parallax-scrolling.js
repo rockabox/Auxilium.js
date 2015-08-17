@@ -1,8 +1,10 @@
 define([
     'aux/attach-css',
+    'aux/events',
     'aux/has-property',
     'aux/offset'
-], function (attachCss, hasProperty, offset) {
+], function (attachCss, Events, hasProperty, offset) {
+    var events = new Events();
 
     /**
      * Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
@@ -15,8 +17,10 @@ define([
      * @todo It would be nice in the future to allow for setting an offset letting the element be partially in view
      * to start scrolling rather than all of the element needing to be in view
      *
-     * @requires module:aux/attach-css
-     * @requires module:aux/offset
+     * @requires module:attach-css
+     * @requires module:events
+     * @requires module:has-property
+     * @requires module:offset
      *
      * @example
      * ```js
@@ -38,6 +42,14 @@ define([
         this._attachCss = attachCss;
         this._offset = offset;
     }
+
+    /**
+     * The Auxillium event system used by the Parallax scrolling module
+     * @see module:events
+     *
+     * @type {Object}
+     */
+    ParallaxScrolling.prototype._events = events;
 
     /**
      * Get the scrollY position of the element depending on the current viewport
