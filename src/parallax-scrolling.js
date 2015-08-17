@@ -206,6 +206,32 @@ define([
     };
 
     /**
+     * Trigger an event of aux.scroll-percent with the percentage when a tenth percentile.
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @protected
+     *
+     * @param  {Object} ele        The element in which to trigger the event on.
+     * @param  {Number} percentage The percentage (rounded) in which to trigger.
+     * @return {Boolean}           Whether the percentage was triggered or not.
+     */
+    ParallaxScrolling.prototype._scrollPercentTriggers = function (ele, percentage) {
+        var percents = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            triggered = false;
+
+        if (percents.indexOf(percentage) > -1) {
+            events.triggerEvent(ele, 'aux.scroll-percent', {
+                percent: percentage
+            });
+
+            triggered = true;
+        }
+
+        return triggered;
+    };
+
+    /**
      * Set the elements scrollY postion (uses top)
      *
      * @memberOf module:parallax-scrolling

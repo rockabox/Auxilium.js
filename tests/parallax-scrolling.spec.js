@@ -287,5 +287,79 @@ define([
                 });
             });
         });
+
+        describe('triggering events for content viewable percentages', function () {
+            var triggerEvent;
+
+            beforeEach(function () {
+                spyOn(ParallaxScrolling.prototype._events, 'triggerEvent');
+
+                triggerEvent = ParallaxScrolling.prototype._events.triggerEvent;
+            });
+
+            it('should trigger a percent when 10 is passed', function () {
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 10);
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 10
+                }));
+            });
+
+            it('should not trigger when a percent that is not a 10 percentile is passed', function () {
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 11);
+
+                expect(triggerEvent).not.toHaveBeenCalled();
+            });
+
+            it('should trigger for all ten percentiles between (including) 0 and 100', function () {
+                for (var i = 0; i < 110; i += 10) {
+                    ParallaxScrolling.prototype._scrollPercentTriggers(ele, i);
+                }
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 0
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 10
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 20
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 30
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 40
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 50
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 60
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 70
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 80
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 90
+                }));
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 100
+                }));
+            });
+        });
     });
 });
