@@ -62,15 +62,15 @@ define([
             });
 
             it('should allow overriding of the offset', function () {
-                parallaxScrolling._getMargin = function (offsetTop) {
+                parallaxScrolling._getScrollY = function (offsetTop) {
                     return offsetTop;
                 };
 
                 var overrideWin,
                     handler = parallaxScrolling.init(ele, container, 100, 50),
-                    margin = handler(overrideWin, 20192);
+                    scrollY = handler(overrideWin, 20192);
 
-                expect(margin).toBe(20192);
+                expect(scrollY).toBe(20192);
             });
         });
 

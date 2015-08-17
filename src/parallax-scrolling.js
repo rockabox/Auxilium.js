@@ -40,7 +40,7 @@ define([
     }
 
     /**
-     * Get the marginal position of the element depending on the current viewport
+     * Get the scrollY position of the element depending on the current viewport
      *
      * @memberOf module:parallax-scrolling
      *
@@ -51,36 +51,37 @@ define([
      * @param  {Number} distance  The distance between the windows height and the viewable height.
      * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
      *
-     * @return {Number} The margin number of the what the element should be
+     * @return {Number} The scrollY position of the what the element should be
      */
-    ParallaxScrolling.prototype._getMargin = function (offsetTop, scrollDistance, distance, scrollTop) {
-        var ratio;
+    ParallaxScrolling.prototype._getScrollY = function (offsetTop, scrollDistance, distance, scrollTop) {
+        var ratio,
+            scrollY;
 
         // Check that the htmlNode is fully within the viewport before starting to scroll
         if (scrollTop < offsetTop && (scrollTop + distance) > offsetTop) {
             // Gets the ratio (scroll speed) to be able to show all of the element within the viewable height, dependant
             // on the viewport size.
             ratio = this._getRatio(offsetTop, scrollTop, distance, this.invert);
-            margin = -Math.abs(scrollDistance * ratio);
+            scrollY = -Math.abs(scrollDistance * ratio);
         } else if ((scrollTop + distance) <= offsetTop) {
             if (this.invert) {
                 // Set the element to show from the bottom of the content (when inverted and at the top)
-                margin = this._positionBottom(scrollDistance);
+                scrollY = this._positionBottom(scrollDistance);
             } else {
                 // Set the element to show from the top of the content (when not inverted and at the top)
-                margin = this._positionTop();
+                scrollY = this._positionTop();
             }
         } else {
             if (this.invert) {
                 // Set the element to show from the top of the content (when inverted and at the top)
-                margin = this._positionTop();
+                scrollY = this._positionTop();
             } else {
                 // Set the element to show from the bottom of the content (when not inverted and at the top)
-                margin = this._positionBottom(scrollDistance);
+                scrollY = this._positionBottom(scrollDistance);
             }
         }
 
-        return margin;
+        return scrollY;
     };
 
     /**
@@ -193,20 +194,20 @@ define([
     };
 
     /**
-     * Set the elements positional margin
+     * Set the elements scrollY postion (uses top)
      *
      * @memberOf module:parallax-scrolling
      *
      * @private
      *
-     * @param {Object} ele    The element in which to attach the positional margin to.
-     * @param {Number} margin The positional margin in which to attach to the element.
+     * @param {Object} ele    The element in which to attach the positional scrollY to.
+     * @param {Number} scrollY The positional scrollY in which to attach to the element.
      *
-     * @return {Object} The original element passed through with the new positional margin attached.
+     * @return {Object} The original element passed through with the new positional scrollY attached (to top).
      */
-    ParallaxScrolling.prototype._setElePosition = function (ele, margin) {
+    ParallaxScrolling.prototype._setElePosition = function (ele, scrollY) {
         this._attachCss(ele, {
-            'top': margin + 'px'
+            'top': scrollY + 'px'
         });
 
         return ele;
@@ -246,7 +247,7 @@ define([
             overrideOffset = overrideOffset || offsetTop;
 
             var winPosition = $this._getWindowPositions(overrideWin),
-                margin = 0,
+                scrollY = 0,
                 distance,
                 scrollTop = winPosition.scrollTop,
                 percentage;
@@ -254,11 +255,11 @@ define([
             // Set the distance of the viewable height compared to the position of the window height
             distance = (winPosition.winHeight  - viewableHeight);
 
-            margin = $this._getMargin(overrideOffset, scrollDistance, distance, scrollTop);
-            percentage = $this._getPercentageViewed(margin, eleHeight, viewableHeight, invert);
-            $this._setElePosition(ele, margin);
+            scrollY = $this._getScrollY(overrideOffset, scrollDistance, distance, scrollTop);
+            percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert);
+            $this._setElePosition(ele, scrollY);
 
-            return margin;
+            return scrollY;
         };
     };
 
