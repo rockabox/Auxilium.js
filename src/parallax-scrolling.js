@@ -53,6 +53,26 @@ define([
     ParallaxScrolling.prototype._events = events;
 
     /**
+     * Get the percent of content showing within the viewport
+     *
+     * @memberOf: parallax-scrolling
+     *
+     * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
+     * @param  {Number} viewportHeight The height of the viewport.
+     * @param  {Number} offsetTop The offsetTop offset of the element.
+     * @param  {Number} eleHeight The height of the element.
+     * @return {Number}           The percentage of the element that is currently within view.
+     */
+    ParallaxScrolling.prototype._getViewportPercent = function (scrollTop, viewportHeight, offsetTop, eleHeight) {
+        var distance = (scrollTop + viewportHeight) - offsetTop,
+            percentage = distance / ((viewportHeight + eleHeight) / 100);
+
+        percentage = Math.round(percentage);
+
+        return percentage;
+    };
+
+    /**
      * Get the scrollY position of the element depending on the current viewport
      *
      * @memberOf module:parallax-scrolling

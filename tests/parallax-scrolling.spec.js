@@ -342,6 +342,49 @@ define([
             });
         });
 
+        describe('getting of the element in view', function () {
+            var scrollTop,
+                viewportHeight,
+                offsetTop,
+                eleHeight;
+
+            it('should return that 25% is in view', function () {
+                scrollTop = 0;
+                viewportHeight = 100;
+                offsetTop = 50;
+                eleHeight = 100;
+
+                percent = ParallaxScrolling.prototype.
+                            _getViewportPercent(scrollTop, viewportHeight, offsetTop, eleHeight);
+
+                expect(percent).toBe(25);
+            });
+
+            it('should return that 50% is in view', function () {
+                scrollTop = 50;
+                viewportHeight = 100;
+                offsetTop = 50;
+                eleHeight = 100;
+
+                percent = ParallaxScrolling.prototype.
+                            _getViewportPercent(scrollTop, viewportHeight, offsetTop, eleHeight);
+
+                expect(percent).toBe(50);
+            });
+
+            it('should return that 100% is in view', function () {
+                scrollTop = 150;
+                viewportHeight = 100;
+                offsetTop = 50;
+                eleHeight = 100;
+
+                percent = ParallaxScrolling.prototype.
+                            _getViewportPercent(scrollTop, viewportHeight, offsetTop, eleHeight);
+
+                expect(percent).toBe(100);
+            });
+        });
+
         describe('triggering events for content viewable percentages', function () {
             var triggerEvent;
 
