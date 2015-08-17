@@ -41,6 +41,7 @@ define([
     function ParallaxScrolling () {
         this._attachCss = attachCss;
         this._offset = offset;
+        this._lastPercent = 0;
     }
 
     /**
@@ -206,7 +207,8 @@ define([
     };
 
     /**
-     * Trigger an event of aux.scroll-percent with the percentage when a tenth percentile.
+     * Trigger an event of aux.scroll-percent with the percentage when a tenth percentile, ensuring that it does not
+     * trigger more than once for a percent.
      *
      * @memberOf module:parallax-scrolling
      *
@@ -217,12 +219,14 @@ define([
      * @return {Boolean}           Whether the percentage was triggered or not.
      */
     ParallaxScrolling.prototype._scrollPercentTriggers = function (ele, percentage) {
-        var percents = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        var roundedPercent = (parseInt(Math.floor(percentage) / 10, 10) * 10),
             triggered = false;
 
-        if (percents.indexOf(percentage) > -1) {
-            events.triggerEvent(ele, 'aux.scroll-percent', {
-                percent: percentage
+        if (roundedPercent !== this._lastPercent) {
+            this._lastPercent = roundedPercent;
+
+            this._events.triggerEvent(ele, 'aux.scroll-percent', {
+                percent: roundedPercent
             });
 
             triggered = true;
