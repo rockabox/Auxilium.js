@@ -239,7 +239,7 @@ define([
      * @return {Boolean}           Whether the percentage was triggered or not.
      */
     ParallaxScrolling.prototype._scrollPercentTriggers = function (ele, percentage) {
-        var roundedPercent = (parseInt(Math.floor(percentage) / 10, 10) * 10),
+        var roundedPercent = Math.floor(percentage / 10) * 10,
             triggered = false;
 
         if (roundedPercent !== this._lastPercent) {
