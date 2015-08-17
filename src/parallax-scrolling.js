@@ -41,7 +41,7 @@ define([
     function ParallaxScrolling () {
         this._attachCss = attachCss;
         this._offset = offset;
-        this._lastPercent = 0;
+        this._lastPercent = -1;
     }
 
     /**
