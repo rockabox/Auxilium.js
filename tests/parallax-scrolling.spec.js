@@ -138,6 +138,60 @@ define([
             });
         });
 
+        describe('getting the position within the viewport', function () {
+            var scrollTop,
+                distance,
+                offsetTop,
+                position;
+
+            it('should return that the content is at the top of the view port', function () {
+                scrollTop = 50;
+                offsetTop = 49;
+                distance = 99;
+                position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
+
+                expect(position).toBe('top');
+            });
+
+            describe('centre of viewport', function () {
+                it('should return that the content is at the centre of the view port', function () {
+                    scrollTop = 50;
+                    offsetTop = 80;
+                    distance = 31;
+                    position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
+
+                    expect(position).toBe('centre');
+                });
+
+                it('should not return when scrolled passed', function () {
+                    scrollTop = 50;
+                    offsetTop = 49;
+                    distance = 40;
+                    position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
+
+                    expect(position).not.toBe('centre');
+                });
+
+                it('should not return that it is centre not scrolled enough', function () {
+                    scrollTop = 50;
+                    offsetTop = 80;
+                    distance = 29;
+                    position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
+
+                    expect(position).not.toBe('centre');
+                });
+            });
+
+            it('should return that the content is within the centre of the view port', function () {
+                offsetTop = 101;
+                scrollTop = 100;
+                distance = 1;
+                position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
+
+                expect(position).toBe('bottom');
+            });
+        });
+
         it('should set the marginal position to an element', function () {
             spyOn(parallaxScrolling, '_attachCss');
 

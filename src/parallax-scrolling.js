@@ -256,6 +256,35 @@ define([
     };
 
     /**
+     * Get the current viewport position (top, centre or bottom)
+     * NOTE: top will mean that part of the content is out of view at the top of the viewport, centre will mean that
+     * all of the element is currently within the viewport and bottom will mean that part of the content is out of view
+     * at the bottom.
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @param  {Number} offsetTop The offsetTop offset of the element.
+     * @param  {Number} distance  The distance between the windows height and the viewable height.
+     * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
+     *
+     * @return {String}           Where the htmlNode is currently in view
+     */
+    ParallaxScrolling.prototype._getViewportPosition = function (offsetTop, distance, scrollTop) {
+
+        // Check that the htmlNode is fully within the viewport before starting to scroll
+        if (scrollTop < offsetTop && (scrollTop + distance) > offsetTop) {
+            // We are in full view
+            return 'centre';
+        } else if ((scrollTop + distance) <= offsetTop) {
+            // We are at the top of the page
+            return 'bottom';
+        } else {
+            // We are at the bottom of the page
+            return 'top';
+        }
+    };
+
+    /**
      * Initialise the a new parallax scrolling handler
      *
      * @memberOf module:parallax-scrolling
