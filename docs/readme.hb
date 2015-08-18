@@ -157,6 +157,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="in-array"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="inner-html"~}}
   # {{>name}}
   {{>body~}}

@@ -62,15 +62,15 @@ define([
             });
 
             it('should allow overriding of the offset', function () {
-                parallaxScrolling._getMargin = function (offsetTop) {
+                parallaxScrolling._getScrollY = function (offsetTop) {
                     return offsetTop;
                 };
 
                 var overrideWin,
                     handler = parallaxScrolling.init(ele, container, 100, 50),
-                    margin = handler(overrideWin, 20192);
+                    scrollY = handler(overrideWin, 20192);
 
-                expect(margin).toBe(20192);
+                expect(scrollY).toBe(20192);
             });
         });
 
@@ -115,21 +115,25 @@ define([
         });
 
         describe('getting the positions', function () {
+            it('should return as a number', function () {
+                expect(typeof ParallaxScrolling.prototype._positionBottom()).toBe('number');
+            });
+
             it('should return top', function () {
                 expect(ParallaxScrolling.prototype._positionTop()).toBe(0);
             });
 
             describe('bottom', function () {
+                it('should return as a number', function () {
+                    expect(typeof ParallaxScrolling.prototype._positionBottom(910)).toBe('number');
+                });
+
                 it('should return as zero', function () {
-                    expect(ParallaxScrolling.prototype._positionBottom(0)).toBe('0px');
+                    expect(ParallaxScrolling.prototype._positionBottom(0)).toBe(0);
                 });
 
                 it('should return of as a number as minus', function () {
-                    expect(ParallaxScrolling.prototype._positionBottom(100)).toBe('-100px');
-                });
-
-                it('should return containing css pixels', function () {
-                    expect(ParallaxScrolling.prototype._positionBottom(100)).toContain('px');
+                    expect(ParallaxScrolling.prototype._positionBottom(100)).toBe(-100);
                 });
             });
         });
@@ -137,7 +141,7 @@ define([
         it('should set the marginal position to an element', function () {
             spyOn(parallaxScrolling, '_attachCss');
 
-            var elePos = parallaxScrolling._setElePosition(ele, '90px');
+            var elePos = parallaxScrolling._setElePosition(ele, 90);
 
             expect(parallaxScrolling._attachCss).toHaveBeenCalledWith(ele, jasmine.objectContaining({
                 'top': '90px'
@@ -153,6 +157,176 @@ define([
 
             it('should return the ratio (inverted)', function () {
                 expect(parallaxScrolling._getRatio(100, 50, 2, true)).toBe(25);
+            });
+        });
+
+        describe('getting the scroll percentages', function () {
+            var percentage,
+                scrolled,
+                viewableHeight,
+                contentHeight,
+                inverted;
+
+            describe('not inverted', function () {
+                beforeEach(function () {
+                    inverted = false;
+                    contentHeight = 2000;
+                    viewableHeight = 500;
+                });
+
+                it('should have a 25% when no scrolling and 25% is viewable at start', function () {
+                    scrolled = 0;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(25);
+                });
+
+                it('should have a 50% when no scrolling and 50% is viewable at start', function () {
+                    scrolled = -500;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(50);
+                });
+
+                it('should have 75% when all is scrolled', function () {
+                    scrolled = -1000;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(75);
+                });
+
+                it('should have 100% when all content has been scrolled', function () {
+                    scrolled = -1500;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(100);
+                });
+            });
+
+            describe('inverted', function () {
+                beforeEach(function () {
+                    inverted = true;
+                    contentHeight = 2000;
+                    viewableHeight = 500;
+                });
+
+                it('should have a 0% when no scrolling', function () {
+                    scrolled = -1500;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(25);
+                });
+
+                it('should have 25% when all is scrolled', function () {
+                    scrolled = -1000;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(50);
+                });
+
+                it('should have a 50% when no scrolling and 50% is viewable at start', function () {
+                    scrolled = -500;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(75);
+                });
+
+                it('should have 100% when all content has been scrolled', function () {
+                    scrolled = 0;
+
+                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
+                        scrolled,
+                        contentHeight,
+                        viewableHeight,
+                        inverted
+                    );
+
+                    expect(percentage).toBe(100);
+                });
+            });
+        });
+
+        describe('triggering events for content viewable percentages', function () {
+            var triggerEvent;
+
+            beforeEach(function () {
+                spyOn(ParallaxScrolling.prototype._events, 'triggerEvent');
+
+                triggerEvent = ParallaxScrolling.prototype._events.triggerEvent;
+                ParallaxScrolling.prototype._lastPercent = 0;
+            });
+
+            it('should trigger a percent when 10 is passed', function () {
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 10);
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 10
+                }));
+            });
+
+            it('should trigger a percent of 10 when passed something above 10 but lower than 20', function () {
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
+
+                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
+                    percent: 10
+                }));
+            });
+
+            it('should only trigger a percentile once', function () {
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
+
+                expect(triggerEvent.calls.count()).toBe(1);
+            });
+
+            it('should trigger a percentile twice if it has changed since', function () {
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 24);
+                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
+
+                expect(triggerEvent.calls.count()).toBe(3);
             });
         });
     });

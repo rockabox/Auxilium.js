@@ -1,8 +1,10 @@
 define([
     'aux/attach-css',
+    'aux/events',
     'aux/has-property',
     'aux/offset'
-], function (attachCss, hasProperty, offset) {
+], function (attachCss, Events, hasProperty, offset) {
+    var events = new Events();
 
     /**
      * Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
@@ -15,8 +17,10 @@ define([
      * @todo It would be nice in the future to allow for setting an offset letting the element be partially in view
      * to start scrolling rather than all of the element needing to be in view
      *
-     * @requires module:aux/attach-css
-     * @requires module:aux/offset
+     * @requires module:attach-css
+     * @requires module:events
+     * @requires module:has-property
+     * @requires module:offset
      *
      * @example
      * ```js
@@ -37,10 +41,19 @@ define([
     function ParallaxScrolling () {
         this._attachCss = attachCss;
         this._offset = offset;
+        this._lastPercent = 0;
     }
 
     /**
-     * Get the marginal position of the element depending on the current viewport
+     * The Auxillium event system used by the Parallax scrolling module
+     * @see module:events
+     *
+     * @type {Object}
+     */
+    ParallaxScrolling.prototype._events = events;
+
+    /**
+     * Get the scrollY position of the element depending on the current viewport
      *
      * @memberOf module:parallax-scrolling
      *
@@ -51,36 +64,69 @@ define([
      * @param  {Number} distance  The distance between the windows height and the viewable height.
      * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
      *
-     * @return {Number} The margin number of the what the element should be
+     * @return {Number} The scrollY position of the what the element should be
      */
-    ParallaxScrolling.prototype._getMargin = function (offsetTop, scrollDistance, distance, scrollTop) {
-        var ratio;
+    ParallaxScrolling.prototype._getScrollY = function (offsetTop, scrollDistance, distance, scrollTop) {
+        var ratio,
+            scrollY;
 
         // Check that the htmlNode is fully within the viewport before starting to scroll
         if (scrollTop < offsetTop && (scrollTop + distance) > offsetTop) {
             // Gets the ratio (scroll speed) to be able to show all of the element within the viewable height, dependant
             // on the viewport size.
             ratio = this._getRatio(offsetTop, scrollTop, distance, this.invert);
-            margin = '-' + (scrollDistance * ratio) + 'px';
+            scrollY = -Math.abs(scrollDistance * ratio);
         } else if ((scrollTop + distance) <= offsetTop) {
             if (this.invert) {
                 // Set the element to show from the bottom of the content (when inverted and at the top)
-                margin = this._positionBottom(scrollDistance);
+                scrollY = this._positionBottom(scrollDistance);
             } else {
                 // Set the element to show from the top of the content (when not inverted and at the top)
-                margin = this._positionTop();
+                scrollY = this._positionTop();
             }
         } else {
             if (this.invert) {
                 // Set the element to show from the top of the content (when inverted and at the top)
-                margin = this._positionTop();
+                scrollY = this._positionTop();
             } else {
                 // Set the element to show from the bottom of the content (when not inverted and at the top)
-                margin = this._positionBottom(scrollDistance);
+                scrollY = this._positionBottom(scrollDistance);
             }
         }
 
-        return margin;
+        return scrollY;
+    };
+
+    /**
+     * Get the percentage of the content viewed based on scroll position
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @protected
+     *
+     * @param  {Number} scrollY        The scroll y position of the scolling content.
+     * @param  {Number} eleHeight      The height of the element in which is being scrolled.
+     * @param  {Number} viewableHeight The total height of the content being scrolled (including what is hidden).
+     * @param  {Boolean} invert        Whether or not the content is being scrolled in an inverted direction.
+     * @return {Number}                The percentage of the content which is viewed.
+     */
+    ParallaxScrolling.prototype._getPercentageViewed = function (scrollY, eleHeight, viewableHeight, invert) {
+        var scrollPercent,
+            calculatedScrollY = scrollY,
+            decimal;
+
+        if (invert) {
+            // When inverting we need to retrieve it's polar opposite in pixels in order to work out the percentage
+            calculatedScrollY = -Math.abs((eleHeight - viewableHeight + scrollY));
+        }
+
+        // Get the decimal based on the whole content size compared to what has been scrolled
+        decimal = (Math.abs(calculatedScrollY) + viewableHeight) / eleHeight;
+
+        // Get the percentage from decimal ratio
+        scrollPercent = (100 * decimal);
+
+        return scrollPercent;
     };
 
     /**
@@ -157,24 +203,53 @@ define([
      * @return {Number} The positional value for the content showing at the bottom of the element.
      */
     ParallaxScrolling.prototype._positionBottom = function (scrollDistance) {
-        return (scrollDistance * -1) + 'px';
+        return (scrollDistance * -1);
     };
 
     /**
-     * Set the elements positional margin
+     * Trigger an event of aux.scroll-percent with the percentage when a tenth percentile, ensuring that it does not
+     * trigger more than once for a percent.
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @protected
+     *
+     * @param  {Object} ele        The element in which to trigger the event on.
+     * @param  {Number} percentage The percentage (rounded) in which to trigger.
+     * @return {Boolean}           Whether the percentage was triggered or not.
+     */
+    ParallaxScrolling.prototype._scrollPercentTriggers = function (ele, percentage) {
+        var roundedPercent = (parseInt(Math.floor(percentage) / 10, 10) * 10),
+            triggered = false;
+
+        if (roundedPercent !== this._lastPercent) {
+            this._lastPercent = roundedPercent;
+
+            this._events.triggerEvent(ele, 'aux.scroll-percent', {
+                percent: roundedPercent
+            });
+
+            triggered = true;
+        }
+
+        return triggered;
+    };
+
+    /**
+     * Set the elements scrollY postion (uses top)
      *
      * @memberOf module:parallax-scrolling
      *
      * @private
      *
-     * @param {Object} ele    The element in which to attach the positional margin to.
-     * @param {Number} margin The positional margin in which to attach to the element.
+     * @param {Object} ele    The element in which to attach the positional scrollY to.
+     * @param {Number} scrollY The positional scrollY in which to attach to the element.
      *
-     * @return {Object} The original element passed through with the new positional margin attached.
+     * @return {Object} The original element passed through with the new positional scrollY attached (to top).
      */
-    ParallaxScrolling.prototype._setElePosition = function (ele, margin) {
+    ParallaxScrolling.prototype._setElePosition = function (ele, scrollY) {
         this._attachCss(ele, {
-            'top': margin
+            'top': scrollY + 'px'
         });
 
         return ele;
@@ -214,17 +289,24 @@ define([
             overrideOffset = overrideOffset || offsetTop;
 
             var winPosition = $this._getWindowPositions(overrideWin),
-                margin = 0,
+                scrollY = 0,
                 distance,
-                scrollTop = winPosition.scrollTop;
+                scrollTop = winPosition.scrollTop,
+                percentage;
 
             // Set the distance of the viewable height compared to the position of the window height
             distance = (winPosition.winHeight  - viewableHeight);
 
-            margin = $this._getMargin(overrideOffset, scrollDistance, distance, scrollTop);
-            $this._setElePosition(ele, margin);
+            // Get the scrollY position of the content and use it.
+            scrollY = $this._getScrollY(overrideOffset, scrollDistance, distance, scrollTop);
+            $this._setElePosition(ele, scrollY);
 
-            return margin;
+            // Get the percentage of the parallaxed content that is currently viewable.
+            percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert);
+            // Pass the percentage with no decimal places to the scroll percentage trigger.
+            $this._scrollPercentTriggers(ele, percentage);
+
+            return scrollY;
         };
     };
 
