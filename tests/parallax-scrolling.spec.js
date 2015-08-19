@@ -1,14 +1,16 @@
 define([
-    'aux/create-element',
-    'aux/parallax-scrolling'
-], function (createElement, ParallaxScrolling) {
-    var container,
+    'aux/create-element'
+], function (createElement) {
+    var ParallaxScrolling,
+        container,
         ele,
         mainEle,
         parallaxScrolling;
 
     describe('Parallax scrolling an element', function () {
         beforeEach(function () {
+            ParallaxScrolling = require('aux/parallax-scrolling');
+
             ele = document.createElement('div');
             mainEle = document.createElement('div');
             container = createElement('div', {
@@ -62,7 +64,7 @@ define([
             });
 
             it('should allow overriding of the offset', function () {
-                parallaxScrolling._getScrollY = function (offsetTop) {
+                parallaxScrolling._getScrollY = function (position, offsetTop) {
                     return offsetTop;
                 };
 
@@ -71,6 +73,126 @@ define([
                     scrollY = handler(overrideWin, 20192);
 
                 expect(scrollY).toBe(20192);
+            });
+        });
+
+        describe('getting the scroll y position', function () {
+            var position,
+                offsetTop,
+                scrollDistance,
+                distance,
+                scrollTop,
+                scrollY;
+
+            beforeEach(function () {
+                offsetTop = 90;
+                scrollDistance = 100;
+                distance = 40;
+                scrollTop = 10;
+            });
+
+            describe('top of viewport', function () {
+                beforeEach(function () {
+                    position = 'top';
+                });
+
+                it('should return the scroll y position as the top when normal scrolling', function () {
+                    spyOn(ParallaxScrolling.prototype, '_positionTop').and.returnValue('topPosition');
+
+                    ParallaxScrolling.prototype.invert = true;
+
+                    scrollY = ParallaxScrolling.prototype.
+                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
+
+                    expect(ParallaxScrolling.prototype._positionTop).toHaveBeenCalled();
+                    expect(scrollY).toBe('topPosition');
+                });
+
+                it('should return the scroll y with content ready to view the bottom when inverted', function () {
+                    scrollDistance = 100;
+
+                    spyOn(ParallaxScrolling.prototype, '_positionBottom').and.returnValue('bottomPosition');
+
+                    ParallaxScrolling.prototype.invert = false;
+
+                    scrollY = ParallaxScrolling.prototype.
+                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
+
+                    expect(ParallaxScrolling.prototype._positionBottom).toHaveBeenCalledWith(scrollDistance);
+                    expect(scrollY).toBe('bottomPosition');
+                });
+            });
+
+            describe('bottom of viewport', function () {
+                beforeEach(function () {
+                    position = 'bottom';
+                });
+
+                it('should return scroll y to show bottom content when at bottom scrolling normally', function () {
+                    spyOn(ParallaxScrolling.prototype, '_positionBottom').and.returnValue('bottomPosition');
+
+                    ParallaxScrolling.prototype.invert = true;
+
+                    scrollY = ParallaxScrolling.prototype.
+                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
+
+                    expect(ParallaxScrolling.prototype._positionBottom).toHaveBeenCalledWith(scrollDistance);
+                    expect(scrollY).toBe('bottomPosition');
+                });
+
+                it('should return scroll y to show top content when at bottom scrolling invertedly', function () {
+                    spyOn(ParallaxScrolling.prototype, '_positionTop').and.returnValue('topPosition');
+
+                    ParallaxScrolling.prototype.invert = false;
+
+                    scrollY = ParallaxScrolling.prototype.
+                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
+
+                    expect(ParallaxScrolling.prototype._positionTop).toHaveBeenCalled();
+                    expect(scrollY).toBe('topPosition');
+                });
+            });
+
+            describe('centre of viewport', function () {
+                beforeEach(function () {
+                    position = 'center';
+
+                    ParallaxScrolling.prototype.invert = false;
+                });
+
+                it('should not call top or bottom position helpers', function () {
+                    spyOn(ParallaxScrolling.prototype, '_positionTop').and.returnValue('top');
+                    spyOn(ParallaxScrolling.prototype, '_positionBottom').and.returnValue('bottom');
+
+                    scrollY = ParallaxScrolling.prototype.
+                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
+
+                    expect(ParallaxScrolling.prototype._positionTop).not.toHaveBeenCalled();
+                    expect(ParallaxScrolling.prototype._positionBottom).not.toHaveBeenCalled();
+                });
+
+                it('should call get ratio', function () {
+                    spyOn(ParallaxScrolling.prototype, '_getRatio').and.returnValue(0.8);
+
+                    scrollY = ParallaxScrolling.prototype.
+                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
+
+                    expect(ParallaxScrolling.prototype._getRatio).toHaveBeenCalledWith(
+                        offsetTop,
+                        scrollTop,
+                        distance,
+                        false
+                    );
+                });
+
+                it('should return the scroll y with the ratio times by the scroll distance as a minus', function () {
+                    spyOn(ParallaxScrolling.prototype, '_getRatio').and.returnValue(0.8);
+
+                    scrollY = ParallaxScrolling.prototype.
+                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
+
+                    expect(scrollY).toBe(-80);
+                });
             });
         });
 

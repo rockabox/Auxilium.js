@@ -79,6 +79,7 @@ define([
      *
      * @private
      *
+     * @param  {String} position  The position of the htmlNode (top of view, bottom of view or in centre (in view))
      * @param  {Number} offsetTop The offsetTop offset of the element.
      * @param  {Number} scrollDistance The distance of the viewable height compared to the position of the window height
      * @param  {Number} distance  The distance between the windows height and the viewable height.
@@ -86,32 +87,23 @@ define([
      *
      * @return {Number} The scrollY position of the what the element should be
      */
-    ParallaxScrolling.prototype._getScrollY = function (offsetTop, scrollDistance, distance, scrollTop) {
+    ParallaxScrolling.prototype._getScrollY = function (position, offsetTop, scrollDistance, distance, scrollTop) {
         var ratio,
             scrollY;
 
-        // Check that the htmlNode is fully within the viewport before starting to scroll
-        if (scrollTop < offsetTop && (scrollTop + distance) > offsetTop) {
+        if ((position === 'top' && this.invert) || (position === 'bottom' && !this.invert)) {
+            // Set the element to show from the top when the htmlNode is at the top of the viewport with invert on or
+            // the htmlNode is at the bottom invert is off.
+            scrollY = this._positionTop();
+        } else if ((position === 'top' && !this.invert) || (position === 'bottom' && this.invert)) {
+            // Set the element to show the bottom of the content when the htmlNode is at the top of the viewport when
+            // invert is on or the htmlNode is at the bottom when invert is off.
+            scrollY = this._positionBottom(scrollDistance);
+        } else {
             // Gets the ratio (scroll speed) to be able to show all of the element within the viewable height, dependant
             // on the viewport size.
             ratio = this._getRatio(offsetTop, scrollTop, distance, this.invert);
             scrollY = -Math.abs(scrollDistance * ratio);
-        } else if ((scrollTop + distance) <= offsetTop) {
-            if (this.invert) {
-                // Set the element to show from the bottom of the content (when inverted and at the top)
-                scrollY = this._positionBottom(scrollDistance);
-            } else {
-                // Set the element to show from the top of the content (when not inverted and at the top)
-                scrollY = this._positionTop();
-            }
-        } else {
-            if (this.invert) {
-                // Set the element to show from the top of the content (when inverted and at the top)
-                scrollY = this._positionTop();
-            } else {
-                // Set the element to show from the bottom of the content (when not inverted and at the top)
-                scrollY = this._positionBottom(scrollDistance);
-            }
         }
 
         return scrollY;
@@ -346,7 +338,7 @@ define([
                 position = $this._getViewportPosition(overrideOffset, distance, scrollTop);
 
             // Get the scrollY position of the content and use it.
-            scrollY = $this._getScrollY(overrideOffset, scrollDistance, distance, scrollTop);
+            scrollY = $this._getScrollY(position, overrideOffset, scrollDistance, distance, scrollTop);
             $this._setElePosition(ele, scrollY);
 
             if (position === 'bottom') {
