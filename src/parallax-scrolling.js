@@ -41,7 +41,7 @@ define([
     function ParallaxScrolling () {
         this._attachCss = attachCss;
         this._offset = offset;
-        this._lastPercent = 0;
+        this._lastPercent = -1;
     }
 
     /**
@@ -53,12 +53,33 @@ define([
     ParallaxScrolling.prototype._events = events;
 
     /**
+     * Get the percent of content showing within the viewport
+     *
+     * @memberOf: parallax-scrolling
+     *
+     * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
+     * @param  {Number} viewportHeight The height of the viewport.
+     * @param  {Number} offsetTop The offsetTop offset of the element.
+     * @param  {Number} eleHeight The height of the element.
+     * @return {Number}           The percentage of the element that is currently within view.
+     */
+    ParallaxScrolling.prototype._getViewportPercent = function (scrollTop, viewportHeight, offsetTop, eleHeight) {
+        var distance = (scrollTop + viewportHeight) - offsetTop,
+            percentage = distance / ((viewportHeight + eleHeight) / 100);
+
+        percentage = Math.round(percentage);
+
+        return percentage;
+    };
+
+    /**
      * Get the scrollY position of the element depending on the current viewport
      *
      * @memberOf module:parallax-scrolling
      *
      * @private
      *
+     * @param  {String} position  The position of the htmlNode (top of view, bottom of view or in centre (in view))
      * @param  {Number} offsetTop The offsetTop offset of the element.
      * @param  {Number} scrollDistance The distance of the viewable height compared to the position of the window height
      * @param  {Number} distance  The distance between the windows height and the viewable height.
@@ -66,32 +87,23 @@ define([
      *
      * @return {Number} The scrollY position of the what the element should be
      */
-    ParallaxScrolling.prototype._getScrollY = function (offsetTop, scrollDistance, distance, scrollTop) {
+    ParallaxScrolling.prototype._getScrollY = function (position, offsetTop, scrollDistance, distance, scrollTop) {
         var ratio,
             scrollY;
 
-        // Check that the htmlNode is fully within the viewport before starting to scroll
-        if (scrollTop < offsetTop && (scrollTop + distance) > offsetTop) {
+        if ((position === 'top' && this.invert) || (position === 'bottom' && !this.invert)) {
+            // Set the element to show from the top when the htmlNode is at the top of the viewport with invert on or
+            // the htmlNode is at the bottom invert is off.
+            scrollY = this._positionTop();
+        } else if ((position === 'top' && !this.invert) || (position === 'bottom' && this.invert)) {
+            // Set the element to show the bottom of the content when the htmlNode is at the top of the viewport when
+            // invert is on or the htmlNode is at the bottom when invert is off.
+            scrollY = this._positionBottom(scrollDistance);
+        } else {
             // Gets the ratio (scroll speed) to be able to show all of the element within the viewable height, dependant
             // on the viewport size.
             ratio = this._getRatio(offsetTop, scrollTop, distance, this.invert);
             scrollY = -Math.abs(scrollDistance * ratio);
-        } else if ((scrollTop + distance) <= offsetTop) {
-            if (this.invert) {
-                // Set the element to show from the bottom of the content (when inverted and at the top)
-                scrollY = this._positionBottom(scrollDistance);
-            } else {
-                // Set the element to show from the top of the content (when not inverted and at the top)
-                scrollY = this._positionTop();
-            }
-        } else {
-            if (this.invert) {
-                // Set the element to show from the top of the content (when inverted and at the top)
-                scrollY = this._positionTop();
-            } else {
-                // Set the element to show from the bottom of the content (when not inverted and at the top)
-                scrollY = this._positionBottom(scrollDistance);
-            }
         }
 
         return scrollY;
@@ -219,7 +231,7 @@ define([
      * @return {Boolean}           Whether the percentage was triggered or not.
      */
     ParallaxScrolling.prototype._scrollPercentTriggers = function (ele, percentage) {
-        var roundedPercent = (parseInt(Math.floor(percentage) / 10, 10) * 10),
+        var roundedPercent = Math.floor(percentage / 10) * 10,
             triggered = false;
 
         if (roundedPercent !== this._lastPercent) {
@@ -253,6 +265,35 @@ define([
         });
 
         return ele;
+    };
+
+    /**
+     * Get the current viewport position (top, centre or bottom)
+     * NOTE: top will mean that part of the content is out of view at the top of the viewport, centre will mean that
+     * all of the element is currently within the viewport and bottom will mean that part of the content is out of view
+     * at the bottom.
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @param  {Number} offsetTop The offsetTop offset of the element.
+     * @param  {Number} distance  The distance between the windows height and the viewable height.
+     * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
+     *
+     * @return {String}           Where the htmlNode is currently in view
+     */
+    ParallaxScrolling.prototype._getViewportPosition = function (offsetTop, distance, scrollTop) {
+
+        // Check that the htmlNode is fully within the viewport before starting to scroll
+        if (scrollTop < offsetTop && (scrollTop + distance) > offsetTop) {
+            // We are in full view
+            return 'centre';
+        } else if ((scrollTop + distance) <= offsetTop) {
+            // We are at the top of the page
+            return 'bottom';
+        } else {
+            // We are at the bottom of the page
+            return 'top';
+        }
     };
 
     /**
@@ -290,19 +331,23 @@ define([
 
             var winPosition = $this._getWindowPositions(overrideWin),
                 scrollY = 0,
-                distance,
+                // Set the distance of the viewable height compared to the position of the window height
+                distance = (winPosition.winHeight - viewableHeight),
                 scrollTop = winPosition.scrollTop,
-                percentage;
-
-            // Set the distance of the viewable height compared to the position of the window height
-            distance = (winPosition.winHeight  - viewableHeight);
+                percentage,
+                position = $this._getViewportPosition(overrideOffset, distance, scrollTop);
 
             // Get the scrollY position of the content and use it.
-            scrollY = $this._getScrollY(overrideOffset, scrollDistance, distance, scrollTop);
+            scrollY = $this._getScrollY(position, overrideOffset, scrollDistance, distance, scrollTop);
             $this._setElePosition(ele, scrollY);
 
-            // Get the percentage of the parallaxed content that is currently viewable.
-            percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert);
+            if (position === 'bottom') {
+                percentage = $this._getViewportPercent(scrollTop, winPosition.winHeight, offsetTop, viewableHeight);
+            } else {
+                // Get the percentage of the parallaxed content that is currently viewable.
+                percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert, scrollTop);
+            }
+
             // Pass the percentage with no decimal places to the scroll percentage trigger.
             $this._scrollPercentTriggers(ele, percentage);
 
