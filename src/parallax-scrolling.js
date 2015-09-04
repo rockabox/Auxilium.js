@@ -342,7 +342,7 @@ define([
             $this._setElePosition(ele, scrollY);
 
             if (position === 'bottom') {
-                percentage = $this._getViewportPercent(scrollTop, winPosition.winHeight, offsetTop, viewableHeight);
+                percentage = $this._getViewportPercent(scrollTop, winPosition.winHeight, offsetTop, eleHeight);
             } else {
                 // Get the percentage of the parallaxed content that is currently viewable.
                 percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert, scrollTop);
