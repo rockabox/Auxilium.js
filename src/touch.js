@@ -14,6 +14,7 @@ define([
         this.touchStartY = 0;
         // Sets the thresholds of interaction types
         this.swipeDistance = 10;
+        this.threshold = 5;
     }
 
     /**
@@ -26,7 +27,10 @@ define([
      * @return {Boolean} True if position is the same.
      */
     Touch.prototype._isTap = function (posX, posY) {
-        return (this.touchStartX === posX) && (this.touchStartY === posY);
+        var x = Math.abs(this.touchStartX - posX),
+            y = Math.abs(this.touchStartY - posY);
+
+        return (x < this.threshold) && (y < this.threshold);
     };
 
     /**

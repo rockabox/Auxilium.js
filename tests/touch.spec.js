@@ -10,11 +10,24 @@ define([
             callback = jasmine.createSpy('callback');
         });
 
-        it('should be able to detect isTap', function () {
-            touch.touchStartX = 10;
-            touch.touchStartY = 40;
-            expect(touch._isTap(10, 40)).toBeTruthy();
-            expect(touch._isTap(40, 10)).toBeFalsy();
+        describe('_isTap', function () {
+            beforeEach(function () {
+                touch.touchStartX = 10;
+                touch.touchStartY = 40;
+            });
+
+            it('should be detected', function () {
+                expect(touch._isTap(10, 40)).toBeTruthy();
+                expect(touch._isTap(40, 10)).toBeFalsy();
+            });
+
+            it('should be detected if within the threshold of 5', function () {
+                expect(touch._isTap(12, 43)).toBeTruthy();
+            });
+
+            it('should not be detected if outside the threshold of 5', function () {
+                expect(touch._isTap(15, 46)).toBeFalsy();
+            });
         });
 
         it('should be able to detect isSwipe', function () {
