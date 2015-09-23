@@ -53,26 +53,6 @@ define([
     ParallaxScrolling.prototype._events = events;
 
     /**
-     * Get the percent of content showing within the viewport
-     *
-     * @memberOf: parallax-scrolling
-     *
-     * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
-     * @param  {Number} viewportHeight The height of the viewport.
-     * @param  {Number} offsetTop The offsetTop offset of the element.
-     * @param  {Number} eleHeight The height of the element.
-     * @return {Number}           The percentage of the element that is currently within view.
-     */
-    ParallaxScrolling.prototype._getViewportPercent = function (scrollTop, viewportHeight, offsetTop, eleHeight) {
-        var distance = (scrollTop + viewportHeight) - offsetTop,
-            percentage = distance / ((viewportHeight + eleHeight) / 100);
-
-        percentage = Math.round(percentage);
-
-        return percentage;
-    };
-
-    /**
      * Get the scrollY position of the element depending on the current viewport
      *
      * @memberOf module:parallax-scrolling
@@ -110,35 +90,22 @@ define([
     };
 
     /**
-     * Get the percentage of the content viewed based on scroll position
+     * Get the percentage of the scrollable content currently in view
      *
      * @memberOf module:parallax-scrolling
      *
      * @protected
      *
+     * @param  {Number} scrollDistance The distance of the viewable height compared to the position of the window height
      * @param  {Number} scrollY        The scroll y position of the scolling content.
-     * @param  {Number} eleHeight      The height of the element in which is being scrolled.
-     * @param  {Number} viewableHeight The total height of the content being scrolled (including what is hidden).
-     * @param  {Boolean} invert        Whether or not the content is being scrolled in an inverted direction.
-     * @return {Number}                The percentage of the content which is viewed.
+     * @param  {Number} visibleHeight  The number of pixels showing within the viewport
+     * @param  {Number} eleHeight      The full size of the element
+     * @return {Number}                The percentage of the content currently in view.
      */
-    ParallaxScrolling.prototype._getPercentageViewed = function (scrollY, eleHeight, viewableHeight, invert) {
-        var scrollPercent,
-            calculatedScrollY = scrollY,
-            decimal;
+    ParallaxScrolling.prototype._getPercentageViewed = function (scrollDistance, scrollY, visibleHeight, eleHeight) {
+        var scrollProgress = scrollDistance - Math.abs(scrollY);
 
-        if (invert) {
-            // When inverting we need to retrieve it's polar opposite in pixels in order to work out the percentage
-            calculatedScrollY = -Math.abs((eleHeight - viewableHeight + scrollY));
-        }
-
-        // Get the decimal based on the whole content size compared to what has been scrolled
-        decimal = (Math.abs(calculatedScrollY) + viewableHeight) / eleHeight;
-
-        // Get the percentage from decimal ratio
-        scrollPercent = (100 * decimal);
-
-        return scrollPercent;
+        return ((scrollProgress + visibleHeight) / eleHeight) * 100;
     };
 
     /**
@@ -189,6 +156,35 @@ define([
             scrollTop:  pageYOffset,
             winHeight: innerHeight
         };
+    };
+
+    /**
+     * Get the number of pixels showing within the viewport
+     *
+     * @memberOf: parallax-scrolling
+     *
+     * @param  {String} position  The position of the htmlNode (top of view, bottom of view or in centre (in view))
+     * @param  {Number} viewableHeight The amount of the element in which should be viewable at any one time
+     * @param  {Number} scrollTop The offset top of the current viewport compared to the window.
+     * @param  {Number} winHeight The total height of the window
+     * @param  {Number} offsetTop The offsetTop offset of the element.
+     * @return {Number}           The number of pixels the element has currently within view.
+     */
+    ParallaxScrolling.prototype._getVisibleHeight = function (position, viewableHeight,
+        scrollTop, winHeight, offsetTop) {
+
+        var visibleHeight = 0;
+
+        if (position === 'top') {
+            // Assume that 100% of the scrollable creative is seen
+            visibleHeight = viewableHeight;
+        } else if (position === 'bottom') {
+            visibleHeight = (scrollTop + winHeight) - offsetTop;
+        } else {
+            visibleHeight = viewableHeight;
+        }
+
+        return visibleHeight;
     };
 
     /**
@@ -282,7 +278,6 @@ define([
      * @return {String}           Where the htmlNode is currently in view
      */
     ParallaxScrolling.prototype._getViewportPosition = function (offsetTop, distance, scrollTop) {
-
         // Check that the htmlNode is fully within the viewport before starting to scroll
         if (scrollTop < offsetTop && (scrollTop + distance) > offsetTop) {
             // We are in full view
@@ -330,26 +325,17 @@ define([
             overrideOffset = overrideOffset || offsetTop;
 
             var winPosition = $this._getWindowPositions(overrideWin),
-                scrollY = 0,
+                winHeight = winPosition.winHeight,
                 // Set the distance of the viewable height compared to the position of the window height
-                distance = (winPosition.winHeight - viewableHeight),
+                distance = (winHeight - viewableHeight),
                 scrollTop = winPosition.scrollTop,
-                percentage,
-                position = $this._getViewportPosition(overrideOffset, distance, scrollTop);
+                position = $this._getViewportPosition(overrideOffset, distance, scrollTop),
+                scrollY = $this._getScrollY(position, overrideOffset, scrollDistance, distance, scrollTop),
+                visibleHeight = $this._getVisibleHeight(position, viewableHeight, scrollTop, winHeight, offsetTop),
+                percent = $this._getPercentageViewed(scrollDistance, scrollY, visibleHeight, eleHeight);
 
-            // Get the scrollY position of the content and use it.
-            scrollY = $this._getScrollY(position, overrideOffset, scrollDistance, distance, scrollTop);
             $this._setElePosition(ele, scrollY);
-
-            if (position === 'bottom') {
-                percentage = $this._getViewportPercent(scrollTop, winPosition.winHeight, offsetTop, eleHeight);
-            } else {
-                // Get the percentage of the parallaxed content that is currently viewable.
-                percentage = $this._getPercentageViewed(scrollY, eleHeight, viewableHeight, invert, scrollTop);
-            }
-
-            // Pass the percentage with no decimal places to the scroll percentage trigger.
-            $this._scrollPercentTriggers(ele, percentage);
+            $this._scrollPercentTriggers(ele, percent);
 
             return scrollY;
         };
