@@ -344,6 +344,7 @@ define([
                 scrollDistance,
                 inverted;
 
+            // Temporarily disabled until we provide tracking support for none inverted scrolling.
             xdescribe('not inverted', function () {
                 beforeEach(function () {
                     inverted = false;
@@ -504,6 +505,18 @@ define([
 
                 percent = ParallaxScrolling.prototype.
                             _getVisibleHeight('bottom', eleHeight, scrollTop, viewportHeight, offsetTop);
+
+                expect(percent).toBe(100);
+            });
+
+            it('should assume 100% if the element position is at the top', function () {
+                scrollTop = 100;
+                viewportHeight = 100;
+                offsetTop = 75;
+                eleHeight = 100;
+
+                percent = ParallaxScrolling.prototype.
+                            _getVisibleHeight('top', eleHeight, scrollTop, viewportHeight, offsetTop);
 
                 expect(percent).toBe(100);
             });
