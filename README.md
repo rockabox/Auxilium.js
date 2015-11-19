@@ -741,13 +741,20 @@ Creates a DOM element for the script tag.
 
 
 # offset
-  Gets the X and Y offset of an element to the current window
+  Gets the X and Y offset of an element to the current window and whether or not the element is positioned within
+a fixed element.
 
 **Params**
 
 - ele `Object` - The HTMLNode in which to get the axis of.  
 
-**Returns**: `Object` - The X and Y axis of the offset from the window  
+**Properties**
+
+  - offset.x `Number` - The X axis of the offset from the window (top).  
+  - offset.y `Number` - The Y axis of the offset from the window (left).  
+  - offset.fixed `Boolean` - Whether or not the element is nested within a fixed element.  
+
+**Returns**: `Object` - offset The X and Y axis of the offset from the window  
 **Example**  
 ```js
 var ele = '<div style="margin-top: 10px; margin-left: 140px;"></div>',
@@ -759,7 +766,8 @@ offset(testEle);
 // Returns
 {
 	x: 10,
-	y: 140
+	y: 140,
+	fixed: true
 }
 ```
 
@@ -791,8 +799,10 @@ events.addListener(window, 'resize', function () {
 
 * [parallax-scrolling](#module_parallax-scrolling)
   * [parallax-scrolling._events](#module_parallax-scrolling#_events)
-  * [parallax-scrolling.ParallaxScrolling#_getPercentageViewed(scrollY, eleHeight, viewableHeight, invert)](#module_parallax-scrolling.ParallaxScrolling#_getPercentageViewed)
+  * [parallax-scrolling.ParallaxScrolling#_getPercentageViewed(scrollDistance, scrollY, visibleHeight, eleHeight)](#module_parallax-scrolling.ParallaxScrolling#_getPercentageViewed)
+  * [parallax-scrolling._getVisibleHeight(position, viewableHeight, scrollTop, winHeight, offsetTop)](#module_parallax-scrolling#_getVisibleHeight)
   * [parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers(ele, percentage)](#module_parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers)
+  * [parallax-scrolling.ParallaxScrolling#_getViewportPosition(offsetTop, distance, scrollTop)](#module_parallax-scrolling.ParallaxScrolling#_getViewportPosition)
   * [parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [invert], [win])](#module_parallax-scrolling.ParallaxScrolling#init)
 
 <a name="module_parallax-scrolling#_events"></a>
@@ -801,18 +811,31 @@ The Auxillium event system used by the Parallax scrolling module
 
 **Type**: `Object`  
 <a name="module_parallax-scrolling.ParallaxScrolling#_getPercentageViewed"></a>
-####parallax-scrolling.ParallaxScrolling#_getPercentageViewed(scrollY, eleHeight, viewableHeight, invert)
-Get the percentage of the content viewed based on scroll position
+####parallax-scrolling.ParallaxScrolling#_getPercentageViewed(scrollDistance, scrollY, visibleHeight, eleHeight)
+Get the percentage of the scrollable content currently in view
 
 **Params**
 
+- scrollDistance `Number` - The distance of the viewable height compared to the position of the window height  
 - scrollY `Number` - The scroll y position of the scolling content.  
-- eleHeight `Number` - The height of the element in which is being scrolled.  
-- viewableHeight `Number` - The total height of the content being scrolled (including what is hidden).  
-- invert `Boolean` - Whether or not the content is being scrolled in an inverted direction.  
+- visibleHeight `Number` - The number of pixels showing within the viewport  
+- eleHeight `Number` - The full size of the element  
 
-**Returns**: `Number` - The percentage of the content which is viewed.  
+**Returns**: `Number` - The percentage of the content currently in view.  
 **Access**: protected  
+<a name="module_parallax-scrolling#_getVisibleHeight"></a>
+####parallax-scrolling._getVisibleHeight(position, viewableHeight, scrollTop, winHeight, offsetTop)
+Get the number of pixels showing within the viewport
+
+**Params**
+
+- position `String` - The position of the htmlNode (top of view, bottom of view or in centre (in view))  
+- viewableHeight `Number` - The amount of the element in which should be viewable at any one time  
+- scrollTop `Number` - The offset top of the current viewport compared to the window.  
+- winHeight `Number` - The total height of the window  
+- offsetTop `Number` - The offsetTop offset of the element.  
+
+**Returns**: `Number` - The number of pixels the element has currently within view.  
 <a name="module_parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers"></a>
 ####parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers(ele, percentage)
 Trigger an event of aux.scroll-percent with the percentage when a tenth percentile, ensuring that it does not
@@ -825,6 +848,20 @@ trigger more than once for a percent.
 
 **Returns**: `Boolean` - Whether the percentage was triggered or not.  
 **Access**: protected  
+<a name="module_parallax-scrolling.ParallaxScrolling#_getViewportPosition"></a>
+####parallax-scrolling.ParallaxScrolling#_getViewportPosition(offsetTop, distance, scrollTop)
+Get the current viewport position (top, centre or bottom)
+NOTE: top will mean that part of the content is out of view at the top of the viewport, centre will mean that
+all of the element is currently within the viewport and bottom will mean that part of the content is out of view
+at the bottom.
+
+**Params**
+
+- offsetTop `Number` - The offsetTop offset of the element.  
+- distance `Number` - The distance between the windows height and the viewable height.  
+- scrollTop `Number` - The offset top of the current viewport compared to the window.  
+
+**Returns**: `String` - Where the htmlNode is currently in view  
 <a name="module_parallax-scrolling.ParallaxScrolling#init"></a>
 ####parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [invert], [win])
 Initialise the a new parallax scrolling handler
