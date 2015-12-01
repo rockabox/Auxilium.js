@@ -214,17 +214,14 @@ define([
      * @param  {Object} container  The container of the element in which to take into consideration for scroll points
      * @param  {Number} eleHeight  The full size of the element
      * @param  {Number} viewableHeight The amount of the element in which should be viewable at any one time
-     * @param  {Boolean} [invert=false] Whether or not to scroll the content inversed (Bottom to Top) or (Top to Bottom)
      * @param  {Object=} win       Optionally pass the window in which should be checked for the size of the viewport
      *
      * @returns {Function} A handler in which to fire when scrolling
      */
-    ParallaxScrolling.prototype.init = function (ele, container, eleHeight, viewableHeight, invert, win) {
+    ParallaxScrolling.prototype.init = function (ele, container, eleHeight, viewableHeight, win) {
 
         // Default to the current window if it hasn't been passed through to the helper
         win = win || window;
-        // Whether or not to use inverted scrolling direction (defaulting to normal direction)
-        this.invert = invert || false;
 
         var $this = this,
             offsetTop = this._offset(container).y,
