@@ -64,135 +64,15 @@ define([
             });
 
             it('should allow overriding of the offset', function () {
-                parallaxScrolling._getScrollY = function (position, offsetTop) {
-                    return offsetTop;
-                };
+                spyOn(parallaxScrolling, '_getScrollPosition').and.callThrough();
 
-                var overrideWin,
+                var overrideOffset = 20192,
                     handler = parallaxScrolling.init(ele, container, 100, 50),
-                    scrollY = handler(overrideWin, 20192);
+                    scrollPosition = handler(window, 20192);
 
-                expect(scrollY).toBe(20192);
-            });
-        });
-
-        describe('getting the scroll y position', function () {
-            var position,
-                offsetTop,
-                scrollDistance,
-                distance,
-                scrollTop,
-                scrollY;
-
-            beforeEach(function () {
-                offsetTop = 90;
-                scrollDistance = 100;
-                distance = 40;
-                scrollTop = 10;
-            });
-
-            describe('top of viewport', function () {
-                beforeEach(function () {
-                    position = 'top';
-                });
-
-                it('should return the scroll y position as the top when normal scrolling', function () {
-                    spyOn(ParallaxScrolling.prototype, '_positionTop').and.returnValue('topPosition');
-
-                    ParallaxScrolling.prototype.invert = true;
-
-                    scrollY = ParallaxScrolling.prototype.
-                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
-
-                    expect(ParallaxScrolling.prototype._positionTop).toHaveBeenCalled();
-                    expect(scrollY).toBe('topPosition');
-                });
-
-                it('should return the scroll y with content ready to view the bottom when inverted', function () {
-                    scrollDistance = 100;
-
-                    spyOn(ParallaxScrolling.prototype, '_positionBottom').and.returnValue('bottomPosition');
-
-                    ParallaxScrolling.prototype.invert = false;
-
-                    scrollY = ParallaxScrolling.prototype.
-                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
-
-                    expect(ParallaxScrolling.prototype._positionBottom).toHaveBeenCalledWith(scrollDistance);
-                    expect(scrollY).toBe('bottomPosition');
-                });
-            });
-
-            describe('bottom of viewport', function () {
-                beforeEach(function () {
-                    position = 'bottom';
-                });
-
-                it('should return scroll y to show bottom content when at bottom scrolling normally', function () {
-                    spyOn(ParallaxScrolling.prototype, '_positionBottom').and.returnValue('bottomPosition');
-
-                    ParallaxScrolling.prototype.invert = true;
-
-                    scrollY = ParallaxScrolling.prototype.
-                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
-
-                    expect(ParallaxScrolling.prototype._positionBottom).toHaveBeenCalledWith(scrollDistance);
-                    expect(scrollY).toBe('bottomPosition');
-                });
-
-                it('should return scroll y to show top content when at bottom scrolling invertedly', function () {
-                    spyOn(ParallaxScrolling.prototype, '_positionTop').and.returnValue('topPosition');
-
-                    ParallaxScrolling.prototype.invert = false;
-
-                    scrollY = ParallaxScrolling.prototype.
-                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
-
-                    expect(ParallaxScrolling.prototype._positionTop).toHaveBeenCalled();
-                    expect(scrollY).toBe('topPosition');
-                });
-            });
-
-            describe('centre of viewport', function () {
-                beforeEach(function () {
-                    position = 'center';
-
-                    ParallaxScrolling.prototype.invert = false;
-                });
-
-                it('should not call top or bottom position helpers', function () {
-                    spyOn(ParallaxScrolling.prototype, '_positionTop').and.returnValue('top');
-                    spyOn(ParallaxScrolling.prototype, '_positionBottom').and.returnValue('bottom');
-
-                    scrollY = ParallaxScrolling.prototype.
-                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
-
-                    expect(ParallaxScrolling.prototype._positionTop).not.toHaveBeenCalled();
-                    expect(ParallaxScrolling.prototype._positionBottom).not.toHaveBeenCalled();
-                });
-
-                it('should call get ratio', function () {
-                    spyOn(ParallaxScrolling.prototype, '_getRatio').and.returnValue(0.8);
-
-                    scrollY = ParallaxScrolling.prototype.
-                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
-
-                    expect(ParallaxScrolling.prototype._getRatio).toHaveBeenCalledWith(
-                        offsetTop,
-                        scrollTop,
-                        distance,
-                        false
-                    );
-                });
-
-                it('should return the scroll y with the ratio times by the scroll distance as a minus', function () {
-                    spyOn(ParallaxScrolling.prototype, '_getRatio').and.returnValue(0.8);
-
-                    scrollY = ParallaxScrolling.prototype.
-                                _getScrollY(position, offsetTop, scrollDistance, distance, scrollTop);
-
-                    expect(scrollY).toBe(-80);
-                });
+                expect(parallaxScrolling._getScrollPosition).toHaveBeenCalledWith(jasmine.objectContaining({
+                    offsetTop: 20192
+                }));
             });
         });
 
@@ -207,6 +87,12 @@ define([
                 var windowPosition = parallaxScrolling._getWindowPositions(window);
 
                 expect(typeof windowPosition.winHeight).toBe('number');
+            });
+
+            it('should get the windows scroll position', function () {
+                var windowPosition = parallaxScrolling._getWindowPositions(window);
+
+                expect(typeof windowPosition.scrollTop).toBe('number');
             });
 
             it('should get window properties', function () {
@@ -236,81 +122,61 @@ define([
             });
         });
 
-        describe('getting the positions', function () {
-            it('should return as a number', function () {
-                expect(typeof ParallaxScrolling.prototype._positionBottom()).toBe('number');
-            });
+        describe('checking position', function () {
+            describe('top', function () {
+                it('should return that the element is at the top of the viewport (flush @ top)', function () {
+                    var atTop = ParallaxScrolling.prototype._isTop({
+                            scrollTop: 200
+                        }, 100, 100);
 
-            it('should return top', function () {
-                expect(ParallaxScrolling.prototype._positionTop()).toBe(0);
-            });
-
-            describe('bottom', function () {
-                it('should return as a number', function () {
-                    expect(typeof ParallaxScrolling.prototype._positionBottom(910)).toBe('number');
+                    expect(atTop).toBeTruthy();
                 });
 
-                it('should return as zero', function () {
-                    expect(ParallaxScrolling.prototype._positionBottom(0)).toBe(0);
+                it('should return that the element is at the top of the viewport (not flush)', function () {
+                    var atTop = ParallaxScrolling.prototype._isTop({
+                            scrollTop: 200
+                        }, 100, 99);
+
+                    expect(atTop).toBeTruthy();
                 });
 
-                it('should return of as a number as minus', function () {
-                    expect(ParallaxScrolling.prototype._positionBottom(100)).toBe(-100);
-                });
-            });
-        });
+                it('should return that the element is not at the top of the viewport', function () {
+                    var atTop = ParallaxScrolling.prototype._isTop({
+                            scrollTop: 200
+                        }, 100, 101);
 
-        describe('getting the position within the viewport', function () {
-            var scrollTop,
-                distance,
-                offsetTop,
-                position;
-
-            it('should return that the content is at the top of the view port', function () {
-                scrollTop = 50;
-                offsetTop = 49;
-                distance = 99;
-                position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
-
-                expect(position).toBe('top');
-            });
-
-            describe('centre of viewport', function () {
-                it('should return that the content is at the centre of the view port', function () {
-                    scrollTop = 50;
-                    offsetTop = 80;
-                    distance = 31;
-                    position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
-
-                    expect(position).toBe('centre');
-                });
-
-                it('should not return when scrolled passed', function () {
-                    scrollTop = 50;
-                    offsetTop = 49;
-                    distance = 40;
-                    position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
-
-                    expect(position).not.toBe('centre');
-                });
-
-                it('should not return that it is centre not scrolled enough', function () {
-                    scrollTop = 50;
-                    offsetTop = 80;
-                    distance = 29;
-                    position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
-
-                    expect(position).not.toBe('centre');
+                    expect(atTop).toBeFalsy();
                 });
             });
 
-            it('should return that the content is within the centre of the view port', function () {
-                offsetTop = 101;
-                scrollTop = 100;
-                distance = 1;
-                position = ParallaxScrolling.prototype._getViewportPosition(offsetTop, distance, scrollTop);
+            describe('scrollable area', function () {
+                var inScroll;
 
-                expect(position).toBe('bottom');
+                it('should return false when scroll point is higher than window scroll position', function () {
+                    inScroll = ParallaxScrolling.prototype._isScrollable({
+                        scrollTop: 200
+                    }, 100, 99);
+
+                    expect(inScroll).toBeFalsy();
+                });
+
+                it('should return false when scroll position & window height is lower than scroll point', function () {
+                    inScroll = ParallaxScrolling.prototype._isScrollable({
+                        winHeight: 99,
+                        scrollTop: 100
+                    }, 100, 100);
+
+                    expect(inScroll).toBeFalsy();
+                });
+
+                it('should return true when the scroll position is higher than the scroll point', function () {
+                    inScroll = ParallaxScrolling.prototype._isScrollable({
+                        winHeight: 100,
+                        scrollTop: 100
+                    }, 100, 99);
+
+                    expect(inScroll).toBeTruthy();
+                });
             });
         });
 
@@ -326,199 +192,52 @@ define([
             expect(elePos).toBe(ele);
         });
 
-        describe('getting the scroll ratio', function () {
-            it('should return the ratio (not inverted)', function () {
-                expect(ParallaxScrolling.prototype._getRatio(100, 50, 2)).toBe(-24);
+        describe('get scroll position', function () {
+            var scrollPosition;
+
+            it('should pass back scroll position when at bottom', function () {
+                spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
+                spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(false);
+
+                scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
+                    visibleHeight: 200,
+                    eleHeight: 100
+                });
+
+                expect(scrollPosition.scrollProgress).toBe(1);
+                // The visible height minus that of the original ele height
+                expect(scrollPosition.scrollY).toBe(100);
             });
 
-            it('should return the ratio (inverted)', function () {
-                expect(parallaxScrolling._getRatio(100, 50, 2, true)).toBe(25);
-            });
-        });
+            it('should pass back the scroll position when at top', function () {
+                spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(true);
 
-        describe('getting the scroll percentages', function () {
-            var percentage,
-                scrolled,
-                viewableHeight,
-                contentHeight,
-                scrollDistance,
-                inverted;
-
-            // Temporarily disabled until we provide tracking support for none inverted scrolling.
-            xdescribe('not inverted', function () {
-                beforeEach(function () {
-                    inverted = false;
-                    contentHeight = 2000;
-                    viewableHeight = 500;
+                scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
+                    visibleHeight: 200
                 });
 
-                it('should have a 25% when no scrolling and 25% is viewable at start', function () {
-                    scrolled = 0;
-
-                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
-                        scrolled,
-                        contentHeight,
-                        viewableHeight,
-                        inverted
-                    );
-
-                    expect(percentage).toBe(25);
-                });
-
-                it('should have a 50% when no scrolling and 50% is viewable at start', function () {
-                    scrolled = -500;
-
-                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
-                        scrolled,
-                        contentHeight,
-                        viewableHeight,
-                        inverted
-                    );
-
-                    expect(percentage).toBe(50);
-                });
-
-                it('should have 75% when all is scrolled', function () {
-                    scrolled = -1000;
-
-                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
-                        scrolled,
-                        contentHeight,
-                        viewableHeight,
-                        inverted
-                    );
-
-                    expect(percentage).toBe(75);
-                });
-
-                it('should have 100% when all content has been scrolled', function () {
-                    scrolled = -1500;
-
-                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
-                        scrolled,
-                        contentHeight,
-                        viewableHeight,
-                        inverted
-                    );
-
-                    expect(percentage).toBe(100);
-                });
+                expect(scrollPosition.scrollProgress).toBe(0);
+                // The same as the visible height
+                expect(scrollPosition.scrollY).toBe(200);
             });
 
-            describe('inverted', function () {
-                beforeEach(function () {
-                    inverted = true;
-                    contentHeight = 2000;
-                    viewableHeight = 500;
-                    scrollDistance = contentHeight - viewableHeight;
+            it('should get the position in which should be scrolled at', function () {
+                spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
+                spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(true);
+
+                scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
+                    winPosition: {
+                        scrollTop: 200,
+                        winHeight: 1000
+                    },
+                    visibleHeight: 200,
+                    offsetTop: 200,
+                    eleHeight: 1200
                 });
 
-                it('should have a 0% when no scrolling', function () {
-                    scrolled = -1500;
-
-                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
-                        scrollDistance,
-                        scrolled,
-                        viewableHeight,
-                        contentHeight
-                    );
-
-                    expect(percentage).toBe(25);
-                });
-
-                it('should have 25% when all is scrolled', function () {
-                    scrolled = -1000;
-
-                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
-                        scrollDistance,
-                        scrolled,
-                        viewableHeight,
-                        contentHeight
-                    );
-
-                    expect(percentage).toBe(50);
-                });
-
-                it('should have a 50% when no scrolling and 50% is viewable at start', function () {
-                    scrolled = -500;
-
-                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
-                        scrollDistance,
-                        scrolled,
-                        viewableHeight,
-                        contentHeight
-                    );
-
-                    expect(percentage).toBe(75);
-                });
-
-                it('should have 100% when all content has been scrolled', function () {
-                    scrolled = 0;
-
-                    percentage = ParallaxScrolling.prototype._getPercentageViewed(
-                        scrollDistance,
-                        scrolled,
-                        viewableHeight,
-                        contentHeight
-                    );
-
-                    expect(percentage).toBe(100);
-                });
-            });
-        });
-
-        describe('getting of the element in view', function () {
-            var scrollTop,
-                viewportHeight,
-                offsetTop,
-                eleHeight;
-
-            it('should return that 25% is in view', function () {
-                scrollTop = 0;
-                viewportHeight = 100;
-                offsetTop = 75;
-                eleHeight = 100;
-
-                percent = ParallaxScrolling.prototype.
-                            _getVisibleHeight('bottom', eleHeight, scrollTop, viewportHeight, offsetTop);
-
-                expect(percent).toBe(25);
-            });
-
-            it('should return that 50% is in view', function () {
-                scrollTop = 25;
-                viewportHeight = 100;
-                offsetTop = 75;
-                eleHeight = 100;
-
-                percent = ParallaxScrolling.prototype.
-                            _getVisibleHeight('bottom', eleHeight, scrollTop, viewportHeight, offsetTop);
-
-                expect(percent).toBe(50);
-            });
-
-            it('should return that 100% is in view', function () {
-                scrollTop = 75;
-                viewportHeight = 100;
-                offsetTop = 75;
-                eleHeight = 100;
-
-                percent = ParallaxScrolling.prototype.
-                            _getVisibleHeight('bottom', eleHeight, scrollTop, viewportHeight, offsetTop);
-
-                expect(percent).toBe(100);
-            });
-
-            it('should assume 100% if the element position is at the top', function () {
-                scrollTop = 100;
-                viewportHeight = 100;
-                offsetTop = 75;
-                eleHeight = 100;
-
-                percent = ParallaxScrolling.prototype.
-                            _getVisibleHeight('top', eleHeight, scrollTop, viewportHeight, offsetTop);
-
-                expect(percent).toBe(100);
+                expect(scrollPosition.scrollProgress).toBe(0.2);
+                // The same as the visible height
+                expect(scrollPosition.scrollY).toBe(-40);
             });
         });
 

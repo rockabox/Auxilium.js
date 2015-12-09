@@ -799,43 +799,14 @@ events.addListener(window, 'resize', function () {
 
 * [parallax-scrolling](#module_parallax-scrolling)
   * [parallax-scrolling._events](#module_parallax-scrolling#_events)
-  * [parallax-scrolling.ParallaxScrolling#_getPercentageViewed(scrollDistance, scrollY, visibleHeight, eleHeight)](#module_parallax-scrolling.ParallaxScrolling#_getPercentageViewed)
-  * [parallax-scrolling._getVisibleHeight(position, viewableHeight, scrollTop, winHeight, offsetTop)](#module_parallax-scrolling#_getVisibleHeight)
   * [parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers(ele, percentage)](#module_parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers)
-  * [parallax-scrolling.ParallaxScrolling#_getViewportPosition(offsetTop, distance, scrollTop)](#module_parallax-scrolling.ParallaxScrolling#_getViewportPosition)
-  * [parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [invert], [win])](#module_parallax-scrolling.ParallaxScrolling#init)
+  * [parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [win])](#module_parallax-scrolling.ParallaxScrolling#init)
 
 <a name="module_parallax-scrolling#_events"></a>
 ####parallax-scrolling._events
 The Auxillium event system used by the Parallax scrolling module
 
 **Type**: `Object`  
-<a name="module_parallax-scrolling.ParallaxScrolling#_getPercentageViewed"></a>
-####parallax-scrolling.ParallaxScrolling#_getPercentageViewed(scrollDistance, scrollY, visibleHeight, eleHeight)
-Get the percentage of the scrollable content currently in view
-
-**Params**
-
-- scrollDistance `Number` - The distance of the viewable height compared to the position of the window height  
-- scrollY `Number` - The scroll y position of the scolling content.  
-- visibleHeight `Number` - The number of pixels showing within the viewport  
-- eleHeight `Number` - The full size of the element  
-
-**Returns**: `Number` - The percentage of the content currently in view.  
-**Access**: protected  
-<a name="module_parallax-scrolling#_getVisibleHeight"></a>
-####parallax-scrolling._getVisibleHeight(position, viewableHeight, scrollTop, winHeight, offsetTop)
-Get the number of pixels showing within the viewport
-
-**Params**
-
-- position `String` - The position of the htmlNode (top of view, bottom of view or in centre (in view))  
-- viewableHeight `Number` - The amount of the element in which should be viewable at any one time  
-- scrollTop `Number` - The offset top of the current viewport compared to the window.  
-- winHeight `Number` - The total height of the window  
-- offsetTop `Number` - The offsetTop offset of the element.  
-
-**Returns**: `Number` - The number of pixels the element has currently within view.  
 <a name="module_parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers"></a>
 ####parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers(ele, percentage)
 Trigger an event of aux.scroll-percent with the percentage when a tenth percentile, ensuring that it does not
@@ -848,22 +819,8 @@ trigger more than once for a percent.
 
 **Returns**: `Boolean` - Whether the percentage was triggered or not.  
 **Access**: protected  
-<a name="module_parallax-scrolling.ParallaxScrolling#_getViewportPosition"></a>
-####parallax-scrolling.ParallaxScrolling#_getViewportPosition(offsetTop, distance, scrollTop)
-Get the current viewport position (top, centre or bottom)
-NOTE: top will mean that part of the content is out of view at the top of the viewport, centre will mean that
-all of the element is currently within the viewport and bottom will mean that part of the content is out of view
-at the bottom.
-
-**Params**
-
-- offsetTop `Number` - The offsetTop offset of the element.  
-- distance `Number` - The distance between the windows height and the viewable height.  
-- scrollTop `Number` - The offset top of the current viewport compared to the window.  
-
-**Returns**: `String` - Where the htmlNode is currently in view  
 <a name="module_parallax-scrolling.ParallaxScrolling#init"></a>
-####parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [invert], [win])
+####parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [win])
 Initialise the a new parallax scrolling handler
 
 **Params**
@@ -872,7 +829,6 @@ Initialise the a new parallax scrolling handler
 - container `Object` - The container of the element in which to take into consideration for scroll points  
 - eleHeight `Number` - The full size of the element  
 - viewableHeight `Number` - The amount of the element in which should be viewable at any one time  
-- \[invert=false\] `Boolean` - Whether or not to scroll the content inversed (Bottom to Top) or (Top to Bottom)  
 - \[win\] `Object` - Optionally pass the window in which should be checked for the size of the viewport  
 
 **Returns**: `function` - A handler in which to fire when scrolling  
