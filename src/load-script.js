@@ -25,7 +25,8 @@ define([
         this.addListeners = function (onload, onerror) {
             onLoadHandler = onload;
             script.onload = script.onreadystatechange = $this.onload;
-            if (script.onerror) {
+
+            if (typeof script.onerror !== 'undefined') {
                 script.onerror = onerror;
             }
 
