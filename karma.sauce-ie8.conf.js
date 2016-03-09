@@ -27,7 +27,9 @@ module.exports = function (config) {
         exclude: [
             // Inner HTML not supported in IE8
             'tests/**/inner-html.spec.js',
-            'tests/**/offset.spec.js'
+            'tests/**/offset.spec.js',
+            // CSS3 not supported in IE8 as it does not support CSS3 what so ever.
+            'tests/**/css-events.spec.js'
         ]
     });
 };

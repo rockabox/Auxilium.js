@@ -85,6 +85,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="css-events"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="error"~}}
   # {{>name}}
   {{>body~}}

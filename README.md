@@ -267,6 +267,69 @@ var childEle = createElement('div'),
 
 
 
+# css-events
+  A module to add and remove CSS events to an element.
+
+**Members**
+
+* [css-events](#module_css-events)
+  * [css-events.cssEvents#addEvent(ele, eventType, callback)](#module_css-events.cssEvents#addEvent)
+  * [css-events.cssEvents#removeEvent(ele, eventType, callback)](#module_css-events.cssEvents#removeEvent)
+
+<a name="module_css-events.cssEvents#addEvent"></a>
+####css-events.cssEvents#addEvent(ele, eventType, callback)
+Attach CSS Events on to an element (cross browser for Chrome, Firefox, IE and Opera)
+
+- AnimationStart
+- AnimationIteration
+- AnimationEnd
+- TransitionStart
+- TransitionEnd
+
+**Params**
+
+- ele `object` - The DOM Element in which to attach the CSS event handler to  
+- eventType `string` - Which type of css event to listen for.  
+- callback `function` - A function in which to trigger once the CSS animation / transition has been triggered  
+
+**Example**  
+```js
+var cssEvents = new CssEvents();
+cssEvents.addEvent('<div></div>', 'AnimationEnd', function () {
+	console.log('hi there');
+});
+
+// The console log (hi there) will trigger once the Animation has ended.
+```
+
+<a name="module_css-events.cssEvents#removeEvent"></a>
+####css-events.cssEvents#removeEvent(ele, eventType, callback)
+Removes CSS Events on to an element (cross browser for Chrome, Firefox, IE and Opera)
+
+- AnimationStart
+- AnimationIteration
+- AnimationEnd
+- TransitionStart
+- TransitionEnd
+
+**Params**
+
+- ele `object` - The DOM Element in which to attach the CSS event handler to  
+- eventType `string` - Which type of css event to listen for.  
+- callback `function` - The function in which to no longer trigger.  
+
+**Example**  
+```js
+var cssEvents = new CssEvents();
+cssEvents.removeEvent('<div></div>', 'AnimationEnd', function () {
+	console.log('hi there');
+});
+
+// The original event that was listening to AnimationEnd in all browsers would be removed.
+```
+
+
+
 # error
   A module which deals with handling errors (helper to throw error's).
 
