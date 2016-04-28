@@ -193,6 +193,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="multi-ajax"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="offset"~}}
   # {{>name}}
   {{>body~}}

@@ -803,6 +803,57 @@ Creates a DOM element for the script tag.
 **Returns**: `object` - Merged object  
 
 
+# multi-ajax
+  A module to perform several AJAX calls
+
+**Members**
+
+* [multi-ajax](#module_multi-ajax)
+  * [multi-ajax.MultiAjax#_loadJsonCallbackGenerator(urls, index, method, onload, onerror, responses)](#module_multi-ajax.MultiAjax#_loadJsonCallbackGenerator)
+  * [multi-ajax.MultiAjax#_loadJson(urls, index, method, onload, onerror, responses)](#module_multi-ajax.MultiAjax#_loadJson)
+  * [multi-ajax.MultiAjax#loadJson(urls, method, onload, onerror)](#module_multi-ajax.MultiAjax#loadJson)
+
+<a name="module_multi-ajax.MultiAjax#_loadJsonCallbackGenerator"></a>
+####multi-ajax.MultiAjax#_loadJsonCallbackGenerator(urls, index, method, onload, onerror, responses)
+Return a function that can be used as a callback for the Json loading requests.
+
+**Params**
+
+- urls `Array.<string>` - Location of json files  
+- index `integer` - Index of the url being processed  
+- method `string` - Defaults to get  
+- onload `function` - Success callback  
+- onerror `function` - Error callback  
+- responses `Array.<Object>` - Partial response, array containing all the responses collected by previous requests  
+
+**Access**: protected  
+<a name="module_multi-ajax.MultiAjax#_loadJson"></a>
+####multi-ajax.MultiAjax#_loadJson(urls, index, method, onload, onerror, responses)
+Request and parse a single Json object, using a generated callback to collect the response.
+
+**Params**
+
+- urls `Array.<string>` - Location of json files  
+- index `integer` - Index of the url being processed  
+- method `string` - Defaults to get  
+- onload `function` - Success callback  
+- onerror `function` - Error callback  
+- responses `Array.<Object>` - Partial response, array containing all the responses collected by previous requests  
+
+**Access**: protected  
+<a name="module_multi-ajax.MultiAjax#loadJson"></a>
+####multi-ajax.MultiAjax#loadJson(urls, method, onload, onerror)
+Execute several ajax requests parsing the responses into a list of JSON objects.
+
+**Params**
+
+- urls `Array.<string>` - Location of json files  
+- method `string` - Defaults to get  
+- onload `function` - Success callback  
+- onerror `function` - Error callback  
+
+
+
 # offset
   Gets the X and Y offset of an element to the current window and whether or not the element is positioned within
 a fixed element.
