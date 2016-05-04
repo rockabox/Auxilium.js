@@ -51,15 +51,15 @@ define([
          */
         getRequest: function () {
             var xhr = false;
-            if (typeof XDomainRequest !== 'undefined') {
+            if (typeof XMLHttpRequest !== 'undefined') {
                 try {
-                    xhr = new XDomainRequest();
+                    xhr = new XMLHttpRequest();
                 } catch (e) {
                     xhr = false;
                 }
-            } else if (window.XMLHttpRequest) {
+            } else if (typeof XDomainRequest !== 'undefined') {
                 try {
-                    xhr = new XMLHttpRequest();
+                    xhr = new XDomainRequest();
                 } catch (e) {
                     xhr = false;
                 }
