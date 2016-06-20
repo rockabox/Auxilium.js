@@ -181,6 +181,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="is-trusted"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="load-script"~}}
   # {{>name}}
   {{>body~}}

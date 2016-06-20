@@ -744,6 +744,20 @@ isDefined(barney, 'function');
 
 
 
+# is-trusted
+  **Params**
+
+- event `Event` - The variable containing an event  
+
+**Returns**: `Boolean` - When the event is not trusted it will pass back false otherwise pass back true.  
+**Example**  
+```js
+isTrusted(MouseEvent);
+// Returns true/false
+```
+
+
+
 # load-script
   A loader for Javascript files on the page using a script tag.
 
