@@ -2,7 +2,7 @@ define([
     'aux/is-trusted'
 ], function (isTrusted) {
 
-    fdescribe('Will check whether or not an event', function () {
+    describe('Will check whether or not an event', function () {
 
         describe('is trusted', function () {
             it('should return that an event is trusted when isTrusted defined', function () {
