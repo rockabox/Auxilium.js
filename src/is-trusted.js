@@ -22,6 +22,11 @@ define([
      * ```
      */
     function isTrusted (event) {
+        // Not trusted if an event is undefined
+        if (typeof event === 'undefined') {
+            return false;
+        }
+
         if ('isTrusted' in event) {
             return event.isTrusted;
         } else if (event.clientX > 0 && event.clientY > 0) {

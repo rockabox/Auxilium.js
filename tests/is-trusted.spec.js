@@ -38,6 +38,10 @@ define([
                 expect(isTrusted(eventNoX)).toBeFalsy();
                 expect(isTrusted(eventNoY)).toBeFalsy();
             });
+
+            it('should return false if the event is undefined', function () {
+                expect(isTrusted()).toBeFalsy();
+            });
         });
     });
 
