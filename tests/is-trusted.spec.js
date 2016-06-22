@@ -16,6 +16,12 @@ define([
 
                 expect(isTrusted(event)).toBeTruthy();
             });
+
+            it('should return that an event is trusted on mobile when changedTouches defined', function () {
+                var event = {changedTouches: [1, 2]};
+
+                expect(isTrusted(event)).toBeTruthy();
+            });
         });
 
         describe('is not trusted', function () {
@@ -41,6 +47,18 @@ define([
 
             it('should return false if the event is undefined', function () {
                 expect(isTrusted()).toBeFalsy();
+            });
+
+            it('should return false if the event is empty', function () {
+                var event = {};
+
+                expect(isTrusted(event)).toBeFalsy();
+            });
+
+            it('should return false if the event has empty changedTouches', function () {
+                var event = {changedTouches: []};
+
+                expect(isTrusted(event)).toBeFalsy();
             });
         });
     });
