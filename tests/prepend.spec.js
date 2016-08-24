@@ -1,24 +1,14 @@
 define([
     'aux/create-element',
-    'aux/get-elements-by-class',
-    'aux/has-class',
     'aux/prepend'
-], function (createElement, getElementsByClass, hasClass, prepend) {
+], function (createElement, prepend) {
     describe('Check if the node element is added to the parent', function () {
         var ele,
-            doc,
             childEle,
-            customDocument,
             params;
 
         beforeEach(function () {
 
-            customDocument = {
-                createElement: function () {
-                    return true;
-                }
-            };
-            doc = top.document;
             childEle = createElement('div');
             params = {
                 attr: {
@@ -44,25 +34,26 @@ define([
                     childEle
                 ]
             };
-            ele = createElement('div', params, doc);
+            ele = createElement('div', params);
         });
 
-        it('Should check if the parentNode has the class', function () {
-            var eleOne = getElementsByClass(ele, 'futurama');
+        it('should attach an element as the firstChild of the element passed', function () {
+            var eleChild = createElement('div');
 
-            expect(eleOne.length).toBe(1);
-            expect(hasClass(eleOne[0].parentNode, 'legen')).toBeTruthy();
+            prepend(ele, eleChild);
+
+            expect(ele.firstChild).toBe(eleChild);
         });
 
-        it('Should call insertBefore and return the firstChild', function () {
+        it ('should call insertBefore on the element passed to the function', function () {
+            var eleNewChild = createElement('div'),
+                firstChild = ele.firstChild;
 
-            var eleOne = getElementsByClass(ele, 'futurama'),
-                parent = eleOne[0].parentNode,
-                eleChild = createElement('div');
+            spyOn(ele, 'insertBefore');
 
-            prepend(parent, eleChild);
+            prepend(ele, eleNewChild);
 
-            expect(parent.firstChild).toBe(eleChild);
+            expect(ele.insertBefore).toHaveBeenCalledWith(eleNewChild, firstChild);
         });
     });
 });
