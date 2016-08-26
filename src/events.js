@@ -105,7 +105,9 @@ define([
             }
 
             for (var i = 0, len = handlers.length; i < len; i++) {
-                handlers[i](event, data);
+                if (typeof handlers[i] === 'function') {
+                    handlers[i](event, data);
+                }
             }
         }
     };
