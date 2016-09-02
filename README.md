@@ -962,6 +962,23 @@ Initialise the a new parallax scrolling handler
 **Returns**: `function` - A handler in which to fire when scrolling  
 
 
+# prepend
+  Prepend a DOM element before another
+
+**Params**
+
+- parent `Object` - The DOM Element we will be inserting `node` after  
+- node `Object` - The DOM Element we will be inserting after `parent`  
+
+**Example**  
+```js
+ele = <div class="elmo"></div>
+parent = <div class="sesamestreet"></div>
+prepend(parent, ele)
+```
+
+
+
 # remove-class
   Remove a single class from an element.
 
