@@ -217,6 +217,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="prepend"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="remove-class"~}}
   # {{>name}}
   {{>body~}}
