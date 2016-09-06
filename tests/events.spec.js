@@ -1,7 +1,7 @@
 define([
     'aux/events'
 ], function (Events) {
-    describe('Rockabox custom event', function () {
+    describe('Scoota custom event', function () {
 
         var CLICK = 'click',
             element, events,
@@ -82,19 +82,49 @@ define([
         it('remove a registered event.', function () {
             // Register two click events
             events.addListener(element, CLICK, handlers.clickHandler);
+            events.addListener(element, CLICK, handlers.customHandler);
+            // Remove one of them
+            events.removeEvent(element, CLICK, handlers.clickHandler);
+            events.triggerEvent(element, CLICK);
+
+            expect(handlers.clickHandler.calls.count()).toBe(0);
+            expect(handlers.customHandler.calls.count()).toBe(1);
+
+            // Remove the other listener
+            events.removeEvent(element, CLICK, handlers.customHandler);
+            events.triggerEvent(element, CLICK);
+
+            // Should not fire again
+            expect(handlers.clickHandler.calls.count()).toBe(0);
+            expect(handlers.customHandler.calls.count()).toBe(1);
+        });
+
+        it('remove all registered event.', function () {
+            // Register two click events
+            events.addListener(element, CLICK, handlers.clickHandler);
             events.addListener(element, CLICK, handlers.clickHandler);
             // Remove one of them
             events.removeEvent(element, CLICK, handlers.clickHandler);
             events.triggerEvent(element, CLICK);
 
-            expect(handlers.clickHandler.calls.count()).toBe(1);
+            expect(handlers.clickHandler.calls.count()).toBe(0);
+        });
 
-            // Remove both listeners
-            events.removeEvent(element, CLICK, handlers.clickHandler);
+        it('fires all events before removing handler.', function () {
+            removeHandler = function () {
+                handlers.clickHandler ();
+                events.removeEvent(element, CLICK, removeHandler);
+            };
+            // Register five click events
+            events.addListener(element, CLICK, removeHandler);
+            events.addListener(element, CLICK, handlers.clickHandler);
+            events.addListener(element, CLICK, handlers.clickHandler);
+            events.addListener(element, CLICK, handlers.clickHandler);
+            events.addListener(element, CLICK, handlers.clickHandler);
+
             events.triggerEvent(element, CLICK);
 
-            // Should not fire again
-            expect(handlers.clickHandler.calls.count()).toBe(1);
+            expect(handlers.clickHandler.calls.count()).toBe(5);
         });
     });
 });
