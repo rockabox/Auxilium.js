@@ -109,6 +109,13 @@ define([
                     handlers[i](event, data);
                 }
             }
+
+            // clean removed handlers.
+            for (var x = 0; x < handlers.length; x++) {
+                if (typeof handlers[i] === 'function') {
+                    handlers.splice(x, 1);
+                }
+            }
         }
     };
 
@@ -128,8 +135,7 @@ define([
 
             for (var i = 0, len = handlers.length; i < len; i++) {
                 if (handlers[i] == handler) {
-                    var rbevent = handlers.splice(i, 1);
-                    rbevent.length = 0; // Clear array
+                    handlers[i] = false;
                 }
             }
         }
