@@ -252,9 +252,3 @@ define([
   {{>body~}}
   {{>exported~}}
 {{/module}}
-
-{{#module name="touch"~}}
-  # {{>name}}
-  {{>body~}}
-  {{>exported~}}
-{{/module}}
