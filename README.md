@@ -528,6 +528,38 @@ getHighestAccessibleWindow(win);
 
 
 
+# get-offset-rect
+  Gets the X and Y offset of an element to the passed window.
+
+**Params**
+
+- ele `Object` - The HTMLNode in which to get the axis of.  
+- win `Object` - The window in which to get the offset  
+
+**Properties**
+
+  - offset.x `Number` - The X axis of the offset from the window (top).  
+  - offset.y `Number` - The Y axis of the offset from the window (left).  
+
+**Returns**: `Object` - offset The X and Y axis of the offset from the window  
+**Example**  
+```js
+var ele = '<div style="margin-top: 10px; margin-left: 140px;"></div>',
+	testEle = '<div></div>'
+ win = top.window;
+
+ele.appendChild(testEle);
+
+getOffsetRect(testEle, win);
+// Returns
+{
+	x: 10,
+	y: 140
+}
+```
+
+
+
 # get-orientation
   **Params**
 

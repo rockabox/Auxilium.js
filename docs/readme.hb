@@ -127,6 +127,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="get-offset-rect"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="get-orientation"~}}
   # {{>name}}
   {{>body~}}
