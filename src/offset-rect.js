@@ -39,22 +39,64 @@ define([
      *
      * @private
      *
+     * @param {Object} win The window in which to get the offset
      * @param {Object} doc The HTML document in which to get the scroll values.
      *
      * @returns {Object} scroll The scrollX and scrollY of the offset from the window
      * @property {Number} scroll.scrollX The scrollX of the document from the window (top).
      * @property {Number} scroll.scrollY The scrollY of the document from the window (left).
      */
-    OffsetRect.prototype.getScroll = function (doc) {
-        var body = doc.body,
+    OffsetRect.prototype.getScroll = function (win, doc) {
+        var body = doc.body;
+
+        if (hasProperty(win, 'pageYOffset') && hasProperty(win, 'pageXOffset')) {
+            scrollY = win.pageYOffset;
+            scrollX = win.pageXOffset;
+        } else {
             scrollX = (((ele = doc.documentElement) || (ele = body.parentNode)) &&
-                typeof ele.scrollLeft == 'number' ? ele : body).scrollLeft,
+                typeof ele.scrollLeft == 'number' ? ele : body).scrollLeft;
             scrollY = (((ele = doc.documentElement) || (ele = body.parentNode)) &&
                 typeof ele.scrollTop == 'number' ? ele : body).scrollTop;
+        }
 
         return {
             scrollX: scrollX,
             scrollY: scrollY
+        };
+    };
+
+    /**
+     * Get the offset position of the element passed
+     *
+     * @memberOf module:offset-rect
+     *
+     * @private
+     *
+     * @param {Object} ele The HTMLNode in which to get the axis of.
+     *
+     * @returns {Object} rect The scrollX and scrollY of the offset from the window
+     * @property {Number} scroll.scrollX The scrollX of the document from the window (top).
+     * @property {Number} scroll.scrollY The scrollY of the document from the window (left).
+     */
+    OffsetRect.prototype.getOffset = function (ele) {
+        var rect,
+            top = 0,
+            left = 0;
+
+        // In some browser getBoundingClientRect could not exist.
+        if (typeof ele.getBoundingClientRect === 'function') {
+            rect = ele.getBoundingClientRect();
+            top = rect.top;
+            left = rect.left;
+        } else {
+            rect = offset(ele);
+            top = rect.y;
+            left = rect.x;
+        }
+
+        return {
+            y: top,
+            x: left
         };
     };
 
@@ -75,31 +117,10 @@ define([
     OffsetRect.prototype.getOffsetRect = function (ele, wind) {
         var doc = ele.ownerDocument,
             win = wind || windoc.defaultView || doc.parentWindow,
-            scroll,
-            scrollX,
-            scrollY,
-            rect,
-            top = 0,
-            left = 0;
-
-        if (hasProperty(win, 'pageYOffset') && hasProperty(win, 'pageXOffset')) {
-            scrollY = win.pageYOffset;
-            scrollX = win.pageXOffset;
-        } else {
-            scroll = this.getScroll(doc);
-            scrollY = scroll.scrollY;
-            scrollX = scroll.scrollX;
-        }
-
-        if (typeof ele.getBoundingClientRect === 'function') {
-            rect = ele.getBoundingClientRect();
-            top  = rect.top + scrollY;
-            left = rect.left + scrollX;
-        } else {
-            rect = offset(ele);
-            top  = rect.y + scrollY;
-            left = rect.x + scrollX;
-        }
+            scroll = this.getScroll(win, doc),
+            rect = this.getOffset(ele),
+            top = rect.y + scroll.scrollY,
+            left = rect.x + scroll.scrollX;
 
         return {
             y: Math.round(top),

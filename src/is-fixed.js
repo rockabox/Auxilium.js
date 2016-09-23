@@ -23,7 +23,8 @@ define([
      */
     function isFixed (ele) {
         var doc = ele.ownerDocument,
-            win = doc.defaultView || doc.parentWindow;
+            win = doc.defaultView || doc.parentWindow,
+            positionFixed = false;
 
         try {
             while (ele.offsetParent) {
@@ -31,13 +32,13 @@ define([
                 // If we have already found that the element is within a fixed element no longer check the current
                 // element. Uses `getComputedStyle` to get the position allowing for CSS or Style tag.
                 if (win.getComputedStyle(ele).getPropertyValue('position') === 'fixed') {
-                    return true;
+                    positionFixed = true;
                 }
             }
         } catch (error) {
         }
 
-        return false;
+        return positionFixed;
     }
 
     return isFixed;
