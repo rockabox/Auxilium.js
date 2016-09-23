@@ -1,27 +1,34 @@
 define([
     'aux/create-element',
-    'aux/get-offset-rect'
-], function (createElement, getOffsetRect) {
+    'aux/offset-rect'
+], function (createElement, OffsetRect) {
     describe('Get the offset top and left of an element compared to the window', function () {
         var ele,
             eleOffset,
-            win;
+            win,
+            offsetRect;
 
         beforeEach(function () {
             win = top.window;
-        });
-
-        it('should return the current offset of an element which has no offsets set', function () {
-            ele = document.createElement('div');
-            eleOffset = getOffsetRect(ele, win);
-
-            expect(eleOffset.x).toBe(0);
-            expect(eleOffset.y).toBe(0);
+            document.body.style.margin = 0;
+            document.body.style.padding = 0;
+            offsetRect = new OffsetRect();
         });
 
         describe('attached to DOM', function () {
             afterEach(function () {
                 document.body.removeChild(ele);
+            });
+
+            it('should return the current offset of an element which has no offsets set', function () {
+                ele = document.createElement('div');
+
+                document.body.appendChild(ele);
+
+                eleOffset = offsetRect.getOffsetRect(ele, win);
+
+                expect(eleOffset.x).toBe(0);
+                expect(eleOffset.y).toBe(0);
             });
 
             it('should return offset of nested elements', function () {
@@ -67,7 +74,7 @@ define([
 
                 document.body.appendChild(ele);
 
-                eleOffset = getOffsetRect(mainEle, win);
+                eleOffset = offsetRect.getOffsetRect(mainEle, win);
 
                 expect(eleOffset.x).toBe(25);
                 expect(eleOffset.y).toBe(20);
@@ -107,188 +114,10 @@ define([
 
                 document.body.appendChild(ele);
 
-                eleOffset = getOffsetRect(mainEle, win);
+                eleOffset = offsetRect.getOffsetRect(mainEle, win);
 
                 expect(eleOffset.x).toBe(20);
                 expect(eleOffset.y).toBe(-5);
-            });
-
-            describe('on scroll', function () {
-                var mockWin;
-
-                it('should add the scroll (pageYOffset and pageXOffset) to the offset', function () {
-                    var mainEle = createElement('div', {
-                        css: {
-                            'margin-left': '0px',
-                            'margin-top': '0px'
-                        }
-                    });
-
-                    ele = createElement('div', {
-                        css: {
-                            'margin-left': '10px',
-                            'margin-top': '5px',
-                            'position': 'fixed',
-                            'top': '0',
-                            'left': '0'
-                        },
-                        nodes: [
-                            {
-                                tag: 'div',
-                                css: {
-                                    'margin-left': '10px',
-                                    'margin-top': '5px',
-                                    'position': 'relative',
-                                    'top': '5px'
-                                },
-                                nodes: [
-                                    {
-                                        tag: 'div',
-                                        css: {
-                                            'margin-left': '5px',
-                                            'margin-top': '10px'
-                                        },
-                                        children: [
-                                            mainEle
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    });
-
-                    mockWin = {
-                        'pageXOffset': 200,
-                        'pageYOffset': 100,
-                        'document': {
-                            'clientTop': 0,
-                            'clientLeft': 0
-                        }
-                    };
-
-                    document.body.appendChild(ele);
-
-                    eleOffset = getOffsetRect(mainEle, mockWin);
-
-                    expect(eleOffset.x).toBe(225);
-                    expect(eleOffset.y).toBe(120);
-                });
-
-                it('should add scroll and remove client Top and Left', function () {
-                    var mainEle = createElement('div', {
-                        css: {
-                            'margin-left': '0px',
-                            'margin-top': '0px'
-                        }
-                    });
-
-                    ele = createElement('div', {
-                        css: {
-                            'margin-left': '10px',
-                            'margin-top': '5px',
-                            'position': 'fixed',
-                            'top': '0',
-                            'left': '0'
-                        },
-                        nodes: [
-                            {
-                                tag: 'div',
-                                css: {
-                                    'margin-left': '10px',
-                                    'margin-top': '5px',
-                                    'position': 'relative',
-                                    'top': '5px'
-                                },
-                                nodes: [
-                                    {
-                                        tag: 'div',
-                                        css: {
-                                            'margin-left': '5px',
-                                            'margin-top': '10px'
-                                        },
-                                        children: [
-                                            mainEle
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    });
-
-                    mockWin = {
-                        'pageXOffset': 200,
-                        'pageYOffset': 100,
-                        'document': {
-                            'clientTop': 10,
-                            'clientLeft': 50
-                        }
-                    };
-
-                    document.body.appendChild(ele);
-
-                    eleOffset = getOffsetRect(mainEle, mockWin);
-
-                    expect(eleOffset.x).toBe(175);
-                    expect(eleOffset.y).toBe(110);
-                });
-
-                it('should add scrollX and scrollY if not pageXOffset and pageYOffset', function () {
-                    var mainEle = createElement('div', {
-                        css: {
-                            'margin-left': '0px',
-                            'margin-top': '0px'
-                        }
-                    });
-
-                    ele = createElement('div', {
-                        css: {
-                            'margin-left': '10px',
-                            'margin-top': '5px',
-                            'position': 'fixed',
-                            'top': '0',
-                            'left': '0'
-                        },
-                        nodes: [
-                            {
-                                tag: 'div',
-                                css: {
-                                    'margin-left': '10px',
-                                    'margin-top': '5px',
-                                    'position': 'relative',
-                                    'top': '5px'
-                                },
-                                nodes: [
-                                    {
-                                        tag: 'div',
-                                        css: {
-                                            'margin-left': '5px',
-                                            'margin-top': '10px'
-                                        },
-                                        children: [
-                                            mainEle
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    });
-
-                    mockWin = {
-                        'document': {
-                            'scrollTop': 200,
-                            'scrollLeft': 100,
-                            'clientTop': 0,
-                            'clientLeft': 0
-                        }
-                    };
-
-                    document.body.appendChild(ele);
-
-                    eleOffset = getOffsetRect(mainEle, mockWin);
-
-                    expect(eleOffset.x).toBe(125);
-                    expect(eleOffset.y).toBe(220);
-                });
             });
 
             it('should return correct offset with nested spans', function () {
@@ -419,14 +248,176 @@ define([
                 });
 
                 document.body.appendChild(ele);
-                document.body.style.margin = 0;
-                document.body.style.padding = 0;
 
-                eleOffset = getOffsetRect(iframe, win);
+                eleOffset = offsetRect.getOffsetRect(iframe, win);
 
                 expect(eleOffset.x).toBe(241);
                 expect(eleOffset.y).toBe(0);
             });
+
+            describe('on scroll', function () {
+                var mockWin;
+
+                it('should add the scroll (pageYOffset and pageXOffset) to the offset', function () {
+                    var mainEle = createElement('div', {
+                        css: {
+                            'margin-left': '0px',
+                            'margin-top': '0px'
+                        }
+                    });
+
+                    ele = createElement('div', {
+                        css: {
+                            'margin-left': '10px',
+                            'margin-top': '5px',
+                            'position': 'fixed',
+                            'top': '0',
+                            'left': '0'
+                        },
+                        nodes: [
+                            {
+                                tag: 'div',
+                                css: {
+                                    'margin-left': '10px',
+                                    'margin-top': '5px',
+                                    'position': 'relative',
+                                    'top': '5px'
+                                },
+                                nodes: [
+                                    {
+                                        tag: 'div',
+                                        css: {
+                                            'margin-left': '5px',
+                                            'margin-top': '10px'
+                                        },
+                                        children: [
+                                            mainEle
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    });
+
+                    mockWin = {
+                        'pageXOffset': 200,
+                        'pageYOffset': 100
+                    };
+
+                    document.body.appendChild(ele);
+
+                    eleOffset = offsetRect.getOffsetRect(mainEle, mockWin);
+
+                    expect(eleOffset.x).toBe(225);
+                    expect(eleOffset.y).toBe(120);
+                });
+
+                it('should add scrollX and scrollY if not pageXOffset and pageYOffset', function () {
+                    spyOn(offsetRect, 'getScroll').and.returnValue({
+                        scrollX: 100,
+                        scrollY: 200
+                    });
+                    var mainEle = createElement('div', {
+                        css: {
+                            'margin-left': '0px',
+                            'margin-top': '0px'
+                        }
+                    });
+
+                    ele = createElement('div', {
+                        css: {
+                            'margin-left': '10px',
+                            'margin-top': '5px',
+                            'position': 'fixed',
+                            'top': '0',
+                            'left': '0'
+                        },
+                        nodes: [
+                            {
+                                tag: 'div',
+                                css: {
+                                    'margin-left': '10px',
+                                    'margin-top': '5px',
+                                    'position': 'relative',
+                                    'top': '5px'
+                                },
+                                nodes: [
+                                    {
+                                        tag: 'div',
+                                        css: {
+                                            'margin-left': '5px',
+                                            'margin-top': '10px'
+                                        },
+                                        children: [
+                                            mainEle
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    });
+
+                    document.body.appendChild(ele);
+
+                    eleOffset = offsetRect.getOffsetRect(mainEle, {});
+
+                    expect(eleOffset.x).toBe(125);
+                    expect(eleOffset.y).toBe(220);
+                });
+            });
         });
+
+        describe('Get Scroll', function () {
+            var scroll,
+                doc;
+            it('should return documentElement scroll values', function () {
+                doc = {
+                    documentElement: {
+                        scrollLeft: 123,
+                        scrollTop: 78
+                    },
+                    body: {
+                        scrollLeft: 0,
+                        scrollTop: 0
+                    }
+                };
+
+                scroll = offsetRect.getScroll(doc);
+
+                expect(scroll.scrollX).toBe(123);
+                expect(scroll.scrollY).toBe(78);
+            });
+
+            it('should return body parentNode scroll values.', function () {
+                doc = {
+                    body: {
+                        parentNode: {
+                            scrollLeft: 435,
+                            scrollTop: 98
+                        }
+                    }
+                };
+
+                scroll = offsetRect.getScroll(doc);
+
+                expect(scroll.scrollX).toBe(435);
+                expect(scroll.scrollY).toBe(98);
+            });
+
+            it('should return body scroll values.', function () {
+                doc = {
+                    body: {
+                        scrollLeft: 20,
+                        scrollTop: 198
+                    }
+                };
+
+                scroll = offsetRect.getScroll(doc);
+
+                expect(scroll.scrollX).toBe(20);
+                expect(scroll.scrollY).toBe(198);
+            });
+        });
+
     });
 });
