@@ -53,16 +53,16 @@ define([
                                 tag: 'div',
                                 css: {
                                     'margin-left': '10px',
-                                    'margin-top': '5px',
-                                    'position': 'relative',
-                                    'top': '5px'
+                                    'margin-top': '0px',
+                                    'position': 'relative'
                                 },
                                 nodes: [
                                     {
                                         tag: 'div',
                                         css: {
                                             'margin-left': '5px',
-                                            'margin-top': '10px'
+                                            'margin-top': '10px',
+                                            'position': 'relative'
                                         },
                                         children: [
                                             mainEle
@@ -78,7 +78,7 @@ define([
                     eleOffset = offsetRect.getOffset(mainEle);
 
                     expect(eleOffset.x).toBe(25);
-                    expect(eleOffset.y).toBe(20);
+                    expect(eleOffset.y).toBe(15);
                 });
 
                 it('should take in to consideration minus margins', function () {

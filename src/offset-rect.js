@@ -90,8 +90,8 @@ define([
             left = rect.left;
         } else {
             rect = offset(ele);
-            top = rect.y;
             left = rect.x;
+            top = rect.y;
         }
 
         return {
@@ -116,7 +116,7 @@ define([
      */
     OffsetRect.prototype.getOffsetRect = function (ele, wind) {
         var doc = ele.ownerDocument,
-            win = wind || windoc.defaultView || doc.parentWindow,
+            win = wind || doc.defaultView || doc.parentWindow,
             scroll = this.getScroll(win, doc),
             rect = this.getOffset(ele),
             top = rect.y + scroll.scrollY,
