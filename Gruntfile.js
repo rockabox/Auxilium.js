@@ -11,8 +11,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('sauce-labs', [
-        'karma:unit-sauce',
-        'karma:unit-sauce-ie8'
+        'karma:unit-sauce'
     ]);
 
     grunt.registerTask('test', [
