@@ -211,6 +211,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="offset-rect"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="parallax-scrolling"~}}
   # {{>name}}
   {{>body~}}

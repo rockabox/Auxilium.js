@@ -901,6 +901,43 @@ offset(testEle);
 
 
 
+# offset-rect
+  A module to get the X and Y offset of an element to the passed window.
+
+**Example**  
+```js
+var offsetRect = new OffsetRect(),
+ ele = '<div style="margin-top: 10px; margin-left: 140px;"></div>',
+	testEle = '<div></div>'
+ win = top.window;
+
+ele.appendChild(testEle);
+
+offsetRect.getOffsetRect(testEle, win);
+// Returns
+{
+	x: 10,
+	y: 140
+}
+```
+
+<a name="module_offset-rect.OffsetRect#getOffsetRect"></a>
+####offset-rect.OffsetRect#getOffsetRect(ele, wind)
+Get get the X and Y offset of an element to the passed window.
+
+**Params**
+
+- ele `Object` - The HTMLNode in which to get the axis of.  
+- wind `Object` - The window in which to get the offset  
+
+**Properties**
+
+  - offset.x `Number` - The X axis of the offset from the window (top).  
+  - offset.y `Number` - The Y axis of the offset from the window (left).  
+
+**Returns**: `Object` - offset The X and Y axis of the offset from the window  
+
+
 # parallax-scrolling
   Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
 is displayed whilst it's in view of the viewport

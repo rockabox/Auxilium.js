@@ -42,18 +42,20 @@ define([
         try {
             while (ele.offsetParent) {
                 ele = ele.offsetParent;
-                // If we have already found that the element is within a fixed element no longer check the current
-                // element. Uses `getComputedStyle` to get the position allowing for CSS or Style tag.
-                if (win.getComputedStyle(ele).getPropertyValue('position') === 'fixed') {
-                    positionFixed = true;
-                }
 
+                try {
+                    // If we have already found that the element is within a fixed element no longer check the current
+                    // element. Uses `getComputedStyle` to get the position allowing for CSS or Style tag.
+                    if (win.getComputedStyle(ele).getPropertyValue('position') === 'fixed') {
+                        positionFixed = true;
+                    }
+                }  catch (error) {
+                }
                 left += ele.offsetLeft;
                 top += ele.offsetTop;
             }
         } catch (error) {
         }
-
         return {
             y: top,
             x: left,
