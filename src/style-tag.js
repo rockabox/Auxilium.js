@@ -35,8 +35,8 @@ define([
              * ```
              */
             attach: function (params) {
-                var node;
-                doc = params.document || document;
+                var node,
+                    doc = params.document || document;
 
                 node = this.generate(params);
                 doc.body.appendChild(node);
