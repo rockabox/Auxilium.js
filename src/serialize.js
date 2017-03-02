@@ -28,9 +28,11 @@ define([
             query;
 
         for (query in queryParams) {
-            if (queryParams.hasOwnProperty(query) && queryParams[query]) {
+            var param = queryParams[query];
+
+            if (queryParams.hasOwnProperty(query) && (param || param === 0)) {
                 key = encodeURIComponent(query);
-                value = encodeURIComponent(queryParams[query]);
+                value = encodeURIComponent(param);
                 str.push(key + '=' + value);
             }
         }
