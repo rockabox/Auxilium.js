@@ -966,6 +966,8 @@ events.addListener(window, 'resize', function () {
   * [parallax-scrolling._events](#module_parallax-scrolling#_events)
   * [parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers(ele, percentage)](#module_parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers)
   * [parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [win])](#module_parallax-scrolling.ParallaxScrolling#init)
+  * [parallax-scrolling~handler(overrideWin, overrideOffset)](#module_parallax-scrolling..handler)
+  * [parallax-scrolling~resetOffset()](#module_parallax-scrolling..resetOffset)
 
 <a name="module_parallax-scrolling#_events"></a>
 ####parallax-scrolling._events
@@ -996,7 +998,26 @@ Initialise the a new parallax scrolling handler
 - viewableHeight `Number` - The amount of the element in which should be viewable at any one time  
 - \[win\] `Object` - Optionally pass the window in which should be checked for the size of the viewport  
 
-**Returns**: `function` - A handler in which to fire when scrolling  
+**Returns**: `Object` - An object of helper functions to be used the main handler function to be fire.  
+<a name="module_parallax-scrolling..handler"></a>
+####parallax-scrolling~handler(overrideWin, overrideOffset)
+A handler in which to fire when scrolling.
+Allows passing a new window object through the handler and the offset of the container.
+
+**Params**
+
+- overrideWin `Object` - A new window object to be used (useful for iFrame neseting).  
+- overrideOffset `Object` - Manually override the offset of the container (iframe nesting again).  
+
+**Scope**: inner function of [parallax-scrolling](#module_parallax-scrolling)  
+**Returns**: `Number` - The scrollY position of the what the element should be.  
+<a name="module_parallax-scrolling..resetOffset"></a>
+####parallax-scrolling~resetOffset()
+Reset the offset top that is used by the handler this is to be used by scroll or resize events for
+example.
+
+**Scope**: inner function of [parallax-scrolling](#module_parallax-scrolling)  
+**Returns**: `Number` - The top offset of the container element.  
 
 
 # prepend

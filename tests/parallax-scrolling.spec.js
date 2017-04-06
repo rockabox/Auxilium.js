@@ -29,15 +29,21 @@ define([
         });
 
         it('should return a function handler', function () {
-            var handler = parallaxScrolling.init(ele, container);
+            var parallaxInit = parallaxScrolling.init(ele, container);
 
-            expect(typeof handler).toBe('function');
+            expect(typeof parallaxInit.handler).toBe('function');
+        });
+
+        it('should return a function for resetting the offset', function () {
+            var parallaxInit = parallaxScrolling.init(ele, container);
+
+            expect(typeof parallaxInit.resetOffset).toBe('function');
         });
 
         it('should get the offset of the element', function () {
             spyOn(parallaxScrolling, '_offset').and.callThrough();
 
-            var handler = parallaxScrolling.init(ele, container);
+            parallaxScrolling.init(ele, container);
 
             expect(parallaxScrolling._offset).toHaveBeenCalledWith(container);
         });
@@ -46,7 +52,7 @@ define([
             it('should allow overriding of the window', function () {
                 spyOn(parallaxScrolling, '_getWindowPositions').and.callThrough();
 
-                var handler = parallaxScrolling.init(ele, container, 100, 50),
+                var parallaxInit = parallaxScrolling.init(ele, container, 100, 50),
                     overrideWin = {
                         pageYOffset: 10,
                         innerHeight: 30,
@@ -58,7 +64,7 @@ define([
                         }
                     };
 
-                handler(overrideWin);
+                parallaxInit.handler(overrideWin);
 
                 expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin);
             });
@@ -67,12 +73,36 @@ define([
                 spyOn(parallaxScrolling, '_getScrollPosition').and.callThrough();
 
                 var overrideOffset = 20192,
-                    handler = parallaxScrolling.init(ele, container, 100, 50),
-                    scrollPosition = handler(window, 20192);
+                    parallaxInit = parallaxScrolling.init(ele, container, 100, 50),
+                    scrollPosition = parallaxInit.handler(window, 20192);
 
                 expect(parallaxScrolling._getScrollPosition).toHaveBeenCalledWith(jasmine.objectContaining({
                     offsetTop: 20192
                 }));
+            });
+        });
+
+        describe('reset the offset via helper', function () {
+            var parallaxInit;
+
+            it('should call the get offset function', function () {
+                parallaxInit = parallaxScrolling.init(ele, container);
+
+                spyOn(parallaxScrolling, '_offset').and.callThrough();
+
+                parallaxInit.resetOffset();
+
+                expect(parallaxScrolling._offset).toHaveBeenCalledWith(container);
+            });
+
+            it('should return the offset of the element', function () {
+                parallaxInit = parallaxScrolling.init(ele, container);
+
+                spyOn(parallaxScrolling, '_offset').and.returnValue({y: 20000});
+
+                var offset = parallaxInit.resetOffset();
+
+                expect(offset).toBe(20000);
             });
         });
 

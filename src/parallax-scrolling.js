@@ -216,7 +216,7 @@ define([
      * @param  {Number} viewableHeight The amount of the element in which should be viewable at any one time
      * @param  {Object=} win       Optionally pass the window in which should be checked for the size of the viewport
      *
-     * @returns {Function} A handler in which to fire when scrolling
+     * @returns {Object} An object of helper functions to be used the main handler function to be fire.
      */
     ParallaxScrolling.prototype.init = function (ele, container, eleHeight, viewableHeight, win) {
 
@@ -230,23 +230,48 @@ define([
             scrollPosition,
             visibleHeight = viewableHeight - (viewableHeight * (1 - percentage));
 
+        this._container = container;
+
         // The handler in which to be used for firing when scrolling
         // Allows passing a new window object through the handler and the offset of the container
-        return function (overrideWin, overrideOffset) {
-            overrideWin = overrideWin || win;
-            overrideOffset = overrideOffset || offsetTop;
+        return {
+            /**
+             * A handler in which to fire when scrolling.
+             * Allows passing a new window object through the handler and the offset of the container.
+             *
+             *
+             * @param  {Object?} overrideWin A new window object to be used (useful for iFrame neseting).
+             * @param  {Object?} overrideOffset Manually override the offset of the container (iframe nesting again).
+             *
+             * @returns {Number} The scrollY position of the what the element should be.
+             */
+            handler: function (overrideWin, overrideOffset) {
+                overrideWin = overrideWin || win;
+                overrideOffset = overrideOffset || offsetTop;
 
-            scrollPosition = $this._getScrollPosition({
-                eleHeight: eleHeight,
-                offsetTop: overrideOffset,
-                visibleHeight: visibleHeight,
-                winPosition: $this._getWindowPositions(overrideWin)
-            });
+                scrollPosition = $this._getScrollPosition({
+                    eleHeight: eleHeight,
+                    offsetTop: overrideOffset,
+                    visibleHeight: visibleHeight,
+                    winPosition: $this._getWindowPositions(overrideWin)
+                });
 
-            $this._setElePosition(ele, scrollPosition.scrollY);
-            $this._scrollPercentTriggers(ele, (1 - scrollPosition.scrollProgress) * 100);
+                $this._setElePosition(ele, scrollPosition.scrollY);
+                $this._scrollPercentTriggers(ele, (1 - scrollPosition.scrollProgress) * 100);
 
-            return scrollPosition.scrollY;
+                return scrollPosition.scrollY;
+            },
+            /**
+             * Reset the offset top that is used by the handler this is to be used by scroll or resize events for
+             * example.
+             *
+             * @returns {Number} The top offset of the container element.
+             */
+            resetOffset: function () {
+                offsetTop = $this._offset($this._container).y;
+
+                return offsetTop;
+            }
         };
     };
 
