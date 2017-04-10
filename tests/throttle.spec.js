@@ -28,7 +28,7 @@ define([
             setTimeout(function () {
                 expect(action.calls.count()).toBe(2);
                 done();
-            }, 20);
+            }, 30);
         });
 
         it('should only fire one action of subsequence calls during the throttle period', function (done) {
@@ -45,7 +45,7 @@ define([
             setTimeout(function () {
                 expect(action.calls.count()).toBe(2);
                 done();
-            }, 20);
+            }, 30);
         });
 
         it('should use a default `wait` of `0`', function (done) {

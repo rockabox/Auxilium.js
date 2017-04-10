@@ -258,3 +258,9 @@ define([
   {{>body~}}
   {{>exported~}}
 {{/module}}
+
+{{#module name="throttle"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
