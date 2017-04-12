@@ -10,7 +10,7 @@ define([
      *
      * @example
      * ```js
-     * var action = var action = function () { console.log('Action to fire');};
+     * var action = function () { console.log('Action to fire');};
      *     throttled = throttle(action,1500);
      *
      * window.addEventListener('scroll', throttled);
@@ -21,14 +21,14 @@ define([
             lastThis,
             result,
             timerId = null,
-            lastCallTime;
+            lastInvokeTime;
 
         wait = wait || 0;
 
         /**
          * Invokes `action` function with passed arguments
          *
-         * @param {number} time Time that has been fired
+         * @param {number} time The timestamp of invoke.
          */
         function invokeAction (time) {
             var args = lastArgs,
@@ -36,6 +36,7 @@ define([
 
             lastArgs = null;
             lastThis = null;
+            lastInvokeTime = time;
 
             action.apply(thisArg, args);
         }
@@ -44,7 +45,7 @@ define([
          * Starts the timer to control when fire last one
          * and invokes the `action`
          *
-         * @param {number} time Time that has been fired
+         * @param {number} time The timestamp of invoke.
          */
         function invokeFirst (time) {
             // Start the timer to invoke last to be fired.
@@ -54,26 +55,28 @@ define([
         }
 
         /**
-         * Checks it hasn't fired the action yes (First time)
+         * Checks it hasn't fired the action yet (First time)
          * or if the time since last time fired is bigger than waiting time
          *
-         * @param {number} time Time that has been fired
+         * @param {number} time The timestamp of invoke.
          */
         function shouldInvoke (time) {
-            var timeSinceLastCall = time - lastCallTime;
+            var timeSinceLastInvoke = time - lastInvokeTime;
 
-            return ((typeof lastCallTime === 'undefined') || (timeSinceLastCall >= wait) || (timeSinceLastCall < 0));
+            return (
+                (typeof lastInvokeTime === 'undefined') || (timeSinceLastInvoke >= wait) || (timeSinceLastInvoke < 0)
+            );
         }
 
         /**
          * Return the remaining time to the be able to fire action
-         * Total time it has to wait minus the time it has already wait.
+         * Total time it has to wait minus the time it has already waited.
          *
-         * @param {number} time Time that has been fired
+         * @param {number} time The timestamp of invoke.
          */
         function remainingWait (time) {
-            var timeSinceLastCall = time - lastCallTime,
-                remaining = wait - timeSinceLastCall;
+            var timeSinceLastInvoke = time - lastInvokeTime,
+                remaining = wait - timeSinceLastInvoke;
 
             return remaining;
         }
@@ -95,7 +98,7 @@ define([
          * Fires the last action with the last time stamp
          * and reset timerId, lastArgs, and lastThis to null.
          *
-         * @param {number} time Time that has been fired
+         * @param {number} time The timestamp of invoke.
          */
         function invokeLast (time) {
             timerId = null;
@@ -117,16 +120,17 @@ define([
         function throttled () {
             var $this = this,
                 time = new Date().getTime(),
-                isInvoking = shouldInvoke(time);
+                canInvoke = shouldInvoke(time);
 
             lastArgs = arguments;
             lastThis = $this;
-            lastCallTime = time;
 
-            if (isInvoking) {
+            if (canInvoke) {
                 if (!timerId) {
-                    return invokeFirst(lastCallTime);
+                    return invokeFirst(time);
                 }
+                timerId = setTimeout(timerExpired, wait);
+                return invokeAction(time);
             }
             if (!timerId) {
                 timerId = setTimeout(timerExpired, wait);

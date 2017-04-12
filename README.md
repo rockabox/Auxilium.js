@@ -4,7 +4,7 @@
 [![NPM devDependencies](https://img.shields.io/david/dev/rockabox/Auxilium.js.svg)](https://david-dm.org/rockabox/Auxilium.js#info=devDependencies)
 
 # Auxilium.js
-Rockabox's AMD utility helpers, which work with IE7+.
+Rockabox's AMD utility helpers, which work with IE10+.
 
 Primarily this project is used in conjunction with [webpack](http://webpack.github.io/) builds being included in via bower, however this should work with any AMD loaders such as Require. Documentation for the modules can be found [here](#all-modules).
 
@@ -1254,7 +1254,7 @@ var css = 'body { margin: 0 auto; };',
 
 **Example**  
 ```js
-var action = var action = function () { console.log('Action to fire');};
+var action = function () { console.log('Action to fire');};
     throttled = throttle(action,1500);
 
 window.addEventListener('scroll', throttled);
@@ -1277,7 +1277,7 @@ Invokes `action` function with passed arguments
 
 **Params**
 
-- time `number` - Time that has been fired  
+- time `number` - The timestamp of invoke.  
 
 **Scope**: inner function of [throttle](#module_throttle)  
 <a name="module_throttle..invokeFirst"></a>
@@ -1287,27 +1287,27 @@ and invokes the `action`
 
 **Params**
 
-- time `number` - Time that has been fired  
+- time `number` - The timestamp of invoke.  
 
 **Scope**: inner function of [throttle](#module_throttle)  
 <a name="module_throttle..shouldInvoke"></a>
 ####throttle~shouldInvoke(time)
-Checks it hasn't fired the action yes (First time)
+Checks it hasn't fired the action yet (First time)
 or if the time since last time fired is bigger than waiting time
 
 **Params**
 
-- time `number` - Time that has been fired  
+- time `number` - The timestamp of invoke.  
 
 **Scope**: inner function of [throttle](#module_throttle)  
 <a name="module_throttle..remainingWait"></a>
 ####throttle~remainingWait(time)
 Return the remaining time to the be able to fire action
-Total time it has to wait minus the time it has already wait.
+Total time it has to wait minus the time it has already waited.
 
 **Params**
 
-- time `number` - Time that has been fired  
+- time `number` - The timestamp of invoke.  
 
 **Scope**: inner function of [throttle](#module_throttle)  
 <a name="module_throttle..timerExpired"></a>
@@ -1322,7 +1322,7 @@ and reset timerId, lastArgs, and lastThis to null.
 
 **Params**
 
-- time `number` - Time that has been fired  
+- time `number` - The timestamp of invoke.  
 
 **Scope**: inner function of [throttle](#module_throttle)  
 <a name="module_throttle..throttled"></a>
