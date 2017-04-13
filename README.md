@@ -4,7 +4,7 @@
 [![NPM devDependencies](https://img.shields.io/david/dev/rockabox/Auxilium.js.svg)](https://david-dm.org/rockabox/Auxilium.js#info=devDependencies)
 
 # Auxilium.js
-Rockabox's AMD utility helpers, which work with IE7+.
+Rockabox's AMD utility helpers, which work with IE10+.
 
 Primarily this project is used in conjunction with [webpack](http://webpack.github.io/) builds being included in via bower, however this should work with any AMD loaders such as Require. Documentation for the modules can be found [here](#all-modules).
 
@@ -1241,5 +1241,31 @@ var css = 'body { margin: 0 auto; };',
  });
 // Returns a style tag with css contents attached
 ```
+
+
+
+# throttle
+  Creates a throttled function that only invokes `action` at most once per every `wait` milliseconds
+
+**Params**
+
+- action `function` - The function to throttle.  
+- wait `number` - The number of milliseconds to throttle  
+
+**Example**  
+```js
+var action = function () { console.log('Action to fire');};
+    throttled = new Throttle(action,1500);
+
+window.addEventListener('scroll', function () {
+    throttle.invoke();
+});
+```
+
+<a name="module_throttle#invoke"></a>
+####throttle.invoke()
+Invokes `action` function if is the first time calling
+or if the time passed since the last one is bigger
+than the `wait` time.
 
 
