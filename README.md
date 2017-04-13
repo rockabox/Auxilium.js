@@ -1255,81 +1255,17 @@ var css = 'body { margin: 0 auto; };',
 **Example**  
 ```js
 var action = function () { console.log('Action to fire');};
-    throttled = throttle(action,1500);
+    throttled = new Throttle(action,1500);
 
-window.addEventListener('scroll', throttled);
+window.addEventListener('scroll', function () {
+    throttle.invoke();
+});
 ```
 
-**Members**
-
-* [throttle](#module_throttle)
-  * [throttle~invokeAction(time)](#module_throttle..invokeAction)
-  * [throttle~invokeFirst(time)](#module_throttle..invokeFirst)
-  * [throttle~shouldInvoke(time)](#module_throttle..shouldInvoke)
-  * [throttle~remainingWait(time)](#module_throttle..remainingWait)
-  * [throttle~timerExpired()](#module_throttle..timerExpired)
-  * [throttle~invokeLast(time)](#module_throttle..invokeLast)
-  * [throttle~throttled()](#module_throttle..throttled)
-
-<a name="module_throttle..invokeAction"></a>
-####throttle~invokeAction(time)
-Invokes `action` function with passed arguments
-
-**Params**
-
-- time `number` - The timestamp of invoke.  
-
-**Scope**: inner function of [throttle](#module_throttle)  
-<a name="module_throttle..invokeFirst"></a>
-####throttle~invokeFirst(time)
-Starts the timer to control when fire last one
-and invokes the `action`
-
-**Params**
-
-- time `number` - The timestamp of invoke.  
-
-**Scope**: inner function of [throttle](#module_throttle)  
-<a name="module_throttle..shouldInvoke"></a>
-####throttle~shouldInvoke(time)
-Checks it hasn't fired the action yet (First time)
-or if the time since last time fired is bigger than waiting time
-
-**Params**
-
-- time `number` - The timestamp of invoke.  
-
-**Scope**: inner function of [throttle](#module_throttle)  
-<a name="module_throttle..remainingWait"></a>
-####throttle~remainingWait(time)
-Return the remaining time to the be able to fire action
-Total time it has to wait minus the time it has already waited.
-
-**Params**
-
-- time `number` - The timestamp of invoke.  
-
-**Scope**: inner function of [throttle](#module_throttle)  
-<a name="module_throttle..timerExpired"></a>
-####throttle~timerExpired()
-Invokes last call method to fire last action and restarts the timer.
-
-**Scope**: inner function of [throttle](#module_throttle)  
-<a name="module_throttle..invokeLast"></a>
-####throttle~invokeLast(time)
-Fires the last action with the last time stamp
-and reset timerId, lastArgs, and lastThis to null.
-
-**Params**
-
-- time `number` - The timestamp of invoke.  
-
-**Scope**: inner function of [throttle](#module_throttle)  
-<a name="module_throttle..throttled"></a>
-####throttle~throttled()
-Fires `action` function if is the first time calling
+<a name="module_throttle#invoke"></a>
+####throttle.invoke()
+Invokes `action` function if is the first time calling
 or if the time passed since the last one is bigger
 than the `wait` time.
 
-**Scope**: inner function of [throttle](#module_throttle)  
 
