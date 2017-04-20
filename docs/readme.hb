@@ -4,7 +4,7 @@
 [![NPM devDependencies](https://img.shields.io/david/dev/rockabox/Auxilium.js.svg)](https://david-dm.org/rockabox/Auxilium.js#info=devDependencies)
 
 # Auxilium.js
-Rockabox's AMD utility helpers, which work with IE7+.
+Rockabox's AMD utility helpers, which work with IE10+.
 
 Primarily this project is used in conjunction with [webpack](http://webpack.github.io/) builds being included in via bower, however this should work with any AMD loaders such as Require. Documentation for the modules can be found [here](#all-modules).
 
@@ -254,6 +254,12 @@ define([
 {{/module}}
 
 {{#module name="style-tag"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
+{{#module name="throttle"~}}
   # {{>name}}
   {{>body~}}
   {{>exported~}}

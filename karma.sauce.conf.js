@@ -2,12 +2,6 @@ var baseConf = require('./karma.conf.js');
 
 module.exports = function (config) {
     var customLaunchers = {
-            'sl_ie_9': {
-                base: 'SauceLabs',
-                browserName: 'internet explorer',
-                platform: 'Windows 7',
-                version: '9'
-            },
             'sl_ie_10': {
                 base: 'SauceLabs',
                 browserName: 'internet explorer',
@@ -32,7 +26,7 @@ module.exports = function (config) {
             'saucelabs'
         ],
         sauceLabs: {
-            testName: 'Auxilium IE9+ browsers',
+            testName: 'Auxilium IE10+ browsers',
             username: process.env['SAUCE_USERNAME'],
             accessKey: process.env['SAUCE_ACCESS_KEY']
         }
