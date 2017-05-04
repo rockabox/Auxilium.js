@@ -156,19 +156,15 @@ define([
                 expect(windowPosition.winHeight).toBe(20);
             });
 
-            it('should get window properties IE8', function () {
-                var winMock = {
-                        document: {
-                            documentElement: {
-                                scrollTop: 30,
-                                clientHeight: 10
-                            }
-                        }
+            it('should get element scroll and height properties', function () {
+                var eleMock = {
+                        scrollTop: 10,
+                        clientHeight: 20
                     },
-                    windowPosition = parallaxScrolling._getWindowPositions(winMock);
+                    windowPosition = parallaxScrolling._getWindowPositions(eleMock, 'element');
 
-                expect(windowPosition.scrollTop).toBe(30);
-                expect(windowPosition.winHeight).toBe(10);
+                expect(windowPosition.scrollTop).toBe(10);
+                expect(windowPosition.winHeight).toBe(20);
             });
         });
 

@@ -1,9 +1,8 @@
 define([
     'aux/attach-css',
     'aux/events',
-    'aux/has-property',
     'aux/offset'
-], function (attachCss, Events, hasProperty, offset) {
+], function (attachCss, Events, offset) {
     var events = new Events();
 
     /**
@@ -16,7 +15,6 @@ define([
      *
      * @requires module:attach-css
      * @requires module:events
-     * @requires module:has-property
      * @requires module:offset
      *
      * @example
@@ -154,15 +152,12 @@ define([
             pageYOffset = viewport.scrollTop;
             innerHeight = viewport.clientHeight;
         } else {
-            pageYOffset = hasProperty(viewport, 'pageYOffset') ? viewport.pageYOffset :
-                viewport.document.documentElement.scrollTop;
-            innerHeight = hasProperty(viewport, 'innerHeight') ? viewport.innerHeight :
-                viewport.document.documentElement.clientHeight;
+            pageYOffset = viewport.pageYOffset;
+            innerHeight = viewport.innerHeight;
         }
 
-
         return {
-            scrollTop:  pageYOffset,
+            scrollTop: pageYOffset,
             winHeight: innerHeight
         };
     };
