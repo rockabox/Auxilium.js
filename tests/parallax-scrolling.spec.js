@@ -66,7 +66,7 @@ define([
 
                 parallaxInit.handler(overrideWin);
 
-                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin);
+                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin, 'window');
             });
 
             it('should allow overriding of the offset', function () {
@@ -79,6 +79,26 @@ define([
                 expect(parallaxScrolling._getScrollPosition).toHaveBeenCalledWith(jasmine.objectContaining({
                     offsetTop: 20192
                 }));
+            });
+
+            it('should allow overriding the type of viewport (ele or window)', function () {
+                spyOn(parallaxScrolling, '_getWindowPositions').and.callThrough();
+
+                var parallaxInit = parallaxScrolling.init(ele, container, 100, 50, window, 'window'),
+                    overrideWin = {
+                        pageYOffset: 10,
+                        innerHeight: 30,
+                        document: {
+                            documentElement: {
+                                scrollTop: 10,
+                                clientHeight: 30
+                            }
+                        }
+                    };
+
+                parallaxInit.handler(overrideWin, {}, 'element');
+
+                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin, 'element');
             });
         });
 

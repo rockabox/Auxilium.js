@@ -138,15 +138,28 @@ define([
      *
      * @private
      *
-     * @param  {Object} win The window in which to check against.
+     * @param  {Object} viewport The viewport in which to check against (an element or the window).
+     * @param  {Object} type The type of the viewport (element or window)
      * @return {Object} positions
      * @property {Number} positions.scrollTop The offset of the viewport compared to the window
      * @property {Number} positions.winHeight The total height of the window
      *
      */
-    ParallaxScrolling.prototype._getWindowPositions = function (win) {
-        var pageYOffset = hasProperty(win, 'pageYOffset') ? win.pageYOffset : win.document.documentElement.scrollTop,
-            innerHeight = hasProperty(win, 'innerHeight') ? win.innerHeight : win.document.documentElement.clientHeight;
+    ParallaxScrolling.prototype._getWindowPositions = function (viewport, type) {
+        var pageYOffset,
+            innerHeight;
+
+        // We are not scrolling via the window and instead by an element
+        if (type === 'element') {
+            pageYOffset = viewport.scrollTop;
+            innerHeight = viewport.clientHeight;
+        } else {
+            pageYOffset = hasProperty(viewport, 'pageYOffset') ? viewport.pageYOffset :
+                viewport.document.documentElement.scrollTop;
+            innerHeight = hasProperty(viewport, 'innerHeight') ? viewport.innerHeight :
+                viewport.document.documentElement.clientHeight;
+        }
+
 
         return {
             scrollTop:  pageYOffset,
@@ -214,14 +227,15 @@ define([
      * @param  {Object} container  The container of the element in which to take into consideration for scroll points
      * @param  {Number} eleHeight  The full size of the element
      * @param  {Number} viewableHeight The amount of the element in which should be viewable at any one time
-     * @param  {Object=} win       Optionally pass the window in which should be checked for the size of the viewport
+     * @param  {Object=} viewport       Optionally pass the viewport of the browser (element or window)
+     * @param  {Object=} type      Optionally pass the type of the viewport (window or element)
      *
      * @returns {Object} An object of helper functions to be used the main handler function to be fire.
      */
-    ParallaxScrolling.prototype.init = function (ele, container, eleHeight, viewableHeight, win) {
-
+    ParallaxScrolling.prototype.init = function (ele, container, eleHeight, viewableHeight, viewport, type) {
         // Default to the current window if it hasn't been passed through to the helper
-        win = win || window;
+        viewport = viewport || window;
+        type = type || 'window';
 
         var $this = this,
             offsetTop = this._offset(container).y,
@@ -232,28 +246,26 @@ define([
 
         this._container = container;
 
-        // The handler in which to be used for firing when scrolling
-        // Allows passing a new window object through the handler and the offset of the container
         return {
             /**
              * A handler in which to fire when scrolling.
-             * Allows passing a new window object through the handler and the offset of the container.
+             * Allows passing a new window viewport through the handler and the offset of the container.
              *
-             *
-             * @param  {Object?} overrideWin A new window object to be used (useful for iFrame neseting).
+             * @param  {Object?} overrideViewport A new window object to be used (useful for iFrame neseting).
              * @param  {Object?} overrideOffset Manually override the offset of the container (iframe nesting again).
              *
              * @returns {Number} The scrollY position of the what the element should be.
              */
-            handler: function (overrideWin, overrideOffset) {
-                overrideWin = overrideWin || win;
+            handler: function (overrideViewport, overrideOffset, overrideType) {
+                overrideViewport = overrideViewport || viewport;
                 overrideOffset = overrideOffset || offsetTop;
+                overrideType = overrideType || type;
 
                 scrollPosition = $this._getScrollPosition({
                     eleHeight: eleHeight,
                     offsetTop: overrideOffset,
                     visibleHeight: visibleHeight,
-                    winPosition: $this._getWindowPositions(overrideWin)
+                    winPosition: $this._getWindowPositions(overrideViewport, overrideType)
                 });
 
                 $this._setElePosition(ele, scrollPosition.scrollY);
