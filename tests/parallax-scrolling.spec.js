@@ -66,7 +66,7 @@ define([
 
                 parallaxInit.handler(overrideWin);
 
-                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin);
+                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin, 'window');
             });
 
             it('should allow overriding of the offset', function () {
@@ -79,6 +79,26 @@ define([
                 expect(parallaxScrolling._getScrollPosition).toHaveBeenCalledWith(jasmine.objectContaining({
                     offsetTop: 20192
                 }));
+            });
+
+            it('should allow overriding the type of viewport (ele or window)', function () {
+                spyOn(parallaxScrolling, '_getWindowPositions').and.callThrough();
+
+                var parallaxInit = parallaxScrolling.init(ele, container, 100, 50, window, 'window'),
+                    overrideWin = {
+                        pageYOffset: 10,
+                        innerHeight: 30,
+                        document: {
+                            documentElement: {
+                                scrollTop: 10,
+                                clientHeight: 30
+                            }
+                        }
+                    };
+
+                parallaxInit.handler(overrideWin, {}, 'element');
+
+                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin, 'element');
             });
         });
 
@@ -136,19 +156,15 @@ define([
                 expect(windowPosition.winHeight).toBe(20);
             });
 
-            it('should get window properties IE8', function () {
-                var winMock = {
-                        document: {
-                            documentElement: {
-                                scrollTop: 30,
-                                clientHeight: 10
-                            }
-                        }
+            it('should get element scroll and height properties', function () {
+                var eleMock = {
+                        scrollTop: 10,
+                        clientHeight: 20
                     },
-                    windowPosition = parallaxScrolling._getWindowPositions(winMock);
+                    windowPosition = parallaxScrolling._getWindowPositions(eleMock, 'element');
 
-                expect(windowPosition.scrollTop).toBe(30);
-                expect(windowPosition.winHeight).toBe(10);
+                expect(windowPosition.scrollTop).toBe(10);
+                expect(windowPosition.winHeight).toBe(20);
             });
         });
 
