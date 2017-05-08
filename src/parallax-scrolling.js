@@ -69,7 +69,9 @@ define([
             eleHeight = params.eleHeight,
             offsetTop = params.offsetTop,
             visibleHeight = params.visibleHeight,
-            winPosition = params.winPosition;
+            winPosition = params.winPosition,
+            topPosition,
+            winHeight = winPosition.winHeight;
 
         if (this._isTop(winPosition, offsetTop, visibleHeight)) {
             scrollProgress = 0;
@@ -77,12 +79,44 @@ define([
         } else if (this._isScrollable(winPosition, offsetTop, visibleHeight)) {
             var ratio,
                 // How much the slot has scrolled compared to the window scroll position
-                scrollDistance = (offsetTop + visibleHeight) - winPosition.scrollTop;
+                scrollDistance = (offsetTop + visibleHeight) - winPosition.scrollTop,
+                bottom,
+                leftToShow;
 
             // Calculate how much the content has scrolled
-            scrollProgress = scrollDistance / winPosition.winHeight;
+            scrollProgress = scrollDistance / winHeight;
             ratio = eleHeight * scrollProgress;
             scrollY = visibleHeight - ratio;
+
+            // Is the Screen larger than the Parallax element
+            if (winHeight > eleHeight) {
+                // distance between starting point and the bottom of the window page.
+                bottom =  winHeight - scrollDistance;
+                // number of pixel left to show from the parallax element
+                leftToShow =  eleHeight - (visibleHeight + bottom);
+
+                if (leftToShow <= 0) {
+                    topPosition = offsetTop - winPosition.scrollTop;
+                    // If the element is at the top of the browser viewport
+                    if (topPosition <= 0) {
+                        scrollY = Math.abs(topPosition);
+                        // The scroll progress will be 100 percent when the top position is equal to the visibleHeight
+                        scrollProgress = 1 - ((eleHeight - (visibleHeight - scrollY)) / eleHeight);
+                    } else {
+                        // Parallax element is at the top of the creative element it stops scrolling until
+                        // the creative element reach the top of the window.
+                        scrollY = 0;
+                        // scrollProgress is equal to the parallax element height minus the size of element
+                        // that should be viewable at any time.
+                        scrollProgress = 1 - ((eleHeight - visibleHeight) / eleHeight);
+                    }
+                } else {
+                    // the scroll progress is calculate from initial size of the minimum viewable part base on
+                    // how many pixel it has scroll.
+                    scrollProgress = 1 - (bottom / eleHeight);
+                    scrollY = (visibleHeight + bottom) - eleHeight;
+                }
+            }
         } else {
             scrollProgress = 1;
             scrollY = visibleHeight - eleHeight;
