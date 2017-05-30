@@ -6,7 +6,8 @@
   "scripts": {
     "docs": "jsdoc2md src/**/*.js --template docs/readme.hb > README.md",
     "test": "grunt test",
-    "test-ci": "grunt ci-test"
+    "test-ci": "grunt ci-test",
+    "unit": "grunt karma:unit"
   },
   "repository": {
     "type": "git",
