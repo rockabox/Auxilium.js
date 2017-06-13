@@ -91,6 +91,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="ele-in-view"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="error"~}}
   # {{>name}}
   {{>body~}}

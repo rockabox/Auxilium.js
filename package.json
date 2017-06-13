@@ -1,12 +1,13 @@
 {
   "name": "Auxilium.js",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "A webpacked utility library.",
   "main": "src/index.js",
   "scripts": {
     "docs": "jsdoc2md src/**/*.js --template docs/readme.hb > README.md",
     "test": "grunt test",
-    "test-ci": "grunt ci-test"
+    "test-ci": "grunt ci-test",
+    "unit": "grunt karma:unit"
   },
   "repository": {
     "type": "git",

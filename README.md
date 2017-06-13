@@ -330,6 +330,31 @@ cssEvents.removeEvent('<div></div>', 'AnimationEnd', function () {
 
 
 
+# ele-in-view
+  Calculates the amount of pixels and the percentage in which an element is currently in view.
+
+**Params**
+
+- ele `Object` - The element in which to check.  
+- eleHeight `Number` - The height of the element.  
+- viewport `Object` - The viewport for the element (window or parent scrolling element)  
+- type `String` - The type of the viewport ('window' or 'element')  
+
+**Returns**: `Object` - An object containing the viewability of the element (the pixels and the ratio)  
+**Example**  
+```js
+var div = document.getElementById('some-ele-id'),
+     inView = eleInView(div, 250, window, 'window');
+
+// Returns Object
+// {
+//   'pixels': 125,
+//   'ratio': 0.5
+// }
+```
+
+
+
 # error
   A module which deals with handling errors (helper to throw error's).
 
@@ -965,8 +990,8 @@ events.addListener(window, 'resize', function () {
 * [parallax-scrolling](#module_parallax-scrolling)
   * [parallax-scrolling._events](#module_parallax-scrolling#_events)
   * [parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers(ele, percentage)](#module_parallax-scrolling.ParallaxScrolling#_scrollPercentTriggers)
-  * [parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [win])](#module_parallax-scrolling.ParallaxScrolling#init)
-  * [parallax-scrolling~handler(overrideWin, overrideOffset)](#module_parallax-scrolling..handler)
+  * [parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [viewport], [type])](#module_parallax-scrolling.ParallaxScrolling#init)
+  * [parallax-scrolling~handler(overrideViewport, overrideOffset)](#module_parallax-scrolling..handler)
   * [parallax-scrolling~resetOffset()](#module_parallax-scrolling..resetOffset)
 
 <a name="module_parallax-scrolling#_events"></a>
@@ -987,7 +1012,7 @@ trigger more than once for a percent.
 **Returns**: `Boolean` - Whether the percentage was triggered or not.  
 **Access**: protected  
 <a name="module_parallax-scrolling.ParallaxScrolling#init"></a>
-####parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [win])
+####parallax-scrolling.ParallaxScrolling#init(ele, container, eleHeight, viewableHeight, [viewport], [type])
 Initialise the a new parallax scrolling handler
 
 **Params**
@@ -996,17 +1021,18 @@ Initialise the a new parallax scrolling handler
 - container `Object` - The container of the element in which to take into consideration for scroll points  
 - eleHeight `Number` - The full size of the element  
 - viewableHeight `Number` - The amount of the element in which should be viewable at any one time  
-- \[win\] `Object` - Optionally pass the window in which should be checked for the size of the viewport  
+- \[viewport\] `Object` - Optionally pass the viewport of the browser (element or window)  
+- \[type\] `Object` - Optionally pass the type of the viewport (window or element)  
 
 **Returns**: `Object` - An object of helper functions to be used the main handler function to be fire.  
 <a name="module_parallax-scrolling..handler"></a>
-####parallax-scrolling~handler(overrideWin, overrideOffset)
+####parallax-scrolling~handler(overrideViewport, overrideOffset)
 A handler in which to fire when scrolling.
-Allows passing a new window object through the handler and the offset of the container.
+Allows passing a new window viewport through the handler and the offset of the container.
 
 **Params**
 
-- overrideWin `Object` - A new window object to be used (useful for iFrame neseting).  
+- overrideViewport `Object` - A new window object to be used (useful for iFrame neseting).  
 - overrideOffset `Object` - Manually override the offset of the container (iframe nesting again).  
 
 **Scope**: inner function of [parallax-scrolling](#module_parallax-scrolling)  
