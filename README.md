@@ -337,6 +337,7 @@ cssEvents.removeEvent('<div></div>', 'AnimationEnd', function () {
 
 - ele `Object` - The element in which to check.  
 - eleHeight `Number` - The height of the element.  
+- eleWidth `Number` - The width of the element.  
 - viewport `Object` - The viewport for the element (window or parent scrolling element)  
 - type `String` - The type of the viewport ('window' or 'element')  
 
@@ -344,12 +345,20 @@ cssEvents.removeEvent('<div></div>', 'AnimationEnd', function () {
 **Example**  
 ```js
 var div = document.getElementById('some-ele-id'),
-     inView = eleInView(div, 250, window, 'window');
+     inView = eleInView(div, 250, 300, window, 'window');
 
 // Returns Object
 // {
-//   'pixels': 125,
-//   'ratio': 0.5
+//   'pixels': 37500,
+//   'ratio': 0.5,
+//   'horizontal': {
+//       'pixels': 300,
+//       'ratio': 1
+//   },
+//   'vertical': {
+//       'pixels': 125,
+//       'ratio': 0.5
+//   }
 // }
 ```
 
