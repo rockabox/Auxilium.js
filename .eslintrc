@@ -1,0 +1,175 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jasmine": true,
+    "node": true,
+    "mocha": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+  },
+  "globals": {
+    "ADCHOICES": true,
+    "ADSERVER": true,
+    "API": true,
+    "COMPONENT_BUTTON": true,
+    "COMPONENT_GALLERY": true,
+    "COMPONENT_HTML": true,
+    "COMPONENT_IFRAME": true,
+    "COMPONENT_IMAGE": true,
+    "COMPONENT_LAYOUT": true,
+    "COMPONENT_PARALLAX": true,
+    "COMPONENT_SHIFT": true,
+    "COMPONENT_VIDEO": true,
+    "CREATIVES": true,
+    "define": true,
+    "DELIVERY_MACRO": true,
+    "DOMAIN_LOGGING": true,
+    "DOMAIN_SERVICE_API": true,
+    "DOMAIN_SERVICE": true,
+    "FALLBACK_URL": true,
+    "FIRST_DESKTOP": true,
+    "FIRST_FALLBACK": true,
+    "FIRST_IN_CONTENT_MOBILE": true,
+    "FIRST_IN_CONTENT_DESKTOP": true,
+    "FIRST_SHIFT": true,
+    "HAS_IFRAME": true,
+    "INITIAL_IMAGE": true,
+    "JS_HOOKS": true,
+    "JS_HOOKS_EXISTS": true,
+    "LAUNCH_CREATIVE": true,
+    "LAUNCH_METHOD": true,
+    "LAUNCH_TRIGGER": true,
+    "LIVE": true,
+    "MRAID": true,
+    "ONE_BY_ONE": true,
+    "PAGE_BACKGROUND": true,
+    "PAGE_SHELL_HEADER": true,
+    "PAGE_SHELLS": true,
+    "PLACEMENT_ID": true,
+    "SCALE_FORMAT": true,
+    "SILICON_URL": true,
+    "TRACKING": true,
+    "__webpack_public_path__": true
+  },
+  "rules": {
+    "no-debugger": 2,
+    "no-eval": 2,
+    "no-implied-eval": 2,
+    "eqeqeq": 2,
+    /*"newline-after-var": 2,*/
+    /*"no-unused-vars": 2,*/
+    /*"new-cap": 2,*/
+    "no-multi-str": 2,
+    "no-new-wrappers": 2,
+    "no-array-constructor": 2,
+    "no-new-object": 2,
+    "no-dupe-keys": 2,
+    "no-dupe-args": 2,
+    "indent": 2,
+    "no-new": 2,
+    "no-redeclare": 2,
+    "no-undefined": 2,
+    "semi": 2,
+    // "no-undef": [
+    //   2
+    // ],
+    "camelcase": [
+      2,
+      {
+        "properties": "never"
+      }
+    ],
+    "dot-notation": [2, {
+        "allowPattern": "^[a-z|1-9]+(_[a-z|1-9]+)+$"
+    }],
+    "curly": [
+      2,
+      "all"
+    ],
+    "space-return-throw-case": 0,
+    "keyword-spacing": [
+      2,
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "space-before-blocks": [
+      2,
+      "always"
+    ],
+    "space-before-function-paren": [
+      2,
+      "always"
+    ],
+    "no-empty": 2,
+    "space-in-parens": [
+      2,
+      "never"
+    ],
+    "key-spacing": [
+      2,
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
+    // "block-scoped-var": 2,
+    "no-multi-spaces": 2,
+    "comma-style": [
+      2,
+      "last"
+    ],
+    "operator-linebreak": [
+      2,
+      "after"
+    ],
+    // "space-infix-ops": 2,
+    "space-unary-ops": 2,
+    "no-implicit-coercion": [
+      2,
+      {
+        "number": true,
+        "boolean": true,
+        "string": true
+      }
+    ],
+    "no-with": 2,
+    "no-multiple-empty-lines": 2,
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "no-mixed-spaces-and-tabs": 2,
+    "no-trailing-spaces": 2,
+    "no-path-concat": 2,
+    "comma-dangle": [
+      2,
+      "never"
+    ],
+    "brace-style": 2,
+    "max-len": [
+      2,
+      120
+    ],
+    "consistent-this": [
+      2,
+      "$this"
+    ],
+    "yoda": [
+      2,
+      "never"
+    ],
+    "sort-imports": ["error", {
+      "ignoreCase": false,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    }]
+  }
+}

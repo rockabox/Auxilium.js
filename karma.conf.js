@@ -14,43 +14,43 @@ opts.module.postLoaders = [
 
 module.exports = function (config) {
     var configuration = {
-            customLaunchers: {
-                'Chrome_travis_ci': {
-                    base: 'Chrome',
-                    flags: ['--no-sandbox']
-                }
-            },
-            basePath: './',
-            files: [
-                'tests/helpers/**/*.matchers.js',
-                'tests/**/*.spec.js'
-            ],
-            browsers: [
-                'Chrome',
-                'Firefox'
-            ],
-            frameworks: [
-                'jasmine'
-            ],
-            port: 9876,
-            runnerPort: 9100,
-            singleRun: true,
-            captureTimeout: 60000,
-            reporters: [
-                'progress',
-                'coverage'
-            ],
-            coverageReporter: {
-                type: 'html',
-                dir: 'coverage/'
-            },
-            preprocessors: {
-                'tests/**/*.spec.js': [
-                    'webpack'
-                ]
-            },
-            webpack: opts
-        };
+        customLaunchers: {
+            'Chrome_travis_ci': {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+        basePath: './',
+        files: [
+            'tests/helpers/**/*.matchers.js',
+            'tests/**/*.spec.js'
+        ],
+        browsers: [
+            'Chrome',
+            'Firefox'
+        ],
+        frameworks: [
+            'jasmine'
+        ],
+        port: 9876,
+        runnerPort: 9100,
+        singleRun: true,
+        captureTimeout: 60000,
+        reporters: [
+            'progress',
+            'coverage'
+        ],
+        coverageReporter: {
+            type: 'html',
+            dir: 'coverage/'
+        },
+        preprocessors: {
+            'tests/**/*.spec.js': [
+                'webpack'
+            ]
+        },
+        webpack: opts
+    };
 
     if (process.env.TRAVIS) {
         // If we're running on Travis CI use the custom launcher & use coveralls reporter

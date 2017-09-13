@@ -35,13 +35,14 @@ define([
                     if (win.getComputedStyle(ele).getPropertyValue('position') === 'fixed') {
                         positionFixed = true;
                     }
-                }  catch (error) {
+                } catch (error) {
                     if (ele.style.position === 'fixed') {
                         positionFixed = true;
                     }
                 }
             }
         } catch (error) {
+            // error
         }
 
         return positionFixed;

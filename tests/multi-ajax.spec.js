@@ -46,7 +46,7 @@ define([
 
             expect(success).toBe(true);
             expect(error).toBe(false);
-            expect(multiAjax['_loadJsonCallbackGenerator'].calls.count()).toBe(3);
+            expect(multiAjax._loadJsonCallbackGenerator.calls.count()).toBe(3);
         });
 
         it('should stop on first error', function () {

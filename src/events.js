@@ -134,7 +134,7 @@ define([
             var handlers = ele.rbevents[eventType];
 
             for (var i = 0, len = handlers.length; i < len; i++) {
-                if (handlers[i] == handler) {
+                if (handlers[i] === handler) {
                     handlers[i] = false;
                 }
             }
