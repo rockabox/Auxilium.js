@@ -55,8 +55,7 @@ module.exports = function (config) {
     if (process.env.TRAVIS) {
         // If we're running on Travis CI use the custom launcher & use coveralls reporter
         configuration.browsers = [
-            'Chrome_travis_ci',
-            'Firefox'
+            'Chrome_travis_ci'
         ];
         configuration.coverageReporter = {
             type: 'lcovonly',

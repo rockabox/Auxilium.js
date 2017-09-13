@@ -56,7 +56,7 @@ define([
                 top += ele.offsetTop;
             }
         } catch (error) {
-            // Errorw
+            // Error
         }
         return {
             y: top,

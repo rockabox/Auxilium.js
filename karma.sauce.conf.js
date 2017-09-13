@@ -13,6 +13,11 @@ module.exports = function (config) {
             browserName: 'internet explorer',
             platform: 'Windows 7',
             version: '11'
+        },
+        'firefox': {
+            base: 'SauceLabs',
+            browserName: 'firefox',
+            version: '30'
         }
     };
 
@@ -27,8 +32,14 @@ module.exports = function (config) {
         ],
         sauceLabs: {
             testName: 'Auxilium IE10+ browsers',
+            tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
             username: process.env.SAUCE_USERNAME,
-            accessKey: process.env.SAUCE_ACCESS_KEY
+            accessKey: process.env.SAUCE_ACCESS_KEY,
+            startConnect: false,
+            connectOptions: {
+                port: 5757,
+                logfile: 'sauce_connect.log'
+            }
         }
     });
 };
