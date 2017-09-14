@@ -172,24 +172,24 @@ define([
             describe('top', function () {
                 it('should return that the element is at the top of the viewport (flush @ top)', function () {
                     var atTop = ParallaxScrolling.prototype._isTop({
-                            scrollTop: 200
-                        }, 100, 100);
+                        scrollTop: 200
+                    }, 100, 100);
 
                     expect(atTop).toBeTruthy();
                 });
 
                 it('should return that the element is at the top of the viewport (not flush)', function () {
                     var atTop = ParallaxScrolling.prototype._isTop({
-                            scrollTop: 200
-                        }, 100, 99);
+                        scrollTop: 200
+                    }, 100, 99);
 
                     expect(atTop).toBeTruthy();
                 });
 
                 it('should return that the element is not at the top of the viewport', function () {
                     var atTop = ParallaxScrolling.prototype._isTop({
-                            scrollTop: 200
-                        }, 100, 101);
+                        scrollTop: 200
+                    }, 100, 101);
 
                     expect(atTop).toBeFalsy();
                 });

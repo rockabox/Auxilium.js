@@ -91,9 +91,9 @@ define([
             // Is the Screen larger than the Parallax element
             if (winHeight > eleHeight) {
                 // distance between starting point and the bottom of the window page.
-                bottom =  winHeight - scrollDistance;
+                bottom = winHeight - scrollDistance;
                 // number of pixel left to show from the parallax element
-                leftToShow =  eleHeight - (visibleHeight + bottom);
+                leftToShow = eleHeight - (visibleHeight + bottom);
 
                 if (leftToShow <= 0) {
                     topPosition = offsetTop - winPosition.scrollTop;

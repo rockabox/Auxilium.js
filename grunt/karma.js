@@ -3,6 +3,6 @@ module.exports = {
         configFile: 'karma.conf.js'
     },
     'unit-sauce': {
-        configFile: 'karma.sauce.conf.js'
+        configFile: 'karma.conf.js'
     }
 };

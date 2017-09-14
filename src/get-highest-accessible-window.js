@@ -35,7 +35,9 @@ define([
             if (win.top.document && win.top.document.domain) {
                 return win.top;
             }
-        } catch (error) {}
+        } catch (error) {
+            // error
+        }
 
         // Climb the windows current parents and get the highest most possible window in which we have access
         climbParents(win);

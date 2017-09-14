@@ -50,7 +50,7 @@ define([
             uuidsSorted = uuids.sort();
 
             for (var u = 0; u < uuids.length - 1; u++) {
-                if (uuidsSorted[u + 1] == uuidsSorted[u]) {
+                if (uuidsSorted[u + 1] === uuidsSorted[u]) {
                     results.push(uuidsSorted[u]);
                 }
             }

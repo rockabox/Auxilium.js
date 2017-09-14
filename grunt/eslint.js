@@ -1,11 +1,8 @@
 module.exports = {
     options: {
-        jshintrc: '.jshintrc'
+        configFile: '.eslintrc'
     },
-    json: [
-        '*.json'
-    ],
-    js: [
+    target: [
         '*.js',
         'grunt/**/*.js',
         'src/**/*.js',

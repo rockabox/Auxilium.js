@@ -30,7 +30,9 @@ define([
             try {
                 host = decodeURIComponent(result);
                 return decodeURIComponent(host);
-            } catch (error) {}
+            } catch (error) {
+                // Error
+            }
         }
         return '';
     }

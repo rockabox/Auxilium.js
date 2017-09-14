@@ -49,12 +49,14 @@ define([
                     if (win.getComputedStyle(ele).getPropertyValue('position') === 'fixed') {
                         positionFixed = true;
                     }
-                }  catch (error) {
+                } catch (error) {
+                    // Error
                 }
                 left += ele.offsetLeft;
                 top += ele.offsetTop;
             }
         } catch (error) {
+            // Error
         }
         return {
             y: top,

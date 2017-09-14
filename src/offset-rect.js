@@ -54,9 +54,9 @@ define([
             scrollX = win.pageXOffset;
         } else {
             scrollX = (((ele = doc.documentElement) || (ele = body.parentNode)) &&
-                typeof ele.scrollLeft == 'number' ? ele : body).scrollLeft;
+                typeof ele.scrollLeft === 'number' ? ele : body).scrollLeft;
             scrollY = (((ele = doc.documentElement) || (ele = body.parentNode)) &&
-                typeof ele.scrollTop == 'number' ? ele : body).scrollTop;
+                typeof ele.scrollTop === 'number' ? ele : body).scrollTop;
         }
 
         return {

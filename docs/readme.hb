@@ -97,6 +97,12 @@ define([
   {{>exported~}}
 {{/module}}
 
+{{#module name="ends-with"~}}
+  # {{>name}}
+  {{>body~}}
+  {{>exported~}}
+{{/module}}
+
 {{#module name="error"~}}
   # {{>name}}
   {{>body~}}

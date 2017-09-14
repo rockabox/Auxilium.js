@@ -1,6 +1,19 @@
 {
     // Predefined globals
     "browser"       : true,     // Standard browser globals
+    "node"          : true,
+
+    "globals"   : {
+        /* JASMINE */
+        "describe"   : false,
+        "it"         : false,
+        "before"     : false,
+        "beforeEach" : false,
+        "after"      : false,
+        "afterEach"  : false
+    },
+
+    "expr"          : true,
 
     // Development
     "debug"         : false,    // Allow debugger statements e.g. browser breakpoints.
@@ -15,5 +28,6 @@
 
     // Styling preferences.
     "indent"        : 4,        // Indent level
-    "camelcase"     : true      // Use CAMEL Casing for variables
+    "camelcase"     : true,      // Use CAMEL Casing for variables
+    "esnext"        : true
 }

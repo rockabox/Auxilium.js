@@ -7,7 +7,7 @@ module.exports = function (grunt) {
     grunt.registerTask('lint', [
         'jshint:json',
         'jshint:js',
-        'jscs:src'
+        'eslint:target'
     ]);
 
     grunt.registerTask('sauce-labs', [
