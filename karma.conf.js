@@ -35,7 +35,7 @@ module.exports = function (config) {
         port: 9876,
         runnerPort: 9100,
         singleRun: true,
-        captureTimeout: 60000,
+        captureTimeout: 120000,
         reporters: [
             'progress',
             'coverage'
