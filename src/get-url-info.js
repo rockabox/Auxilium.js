@@ -1,6 +1,5 @@
 define([
-    'aux/create-element'
-], function (createElement) {
+], function () {
 
     /**
      * Gets information from about a url. Domain, Port, Protocol etc.
@@ -53,13 +52,10 @@ define([
             // Try to use the built in browser URL functions
             linkInfo = new window.URL(url);
         } catch (error) {
-            // When there is an error create an element in order to get the information (URL most likely not avaialbe
+            // When there is an error create an element in order to get the information (URL most likely not available
             // in current browser)
-            var ele = createElement('a', {
-                attr: {
-                    'href': url
-                }
-            });
+            var ele = document.createElement('a');
+            ele.setAttribute('href', url);
 
             linkInfo = {
                 'hash': ele.hash,
