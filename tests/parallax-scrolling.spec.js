@@ -40,12 +40,24 @@ define([
             expect(typeof parallaxInit.resetOffset).toBe('function');
         });
 
+        it('should return a function for `percentageTrigger` ', () => {
+            var parallaxInit = parallaxScrolling.init(ele, container);
+
+            expect(parallaxInit.percentageTrigger).toBe(parallaxScrolling.percentageTrigger);
+        });
+
         it('should get the offset of the element', function () {
             spyOn(parallaxScrolling, '_offset').and.callThrough();
 
             parallaxScrolling.init(ele, container);
 
             expect(parallaxScrolling._offset).toHaveBeenCalledWith(container);
+        });
+
+        it('should assign `will-change` with `transform` to the element style', () => {
+            parallaxScrolling.init(ele, container);
+
+            expect(ele.style.willChange).toBe('transform');
         });
 
         describe('overriding variables via handler', function () {
@@ -66,7 +78,7 @@ define([
 
                 parallaxInit.handler(overrideWin);
 
-                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin, 'window');
+                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin);
             });
 
             it('should allow overriding of the offset', function () {
@@ -84,7 +96,7 @@ define([
             it('should allow overriding the type of viewport (ele or window)', function () {
                 spyOn(parallaxScrolling, '_getWindowPositions').and.callThrough();
 
-                var parallaxInit = parallaxScrolling.init(ele, container, 100, 50, window, 'window'),
+                var parallaxInit = parallaxScrolling.init(ele, container, 100, 50, window),
                     overrideWin = {
                         pageYOffset: 10,
                         innerHeight: 30,
@@ -96,9 +108,9 @@ define([
                         }
                     };
 
-                parallaxInit.handler(overrideWin, {}, 'element');
+                parallaxInit.handler(overrideWin, {});
 
-                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin, 'element');
+                expect(parallaxScrolling._getWindowPositions).toHaveBeenCalledWith(overrideWin);
             });
         });
 
@@ -127,30 +139,43 @@ define([
         });
 
         describe('window positions', function () {
+            var winMock,
+                windowPosition;
+
+            beforeEach(() => {
+                winMock = {};
+            });
+
             it('should get how much the current document has been scrolled', function () {
-                var windowPosition = parallaxScrolling._getWindowPositions(window);
+                winMock.pageYOffset = 0;
+
+                windowPosition = parallaxScrolling._getWindowPositions(winMock);
 
                 expect(windowPosition.scrollTop).toBe(0);
             });
 
             it('should get the windows height', function () {
-                var windowPosition = parallaxScrolling._getWindowPositions(window);
+                winMock.innerHeight = 10;
+
+                windowPosition = parallaxScrolling._getWindowPositions(winMock);
 
                 expect(typeof windowPosition.winHeight).toBe('number');
             });
 
             it('should get the windows scroll position', function () {
-                var windowPosition = parallaxScrolling._getWindowPositions(window);
+                winMock.pageYOffset = 0;
+
+                windowPosition = parallaxScrolling._getWindowPositions(winMock);
 
                 expect(typeof windowPosition.scrollTop).toBe('number');
             });
 
             it('should get window properties', function () {
-                var winMock = {
-                        pageYOffset: 10,
-                        innerHeight: 20
-                    },
-                    windowPosition = parallaxScrolling._getWindowPositions(winMock);
+                winMock = {
+                    pageYOffset: 10,
+                    innerHeight: 20
+                };
+                windowPosition = parallaxScrolling._getWindowPositions(winMock);
 
                 expect(windowPosition.scrollTop).toBe(10);
                 expect(windowPosition.winHeight).toBe(20);
@@ -158,71 +183,13 @@ define([
 
             it('should get element scroll and height properties', function () {
                 var eleMock = {
-                        scrollTop: 10,
-                        clientHeight: 20
-                    },
-                    windowPosition = parallaxScrolling._getWindowPositions(eleMock, 'element');
+                    scrollTop: 10,
+                    clientHeight: 20
+                };
+                windowPosition = parallaxScrolling._getWindowPositions(eleMock);
 
                 expect(windowPosition.scrollTop).toBe(10);
                 expect(windowPosition.winHeight).toBe(20);
-            });
-        });
-
-        describe('checking position', function () {
-            describe('top', function () {
-                it('should return that the element is at the top of the viewport (flush @ top)', function () {
-                    var atTop = ParallaxScrolling.prototype._isTop({
-                        scrollTop: 200
-                    }, 100, 100);
-
-                    expect(atTop).toBeTruthy();
-                });
-
-                it('should return that the element is at the top of the viewport (not flush)', function () {
-                    var atTop = ParallaxScrolling.prototype._isTop({
-                        scrollTop: 200
-                    }, 100, 99);
-
-                    expect(atTop).toBeTruthy();
-                });
-
-                it('should return that the element is not at the top of the viewport', function () {
-                    var atTop = ParallaxScrolling.prototype._isTop({
-                        scrollTop: 200
-                    }, 100, 101);
-
-                    expect(atTop).toBeFalsy();
-                });
-            });
-
-            describe('scrollable area', function () {
-                var inScroll;
-
-                it('should return false when scroll point is higher than window scroll position', function () {
-                    inScroll = ParallaxScrolling.prototype._isScrollable({
-                        scrollTop: 200
-                    }, 100, 99);
-
-                    expect(inScroll).toBeFalsy();
-                });
-
-                it('should return false when scroll position & window height is lower than scroll point', function () {
-                    inScroll = ParallaxScrolling.prototype._isScrollable({
-                        winHeight: 99,
-                        scrollTop: 100
-                    }, 100, 100);
-
-                    expect(inScroll).toBeFalsy();
-                });
-
-                it('should return true when the scroll position is higher than the scroll point', function () {
-                    inScroll = ParallaxScrolling.prototype._isScrollable({
-                        winHeight: 100,
-                        scrollTop: 100
-                    }, 100, 99);
-
-                    expect(inScroll).toBeTruthy();
-                });
             });
         });
 
@@ -232,239 +199,222 @@ define([
             var elePos = parallaxScrolling._setElePosition(ele, 90);
 
             expect(parallaxScrolling._attachCss).toHaveBeenCalledWith(ele, jasmine.objectContaining({
-                'top': '90px'
+                'transform': 'translate3d(0, 90px, 0)'
             }));
 
             expect(elePos).toBe(ele);
         });
 
-        describe('get scroll position', function () {
-            var scrollPosition;
+        describe('_getScrollPosition', function () {
+            var scrollPosition,
+                ele,
+                params,
+                result;
 
-            it('should pass back scroll position when at bottom', function () {
-                spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
-                spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(false);
-
-                scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
-                    visibleHeight: 200,
-                    eleHeight: 100,
-                    winPosition: {
-                        scrollTop: 0,
-                        winHeight: 100
-                    }
-                });
-
-                expect(scrollPosition.scrollProgress).toBe(1);
-                // The visible height minus that of the original ele height
-                expect(scrollPosition.scrollY).toBe(100);
+            beforeEach(() => {
+                spyOn(ParallaxScrolling.prototype, '_setElePosition');
+                params = {};
+                ele = document.createElement('div');
             });
 
-            it('should pass back the scroll position when at top', function () {
-                spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(true);
-
-                scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
-                    visibleHeight: 200,
-                    winPosition: {
-                        scrollTop: 0,
-                        winHeight: 100
-                    }
+            describe('top of window', () => {
+                beforeEach(() => {
+                    params = {
+                        ele: ele,
+                        winPosition: {
+                            scrollTop: 100
+                        },
+                        offsetTop: 10
+                    };
                 });
 
-                expect(scrollPosition.scrollProgress).toBe(0);
-                // The same as the visible height
-                expect(scrollPosition.scrollY).toBe(200);
+                it('should return `scrollY` as `scrollTop` minus `offsetTop`', () => {
+                    result = ParallaxScrolling.prototype._getScrollPosition(params);
+
+                    expect(result.scrollY).toBe(90);
+                });
+
+                it('should return `scrollProgress` as zero', () => {
+                    result = ParallaxScrolling.prototype._getScrollPosition(params);
+
+                    expect(result.scrollProgress).toBe(0);
+                });
+
+                it('should call `_setElePosition` with `ele` and `scrollY`', () => {
+                    result = ParallaxScrolling.prototype._getScrollPosition(params);
+
+                    expect(ParallaxScrolling.prototype._setElePosition).toHaveBeenCalledWith(ele, 90);
+                });
             });
 
-            it('should get the position in which should be scrolled at', function () {
-                spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
-                spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(true);
+            describe('not top', () => {
+                beforeEach(() => {
+                    spyOn(ParallaxScrolling.prototype, '_smallerWindow');
+                    spyOn(ParallaxScrolling.prototype, '_largerWindow');
 
-                scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
-                    winPosition: {
-                        scrollTop: 200,
-                        winHeight: 1000
-                    },
-                    visibleHeight: 200,
-                    offsetTop: 200,
-                    eleHeight: 1200
+                    params = {
+                        ele: ele,
+                        winPosition: {
+                            scrollTop: 0,
+                            winHeight: 100
+                        },
+                        offsetTop: 20
+                    };
                 });
 
-                expect(scrollPosition.scrollProgress).toBe(0.2);
-                // The same as the visible height
-                expect(scrollPosition.scrollY).toBe(-40);
-            });
+                describe('smaller window', () => {
+                    beforeEach(() => {
+                        params.eleHeight = 200;
 
-            describe('when window height is larger than parallax element the `scrollProgress`', function () {
-                var scrollPercent,
-                    scrollTop,
-                    winHeight,
-                    visibleHeight,
-                    offsetTop,
-                    eleHeight;
-
-                it('should return 1 when top position is equal to the visibleHeight', function () {
-                    spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
-                    spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(true);
-                    scrollTop = 400;
-                    winHeight = 1000;
-                    visibleHeight = 200;
-                    offsetTop = 1200;
-                    eleHeight = 600;
-
-                    scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
-                        winPosition: {
-                            scrollTop: scrollTop,
-                            winHeight: winHeight
-                        },
-                        visibleHeight: visibleHeight,
-                        offsetTop: offsetTop,
-                        eleHeight: eleHeight
+                        ParallaxScrolling.prototype._smallerWindow.and.returnValue({
+                            scrollY: 929292
+                        });
                     });
 
-                    expect(scrollPosition.scrollProgress).toBe(1);
-                    expect(scrollPosition.scrollY).toBe(-400);
+                    it('should call `_smallerWindow`', () => {
+                        result = ParallaxScrolling.prototype._getScrollPosition(params);
+
+                        expect(ParallaxScrolling.prototype._smallerWindow).toHaveBeenCalledWith(200, 20, 0, 100);
+                        expect(ParallaxScrolling.prototype._largerWindow).not.toHaveBeenCalled();
+                    });
+
+                    it('should call `_setElePosition` with the `scrollY` returned from `_smallerWindow`', () => {
+                        result = ParallaxScrolling.prototype._getScrollPosition(params);
+
+                        expect(ParallaxScrolling.prototype._setElePosition).toHaveBeenCalledWith(ele, 929292);
+                    });
                 });
 
-                it('should return  0 if the element is at the top of the browser viewport', function () {
-                    spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
-                    spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(true);
-                    scrollTop = 1400;
-                    winHeight = 1000;
-                    visibleHeight = 200;
-                    offsetTop = 1200;
-                    eleHeight = 600;
+                describe('larger window', () => {
+                    beforeEach(() => {
+                        params.eleHeight = 90;
 
-                    scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
-                        winPosition: {
-                            scrollTop: scrollTop,
-                            winHeight: winHeight
-                        },
-                        visibleHeight: visibleHeight,
-                        offsetTop: offsetTop,
-                        eleHeight: eleHeight
+                        ParallaxScrolling.prototype._largerWindow.and.returnValue({
+                            scrollY: 1901
+                        });
                     });
 
-                    expect(scrollPosition.scrollProgress).toBe(0);
-                    expect(scrollPosition.scrollY).toBe(200);
-                });
+                    it('should call `_largerWindow`', () => {
+                        result = ParallaxScrolling.prototype._getScrollPosition(params);
 
-                it('should return `eleHeight` minus the number pixels the creative has pass the top', function () {
-                    spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
-                    spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(true);
-                    scrollTop = 1300;
-                    winHeight = 1000;
-                    visibleHeight = 200;
-                    offsetTop = 1200;
-                    eleHeight = 600;
-
-                    scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
-                        winPosition: {
-                            scrollTop: scrollTop,
-                            winHeight: winHeight
-                        },
-                        visibleHeight: visibleHeight,
-                        offsetTop: offsetTop,
-                        eleHeight: eleHeight
+                        expect(ParallaxScrolling.prototype._largerWindow).toHaveBeenCalledWith(90, 20, 0, 100);
+                        expect(ParallaxScrolling.prototype._smallerWindow).not.toHaveBeenCalled();
                     });
-                    scrollPercent = 1 - ((eleHeight - 100) / eleHeight);
 
-                    expect(scrollPosition.scrollProgress).toBe(scrollPercent);
-                    expect(scrollPosition.scrollY).toBe(100);
-                });
+                    it('should call `_setElePosition` with the `scrollY` returned from `_smallerWindow`', () => {
+                        result = ParallaxScrolling.prototype._getScrollPosition(params);
 
-                it('should return number of pixel to the bottom divided by `eleHeight`', function () {
-                    spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
-                    spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(true);
-                    scrollTop = 650;
-                    winHeight = 1000;
-                    visibleHeight = 200;
-                    offsetTop = 1200;
-                    eleHeight = 600;
-
-                    scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
-                        winPosition: {
-                            scrollTop: scrollTop,
-                            winHeight: winHeight
-                        },
-                        visibleHeight: visibleHeight,
-                        offsetTop: offsetTop,
-                        eleHeight: eleHeight
+                        expect(ParallaxScrolling.prototype._setElePosition).toHaveBeenCalledWith(ele, 1901);
                     });
-                    topPosition = winHeight + scrollTop;
-                    creativeStartPosition = offsetTop + visibleHeight;
-                    scrollPercent = 1 - ((topPosition - creativeStartPosition) / eleHeight);
-
-                    expect(scrollPosition.scrollProgress).toBe(scrollPercent);
-                    expect(scrollPosition.scrollY).toBe(-150);
-                });
-
-                it('should return scrollY 0 if has show all parallax element but is not in the top yet', function () {
-                    spyOn(ParallaxScrolling.prototype, '_isTop').and.returnValue(false);
-                    spyOn(ParallaxScrolling.prototype, '_isScrollable').and.returnValue(true);
-                    scrollTop = 800;
-                    winHeight = 1000;
-                    visibleHeight = 200;
-                    offsetTop = 1200;
-                    eleHeight = 600;
-
-                    scrollPosition = ParallaxScrolling.prototype._getScrollPosition({
-                        winPosition: {
-                            scrollTop: scrollTop,
-                            winHeight: winHeight
-                        },
-                        visibleHeight: visibleHeight,
-                        offsetTop: offsetTop,
-                        eleHeight: eleHeight
-                    });
-                    topPosition = winHeight + scrollTop;
-                    creativeStartPosition = offsetTop + visibleHeight;
-                    scrollPercent = 1 - ((topPosition - creativeStartPosition) / eleHeight);
-
-                    expect(scrollPosition.scrollProgress).toBe(scrollPercent);
-                    expect(scrollPosition.scrollY).toBe(0);
                 });
             });
         });
 
-        describe('triggering events for content viewable percentages', function () {
-            var triggerEvent;
+        describe('`_smallerWindow`', () => {
+            var result,
+                eleHeight,
+                offsetTop,
+                scrollTop,
+                winHeight;
 
-            beforeEach(function () {
-                spyOn(ParallaxScrolling.prototype._events, 'triggerEvent');
+            beforeEach(() => {
+                eleHeight = 500;
+                offsetTop = 0;
+                scrollTop = 250;
+                winHeight = 1000;
 
-                triggerEvent = ParallaxScrolling.prototype._events.triggerEvent;
-                ParallaxScrolling.prototype._lastPercent = 0;
+                result = ParallaxScrolling.prototype._smallerWindow(eleHeight, offsetTop, scrollTop, winHeight);
             });
 
-            it('should trigger a percent when 10 is passed', function () {
-                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 10);
-
-                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
-                    percent: 10
-                }));
+            it('should return the scroll progress of the window in a percentage', () => {
+                expect(result.scrollY).toBe(-125);
             });
 
-            it('should trigger a percent of 10 when passed something above 10 but lower than 20', function () {
-                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
+            it('should return the scrollY compared to the window', () => {
+                expect(result.scrollProgress).toBe(-0.25);
+            });
+        });
 
-                expect(triggerEvent).toHaveBeenCalledWith(ele, 'aux.scroll-percent', jasmine.objectContaining({
-                    percent: 10
-                }));
+        describe('`_largerWindow`', function () {
+            var scrollPercent,
+                scrollTop,
+                winHeight,
+                offsetTop,
+                eleHeight;
+
+            it('should return 1 when top position is equal to the visibleHeight', function () {
+                scrollTop = 200;
+                winHeight = 1000;
+                offsetTop = 1200;
+                eleHeight = 600;
+
+                scrollPosition = ParallaxScrolling.prototype._largerWindow(eleHeight, offsetTop, scrollTop, winHeight);
+
+                expect(scrollPosition.scrollProgress).toBe(1);
+                expect(scrollPosition.scrollY).toBe(-600);
             });
 
-            it('should only trigger a percentile once', function () {
-                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
-                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
+            it('should return 0 if the element is at the top of the browser viewport', function () {
+                scrollTop = 1600;
+                winHeight = 1000;
+                offsetTop = 1600;
+                eleHeight = 600;
 
-                expect(triggerEvent.calls.count()).toBe(1);
+                scrollPosition = ParallaxScrolling.prototype._largerWindow(eleHeight, offsetTop, scrollTop, winHeight);
+
+                expect(scrollPosition.scrollProgress).toBe(0);
+                expect(scrollPosition.scrollY).toBe(0);
             });
 
-            it('should trigger a percentile twice if it has changed since', function () {
-                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
-                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 24);
-                ParallaxScrolling.prototype._scrollPercentTriggers(ele, 19);
+            it('should return `eleHeight` minus the number pixels the creative has pass the top', function () {
+                scrollTop = 1500;
+                winHeight = 1000;
+                offsetTop = 1200;
+                eleHeight = 600;
 
-                expect(triggerEvent.calls.count()).toBe(3);
+                scrollPosition = ParallaxScrolling.prototype._largerWindow(eleHeight, offsetTop, scrollTop, winHeight);
+
+                expect(scrollPosition.scrollProgress).toBe(0.5);
+                expect(scrollPosition.scrollY).toBe(300);
+            });
+
+            it('should return `scrollY` as 0', function () {
+                eleHeight = 1200;
+                offsetTop = 1500;
+                scrollTop = 1300;
+                winHeight = 1500;
+
+                scrollPosition = ParallaxScrolling.prototype._largerWindow(eleHeight, offsetTop, scrollTop, winHeight);
+
+                expect(scrollPosition.scrollProgress).toBe(0);
+                expect(scrollPosition.scrollY).toBe(0);
+            });
+        });
+
+        describe('`percentageTrigger`', () => {
+            var callback;
+
+            beforeEach(() => {
+                callback = jasmine.createSpy('callback');
+                ParallaxScrolling.prototype._lastProgress = 0.2;
+            });
+
+            it('should fire the callback with percentage', () => {
+                ParallaxScrolling.prototype.percentageTrigger(0.3, callback);
+
+                expect(callback).toHaveBeenCalledWith(70);
+            });
+
+            it('should not fire the callback if the progress matches the last progress', () => {
+                ParallaxScrolling.prototype.percentageTrigger(0.2, callback);
+
+                expect(callback).not.toHaveBeenCalled();
+            });
+
+            it('should assign the `lastProgress` on the instance', () => {
+                ParallaxScrolling.prototype.percentageTrigger(0.9, callback);
+
+                expect(ParallaxScrolling.prototype._lastProgress).toBe(0.9);
             });
         });
     });
