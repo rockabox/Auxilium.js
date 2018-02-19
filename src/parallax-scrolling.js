@@ -1,9 +1,7 @@
 define([
     'aux/attach-css',
-    'aux/events',
     'aux/offset'
-], function (attachCss, Events, offset) {
-    var events = new Events();
+], function (attachCss, offset) {
 
     /**
      * Scroll an HTML element at a different rate to the browsers scroll ensuring that all of the element's content
@@ -14,7 +12,6 @@ define([
      * @exports parallax-scrolling
      *
      * @requires module:attach-css
-     * @requires module:events
      * @requires module:offset
      *
      * @example
@@ -36,16 +33,7 @@ define([
     function ParallaxScrolling () {
         this._attachCss = attachCss;
         this._offset = offset;
-        this._lastPercent = -1;
     }
-
-    /**
-     * The Auxillium event system used by the Parallax scrolling module
-     * @see module:events
-     *
-     * @type {Object}
-     */
-    ParallaxScrolling.prototype._events = events;
 
     /**
      * Get the scroll position of the element depending on the current viewport
@@ -57,110 +45,106 @@ define([
      * @param {Object} params Contains parameters we need to calculate scroll position.
      * @property {Number} params.eleHeight The full size of the element.
      * @property {Number} params.offsetTop The offsetTop offset of the element.
-     * @property {Number} params.visibleHeight The number of pixels showing within the viewport.
      * @property {Object} params.winPosition Get the positional data from the window.
-     *
-     * @return {Object} scrollPosition
-     * @property {Number} scrollPosition.scrollProgress The ratio scrolled.
-     * @property {Number} scrollPosition.scrollY The scrollY position of the what the element should be.
+     * @property {Object} params.ele The element in which to set the position on
      */
     ParallaxScrolling.prototype._getScrollPosition = function (params) {
-        var scrollY,
-            eleHeight = params.eleHeight,
-            offsetTop = params.offsetTop,
-            visibleHeight = params.visibleHeight,
+        var offsetTop = params.offsetTop,
             winPosition = params.winPosition,
-            topPosition,
+            scrollTop = winPosition.scrollTop,
+            positionParams;
+
+        if (scrollTop >= offsetTop) {
+            positionParams = {
+                scrollProgress: 0,
+                scrollY: scrollTop - offsetTop
+            };
+
+            this._setElePosition(params.ele, positionParams.scrollY);
+
+            return positionParams;
+        }
+
+        var eleHeight = params.eleHeight,
             winHeight = winPosition.winHeight;
 
-        if (this._isTop(winPosition, offsetTop, visibleHeight)) {
-            scrollProgress = 0;
-            scrollY = visibleHeight;
-        } else if (this._isScrollable(winPosition, offsetTop, visibleHeight)) {
-            var ratio,
-                // How much the slot has scrolled compared to the window scroll position
-                scrollDistance = (offsetTop + visibleHeight) - winPosition.scrollTop,
-                bottom,
-                leftToShow;
+        if (winHeight > eleHeight) {
+            positionParams = this._largerWindow(eleHeight, offsetTop, scrollTop, winHeight);
+        } else {
+            positionParams = this._smallerWindow(eleHeight, offsetTop, scrollTop, winHeight);
+        }
 
-            // Calculate how much the content has scrolled
-            scrollProgress = scrollDistance / winHeight;
-            ratio = eleHeight * scrollProgress;
-            scrollY = visibleHeight - ratio;
+        this._setElePosition(params.ele, positionParams.scrollY);
 
-            // Is the Screen larger than the Parallax element
-            if (winHeight > eleHeight) {
-                // distance between starting point and the bottom of the window page.
-                bottom = winHeight - scrollDistance;
-                // number of pixel left to show from the parallax element
-                leftToShow = eleHeight - (visibleHeight + bottom);
+        return positionParams;
+    };
 
-                if (leftToShow <= 0) {
-                    topPosition = offsetTop - winPosition.scrollTop;
-                    // If the element is at the top of the browser viewport
-                    if (topPosition <= 0) {
-                        scrollY = Math.abs(topPosition);
-                        // The scroll progress will be 100 percent when the top position is equal to the visibleHeight
-                        scrollProgress = 1 - ((eleHeight - (visibleHeight - scrollY)) / eleHeight);
-                    } else {
-                        // Parallax element is at the top of the creative element it stops scrolling until
-                        // the creative element reach the top of the window.
-                        scrollY = 0;
-                        // scrollProgress is equal to the parallax element height minus the size of element
-                        // that should be viewable at any time.
-                        scrollProgress = 1 - ((eleHeight - visibleHeight) / eleHeight);
-                    }
-                } else {
-                    // the scroll progress is calculate from initial size of the minimum viewable part base on
-                    // how many pixel it has scroll.
-                    scrollProgress = 1 - (bottom / eleHeight);
-                    scrollY = (visibleHeight + bottom) - eleHeight;
-                }
+    /**
+     * Parallax scroll when the window is smaller than the height of the parallax element
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @private
+     *
+     * @param {Number} eleHeight The full size of the element.
+     * @param {Number} offsetTop The offset from the top of the element
+     * @param {Number} scrollTop The amount that the browser has been scrolled from the top of the body
+     * @param {Number} winHeight The total height of the browser window.
+     */
+    ParallaxScrolling.prototype._smallerWindow = function (eleHeight, offsetTop, scrollTop, winHeight) {
+        // How much the slot has scrolled compared to the window scroll position
+        var scrollProgress = (offsetTop - scrollTop) / winHeight;
+
+        return {
+            scrollProgress: scrollProgress,
+            scrollY: -Math.abs(eleHeight * scrollProgress)
+        };
+    };
+
+    /**
+     * Parallax scroll when the window is larger than the height of the parallax element
+     *
+     * @memberOf module:parallax-scrolling
+     *
+     * @private
+     *
+     * @param {Number} eleHeight The full size of the element.
+     * @param {Number} offsetTop The offset from the top of the element
+     * @param {Number} scrollTop The amount that the browser has been scrolled from the top of the body
+     * @param {Number} winHeight The total height of the browser window.
+     */
+    ParallaxScrolling.prototype._largerWindow = function (eleHeight, offsetTop, scrollTop, winHeight) {
+        var scrollDistance = offsetTop - scrollTop, // Distance slot has scrolled in window
+            bottom = winHeight - scrollDistance, // Bottom of window
+            leftToShow = eleHeight - bottom; // Pixels left to show of the element;
+
+        if (leftToShow <= 0) {
+            var topPosition = offsetTop - scrollTop;
+
+            // If the element is at the top of the browser viewport
+            if (topPosition <= 0) {
+                scrollY = Math.abs(topPosition);
+                // The scroll progress will be 100 percent when the top position is equal to the visibleHeight
+                scrollProgress = 1 - ((eleHeight - scrollY) / eleHeight);
+            } else {
+                // Parallax element is at the top of the creative element it stops scrolling until
+                // the creative element reach the top of the window.
+                scrollY = 0;
+                // scrollProgress is equal to the parallax element height minus the size of element
+                // that should be viewable at any time.
+                scrollProgress = 1 - (eleHeight / eleHeight);
             }
         } else {
-            scrollProgress = 1;
-            scrollY = visibleHeight - eleHeight;
+            // the scroll progress is calculate from initial size of the minimum viewable part base on
+            // how many pixel it has scroll.
+            scrollProgress = 1 - (bottom / eleHeight);
+            scrollY = bottom - eleHeight;
         }
 
         return {
             scrollProgress: scrollProgress,
             scrollY: scrollY
         };
-    };
-
-    /**
-     * Check to see if an element is currently at the top of the page.
-     *
-     * @memberOf module:parallax-scrolling
-     *
-     * @private
-     *
-     * @param {Object} winPosition Get the positional data from the window.
-     * @param {Number} offsetTop The offsetTop offset of the element.
-     * @param {Number} visibleHeight The number of pixels showing within the viewport.
-     *
-     * @return {Boolean} True if an element is currently at the top of the page.
-     */
-    ParallaxScrolling.prototype._isTop = function (winPosition, offsetTop, visibleHeight) {
-        return (winPosition.scrollTop >= offsetTop + visibleHeight);
-    };
-
-    /**
-     * Check to see if an element is within the scrollable area of the page.
-     *
-     * @memberOf module:parallax-scrolling
-     *
-     * @private
-     *
-     * @param {Object} winPosition Get the positional data from the window.
-     * @param {Number} offsetTop The offsetTop offset of the element.
-     * @param {Number} visibleHeight The number of pixels showing within the viewport.
-     *
-     * @return {Boolean} True if an element is within the scrollable area of the page.
-     */
-    ParallaxScrolling.prototype._isScrollable = function (winPosition, offsetTop, visibleHeight) {
-        return (winPosition.scrollTop <= offsetTop + visibleHeight) &&
-            (winPosition.scrollTop + winPosition.winHeight) >= (offsetTop + visibleHeight);
     };
 
     /**
@@ -171,28 +155,18 @@ define([
      * @private
      *
      * @param  {Object} viewport The viewport in which to check against (an element or the window).
-     * @param  {Object} type The type of the viewport (element or window)
      * @return {Object} positions
      * @property {Number} positions.scrollTop The offset of the viewport compared to the window
      * @property {Number} positions.winHeight The total height of the window
      *
      */
-    ParallaxScrolling.prototype._getWindowPositions = function (viewport, type) {
-        var pageYOffset,
-            innerHeight;
-
-        // We are not scrolling via the window and instead by an element
-        if (type === 'element') {
-            pageYOffset = viewport.scrollTop;
-            innerHeight = viewport.clientHeight;
-        } else {
-            pageYOffset = viewport.pageYOffset;
-            innerHeight = viewport.innerHeight;
-        }
+    ParallaxScrolling.prototype._getWindowPositions = function (viewport) {
+        var scrollTop = viewport.pageYOffset,
+            winHeight = viewport.innerHeight;
 
         return {
-            scrollTop: pageYOffset,
-            winHeight: innerHeight
+            scrollTop: (typeof scrollTop !== 'undefined') ? scrollTop : viewport.scrollTop,
+            winHeight: (typeof winHeight !== 'undefined') ? winHeight : viewport.clientHeight
         };
     };
 
@@ -204,25 +178,17 @@ define([
      *
      * @protected
      *
-     * @param  {Object} ele        The element in which to trigger the event on.
-     * @param  {Number} percentage The percentage (rounded) in which to trigger.
-     * @return {Boolean}           Whether the percentage was triggered or not.
+     * @param {Number} progress The scroll progress in which to trigger.
+     * @param {Function} callback A function in which to trigger percentages
      */
-    ParallaxScrolling.prototype._scrollPercentTriggers = function (ele, percentage) {
-        var roundedPercent = Math.floor(percentage / 10) * 10,
-            triggered = false;
+    ParallaxScrolling.prototype.percentageTrigger = function (progress, callback) {
+        var percentage = Math.floor((1 - progress) * 10) * 10;
 
-        if (roundedPercent !== this._lastPercent) {
-            this._lastPercent = roundedPercent;
+        if (progress !== this._lastProgress) {
+            this._lastProgress = progress;
 
-            this._events.triggerEvent(ele, 'aux.scroll-percent', {
-                percent: roundedPercent
-            });
-
-            triggered = true;
+            callback(percentage);
         }
-
-        return triggered;
     };
 
     /**
@@ -239,7 +205,7 @@ define([
      */
     ParallaxScrolling.prototype._setElePosition = function (ele, scrollY) {
         this._attachCss(ele, {
-            'top': scrollY + 'px'
+            transform: 'translate3d(0, ' + scrollY + 'px, 0)'
         });
 
         return ele;
@@ -257,25 +223,24 @@ define([
      * @param  {Number} eleHeight  The full size of the element
      * @param  {Number} viewableHeight The amount of the element in which should be viewable at any one time
      * @param  {Object=} viewport       Optionally pass the viewport of the browser (element or window)
-     * @param  {Object=} type      Optionally pass the type of the viewport (window or element)
      *
      * @returns {Object} An object of helper functions to be used the main handler function to be fire.
      */
-    ParallaxScrolling.prototype.init = function (ele, container, eleHeight, viewableHeight, viewport, type) {
+    ParallaxScrolling.prototype.init = function (ele, container, eleHeight, viewableHeight, viewport) {
         // Default to the current window if it hasn't been passed through to the helper
         viewport = viewport || window;
-        type = type || 'window';
 
         var $this = this,
-            offsetTop = this._offset(container).y,
-            percentage = 0.5,
-            scrollProgress,
-            scrollPosition,
-            visibleHeight = viewableHeight - (viewableHeight * (1 - percentage));
+            offsetTop = this._offset(container).y;
 
         this._container = container;
 
+        this._attachCss(ele, {
+            'will-change': 'transform'
+        });
+
         return {
+            _lastProgress: -1,
             /**
              * A handler in which to fire when scrolling.
              * Allows passing a new window viewport through the handler and the offset of the container.
@@ -285,22 +250,16 @@ define([
              *
              * @returns {Number} The scrollY position of the what the element should be.
              */
-            handler: function (overrideViewport, overrideOffset, overrideType) {
+            handler: function (overrideViewport, overrideOffset) {
                 overrideViewport = overrideViewport || viewport;
                 overrideOffset = overrideOffset || offsetTop;
-                overrideType = overrideType || type;
 
-                scrollPosition = $this._getScrollPosition({
+                return $this._getScrollPosition({
+                    ele: ele,
                     eleHeight: eleHeight,
                     offsetTop: overrideOffset,
-                    visibleHeight: visibleHeight,
-                    winPosition: $this._getWindowPositions(overrideViewport, overrideType)
+                    winPosition: $this._getWindowPositions(overrideViewport)
                 });
-
-                $this._setElePosition(ele, scrollPosition.scrollY);
-                $this._scrollPercentTriggers(ele, (1 - scrollPosition.scrollProgress) * 100);
-
-                return scrollPosition.scrollY;
             },
             /**
              * Reset the offset top that is used by the handler this is to be used by scroll or resize events for
@@ -312,7 +271,8 @@ define([
                 offsetTop = $this._offset($this._container).y;
 
                 return offsetTop;
-            }
+            },
+            percentageTrigger: $this.percentageTrigger
         };
     };
 
