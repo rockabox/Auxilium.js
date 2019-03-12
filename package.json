@@ -1,6 +1,6 @@
 {
   "name": "Auxilium.js",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "description": "A webpacked utility library.",
   "main": "src/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "helpers"
   ],
   "author": [
-    "Rockabox <tech@rockabox.com> (http://rockabox.com)",
+    "Scoota <tech@scoota.com> (http://scoota.com)",
     "Nick White <nickswhite89@gmail.com> (http://nwhite89.github.io)"
   ],
   "license": "MIT",

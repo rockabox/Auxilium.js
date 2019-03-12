@@ -16,5 +16,11 @@ define([
 
             expect(ele.style.backgroundColor).toEqual(css.backgroundColor);
         });
+
+        it('should make the backgroundColour priority set as important', () => {
+            attachCss(ele, css);
+
+            expect(ele.style.getPropertyPriority('background-color')).toBe('important');
+        });
     });
 });
