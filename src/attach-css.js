@@ -19,7 +19,7 @@ define([
      *    		'backgroundColor': 'black'
      *   	};
      *  attachCss(ele, css);
-     *  // Returns div (<div style="position: relative; background-colour: black"></div>)
+     *  // Returns div (<div style="position: relative; background-colour: black!important;"></div>)
      *  ```
      */
     function attachCss (ele, css) {
@@ -31,11 +31,21 @@ define([
 
         for (var rule in css) {
             if (css.hasOwnProperty(rule)) {
-                style[rule] = css[rule];
+                if (typeof style.setProperty === 'function') {
+                    style.setProperty(toSnakeCase(rule), css[rule], 'important');
+                } else {
+                    style[rule] = css[rule];
+                }
             }
         }
 
         return ele;
+    }
+
+    function toSnakeCase (rule) {
+        return rule.replace(/([A-Z])/g, function ($1) {
+            return '-' + $1.toLowerCase();
+        });
     }
 
     return attachCss;
