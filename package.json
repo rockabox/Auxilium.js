@@ -49,5 +49,8 @@
     "lodash-node": "~3.1.0",
     "webpack": "~1.15.0",
     "webpack-dev-middleware": "~1.12.2"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
