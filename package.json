@@ -1,6 +1,6 @@
 {
-  "name": "Auxilium.js",
-  "version": "2.10.2",
+  "name": "@rockabox/auxilium",
+  "version": "3.0.0",
   "description": "A webpacked utility library.",
   "main": "src/index.js",
   "scripts": {
@@ -20,10 +20,7 @@
     "utils",
     "helpers"
   ],
-  "author": [
-    "Scoota <tech@scoota.com> (http://scoota.com)",
-    "Nick White <nickswhite89@gmail.com> (http://nwhite89.github.io)"
-  ],
+  "author": "Scoota <tech@scoota.com> (http://scoota.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rockabox/Auxilium.js/issues"
@@ -52,5 +49,8 @@
     "lodash-node": "~3.1.0",
     "webpack": "~1.15.0",
     "webpack-dev-middleware": "~1.12.2"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
