@@ -28,5 +28,29 @@ define([
             expect(request).toBeDefined();
             expect(request).not.toBe(false);
         });
+
+        describe('headers', function () {
+            var getRequestSpy;
+
+            beforeEach(function () {
+                getRequestSpy = jasmine.createSpyObj('ajax.getRequest', ['open', 'send', 'setRequestHeader']);
+                spyOn(ajax, 'getRequest').and.returnValue(getRequestSpy);
+            });
+
+            it('should set headers', function () {
+                ajax.load('', 'get', function () {}, function () {}, {
+                    'x-api-key': '7a7a7a'
+                });
+
+                expect(getRequestSpy.setRequestHeader).toHaveBeenCalledWith('x-api-key', '7a7a7a');
+            });
+
+            it('should do nothing if headers not passed', function () {
+                ajax.load('', 'get', function () {}, function () {});
+
+                expect(getRequestSpy.setRequestHeader).not.toHaveBeenCalled();
+            });
+        });
+
     });
 });

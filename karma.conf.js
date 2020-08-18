@@ -26,8 +26,7 @@ module.exports = function (config) {
             'tests/**/*.spec.js'
         ],
         browsers: [
-            'Chrome',
-            'Firefox'
+            'Chrome'
         ],
         frameworks: [
             'jasmine'

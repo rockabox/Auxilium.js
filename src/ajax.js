@@ -18,10 +18,11 @@ define([
          * @param {string} method Defaults to get
          * @param {function} onload Success callback
          * @param {function} onerror Error callback
+         * @param {Object} headers An optional argument for setting XHR headers.
          *
          * @returns {object} XMLHTTP request object
          */
-        load: function (url, method, onload, onerror) {
+        load: function (url, method, onload, onerror, headers) {
             var $this = this,
                 xhr = $this.getRequest();
 
@@ -38,6 +39,15 @@ define([
                     }
                 };
                 xhr.open(method, url, true);
+
+                if (headers) {
+                    for (var key in headers) {
+                        if (headers.hasOwnProperty(key)) {
+                            xhr.setRequestHeader(key, headers[key]);
+                        }
+                    }
+                }
+
                 xhr.send(null);
             }
             return xhr;
@@ -76,10 +86,11 @@ define([
          * @param {string} method Defaults to get
          * @param {function} onload Success callback
          * @param {function} onerror Error callback
+         * @param {Object} headers An optional argument for setting XHR headers.
          *
          * @returns {object} XMLHTTP request object
          */
-        loadJson: function (url, method, onload, onerror) {
+        loadJson: function (url, method, onload, onerror, headers) {
             var $this = this;
 
             return $this.load(url, method, function (xhr) {
@@ -91,7 +102,7 @@ define([
                         onerror(error);
                     }
                 }
-            }, onerror);
+            }, onerror, headers);
         }
     };
 
